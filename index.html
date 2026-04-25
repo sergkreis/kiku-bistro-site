@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiku Bistro | Quedlinburg</title>
+    <meta
+      name="description"
+      content="Modernes Bistro in Quedlinburg mit Fr&uuml;hst&uuml;ck, Lunch und einer kleinen, wechselnden Karte."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="header-address" href="#visit">
+          <span>Steinbr&uuml;cke 2</span>
+          <span>06484 Quedlinburg</span>
+        </a>
+        <nav class="nav">
+          <a href="#about">Bistro</a>
+          <a href="#menu">Speisekarte</a>
+          <a href="#visit">Besuch</a>
+          <a href="#contact">Kontakt</a>
+        </nav>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Men&uuml; &ouml;ffnen"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a
+          class="header-cta"
+          href="https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg"
+          target="_blank"
+          rel="noreferrer"
+          >Route planen</a
+        >
+      </div>
+      <div class="mobile-menu" id="mobile-menu">
+        <a href="#about">Bistro</a>
+        <a href="#menu">Speisekarte</a>
+        <a href="#visit">Besuch</a>
+        <a href="#contact">Kontakt</a>
+        <a href="impressum.html">Impressum &amp; Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-media">
+          <img src="assets/hero-bread.jpg" alt="Frisch gebackenes Brot im Kiku Bistro" />
+        </div>
+        <div class="hero-overlay">
+          <div class="container hero-shell">
+            <div class="hero-brand fade-up">
+              <p class="hero-tagline">Sehr franz&ouml;sisch. Sehr entspannt. Sehr lebendig.</p>
+              <div class="hero-logo-wrap hero-logo-wrap-full">
+                <img src="assets/logo-white.png" alt="Kiku Bistro Logo" class="hero-logo" />
+              </div>
+              <p class="hero-intro hero-intro-light">
+                Wir haben an allen Tagen au&szlig;er Dienstag und Mittwoch von
+                9:00 bis 17:00 Uhr ge&ouml;ffnet und servieren moderne, frische
+                Fr&uuml;hst&uuml;cks- und Mittagsgerichte.
+              </p>
+              <div class="hero-actions">
+                <a class="btn btn-light-solid" href="#menu">Zur Speisekarte</a>
+                <a
+                  class="btn btn-light-outline"
+                  href="https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Route planen</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section intro-section" id="about">
+        <div class="container intro-layout">
+          <div class="intro-statement fade-up">
+            <p class="statement-line">Das Bistro in Quedlinburg</p>
+            <h1><span>Das Bistro</span><span>Kiku ist da.</span></h1>
+            <p>
+              Als kleiner Bruder des Michelin-gelisteten Restaurant Kiku bringt es
+              gro&szlig;e K&uuml;che in lockerer Atmosph&auml;re auf den Tisch.
+            </p>
+            <p>
+              Chef Jan Fribus interpretiert seine besten Rezepte neu - er backt
+              au&szlig;erdem Croissants, Brot und Kuchen t&auml;glich selbst und
+              &uuml;berrascht mit einem au&szlig;ergew&ouml;hnlichen Tagesangebot.
+            </p>
+            <p class="intro-accent">Fr&uuml;hst&uuml;ck. Lunch. Etwas zwischendurch.</p>
+            <p class="intro-accent">Unkompliziert. Und in h&ouml;chster Qualit&auml;t.</p>
+            <p>Jeden Tag in der Steinbr&uuml;cke - direkt am Marktplatz.</p>
+            <p class="statement-footer">Bonjour et bon app&eacute;tit!</p>
+            <p>Wir freuen uns auf euch.</p>
+          </div>
+
+          <figure class="intro-photo fade-up delay-1">
+            <img src="assets/dish-editorial.jpg" alt="Dessert aus dem Bistro Kiku" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="section story-bridge">
+        <div class="story-bridge-inner fade-up">
+          <p class="story-bridge-line story-bridge-line-wide">
+            Frisch gebackenes Brot, feine Patisserie und gro&szlig;e Aromen in lockerer
+            Atmosph&auml;re.
+          </p>
+        </div>
+      </section>
+
+      <section class="section menu-section" id="menu">
+        <div class="container section-heading">
+          <p class="eyebrow">Speisekarte</p>
+          <h2>Fr&uuml;hst&uuml;ck, Lunch und etwas f&uuml;r zwischendurch.</h2>
+        </div>
+
+        <div class="container menu-layout menu-layout-wide">
+          <div class="menu-copy fade-up">
+            <div class="menu-tabs">
+              <button class="tab active" data-tab="fruehstueck">Fr&uuml;hst&uuml;ck</button>
+              <button class="tab" data-tab="mittag">Ab 12:00 Uhr</button>
+              <button class="tab" data-tab="getraenke">Getr&auml;nke</button>
+            </div>
+
+            <div class="menu-panels">
+              <div class="menu-panel active" id="tab-fruehstueck">
+                <div class="menu-group">
+                  <p class="menu-group-label">Bis 12:00 Uhr</p>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Shakshuka</span>
+                      <span class="item-description">Eier, Zwiebel, Paprika, Tomaten, Kr&auml;uter</span>
+                    </div>
+                    <span class="item-price">15 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Eggs Benedikt mit Avocado</span>
+                      <span class="item-description">Pochierte Eier, Croissant, Hollandaise, Avocado</span>
+                    </div>
+                    <span class="item-price">14 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Eggs Benedikt mit Lachs</span>
+                      <span class="item-description">Pochierte Eier, Lachs, Brioche, Hollandaise, Avocado</span>
+                    </div>
+                    <span class="item-price">18 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Eggs Benedikt mit Roastbeef</span>
+                      <span class="item-description">Pochierte Eier, Roastbeef, Brioche, Unagi-B&eacute;arnaise</span>
+                    </div>
+                    <span class="item-price">18 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">French Toast</span>
+                      <span class="item-description">Brioche, Mascarpone, Beeren, Karamell</span>
+                    </div>
+                    <span class="item-price">16 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Croissant</span>
+                    </div>
+                    <span class="item-price">4 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">S&uuml;&szlig;es Croissant</span>
+                      <span class="item-description">Nutella, Banane, Marshmallow</span>
+                    </div>
+                    <span class="item-price">10 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Quiche</span>
+                      <span class="item-description">Kartoffel, Ei, W&uuml;rstchen, Cornichons, Senf, Hollandaise</span>
+                    </div>
+                    <span class="item-price">17 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Gem&uuml;se-Quiche</span>
+                      <span class="item-description">Spargel, Blumenkohl, Pilze, Tomaten, Ei</span>
+                    </div>
+                    <span class="item-price">16 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Hausgemachtes Granola</span>
+                      <span class="item-description">Griechischer Joghurt, Beeren, N&uuml;sse</span>
+                    </div>
+                    <span class="item-price">9 &euro;</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="menu-panel" id="tab-mittag">
+                <div class="menu-stack">
+                  <p class="menu-panel-title">Lunch</p>
+                  <div class="menu-group">
+                    <p class="menu-group-label">Vorspeisen</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Trio von Dips</span>
+                        <span class="item-description">Baba Ghanoush, Hummus, Muhammarra</span>
+                      </div>
+                      <span class="item-price">10 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Rindertatar</span>
+                        <span class="item-description">Brioche, Cornichons, Kapern, Parmesan, Spargel-B&eacute;arnaise, gebeiztes Eigelb</span>
+                      </div>
+                      <span class="item-price">18 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Lachstatar</span>
+                        <span class="item-description">Lachs, Avocado, Radieschen, Blattsalat, Ponzu</span>
+                      </div>
+                      <span class="item-price">18 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Ave Kiku Salat</span>
+                        <span class="item-description">R&ouml;mersalat, Huhn, Wasabi, Parmesan</span>
+                      </div>
+                      <span class="item-price">20 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Roast Beef-Salat</span>
+                        <span class="item-description">Rind, Blumenkohl, Blattsalat, vegane XO-Sauce</span>
+                      </div>
+                      <span class="item-price">16 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Tomatensalat</span>
+                        <span class="item-description">Tomaten, Burrata, Blattsalat, Muhammarra</span>
+                      </div>
+                      <span class="item-price">17 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Konsomm&eacute;-Nudelsuppe</span>
+                        <span class="item-description">Schwein, Nudeln, Ei, Schnittlauch, vegane XO-Sauce</span>
+                      </div>
+                      <span class="item-price">17 &euro;</span>
+                    </div>
+                  </div>
+
+                  <div class="menu-group">
+                    <p class="menu-group-label">Hauptg&auml;nge</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Lachs</span>
+                        <span class="item-description">Pastinakenp&uuml;ree, Beurre blanc</span>
+                      </div>
+                      <span class="item-price">26 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Beef Bourguignon</span>
+                        <span class="item-description">Kartoffelp&uuml;ree, eingelegte Perlzwiebeln, Pilze, Jus</span>
+                      </div>
+                      <span class="item-price">27 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Chili Huhn</span>
+                        <span class="item-description">Huhn, Chili, Ei, Reis</span>
+                      </div>
+                      <span class="item-price">22 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Yuzu-Miso-Aubergine</span>
+                        <span class="item-description">Tomaten, Koriander, Nusssauce</span>
+                      </div>
+                      <span class="item-price">19 &euro;</span>
+                    </div>
+                  </div>
+
+                  <div class="menu-group">
+                    <p class="menu-group-label">Desserts</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Croissant mit Nutella und Beeren</span>
+                      </div>
+                      <span class="item-price">10 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">French Toast</span>
+                      </div>
+                      <span class="item-price">16 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">San-Sabastian</span>
+                      </div>
+                      <span class="item-price">10 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Honigkuchen</span>
+                      </div>
+                      <span class="item-price">10 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Kardamomschnecke mit Vanillecreme</span>
+                      </div>
+                      <span class="item-price">12 &euro;</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="menu-note">
+                  Die Mittagskarte stammt aus dem aktuellen PDF-Men&uuml;. Die vollst&auml;ndige Version gibt es unten als Originalkarte.
+                </p>
+              </div>
+
+              <div class="menu-panel" id="tab-getraenke">
+                <div class="menu-stack">
+                  <p class="menu-panel-title">Getr&auml;nke</p>
+                  <div class="menu-group">
+                    <p class="menu-group-label">Kaffee &amp; Specials</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Espresso, Doppio, Americano, Cappuccino</span>
+                      </div>
+                      <span class="item-price">ab 6 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Flat White, Latte Macchiato, Hei&szlig;e Schokolade</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Matcha, Matcha Latte</span>
+                      </div>
+                      <span class="item-price">ab 10 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Affogato</span>
+                        <span class="item-description">Vanilleeis, Espresso</span>
+                      </div>
+                      <span class="item-price">7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Espresso Yuzu Tonic</span>
+                        <span class="item-description">Espresso, Yuzu, Tonic</span>
+                      </div>
+                      <span class="item-price">8 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Bumble Coffee</span>
+                        <span class="item-description">Orangensaft, Espresso, Karamell</span>
+                      </div>
+                      <span class="item-price">7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Pecan-Caramel Latte</span>
+                        <span class="item-description">Milchkaffee, Pekannuss, Karamell</span>
+                      </div>
+                      <span class="item-price">13 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Himbeer-Raf</span>
+                        <span class="item-description">Espresso, Sahne, Himbeersirup</span>
+                      </div>
+                      <span class="item-price">13 &euro;</span>
+                    </div>
+                  </div>
+
+                  <div class="menu-group">
+                    <p class="menu-group-label">Tee &amp; Hausgemachte Getr&auml;nke</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Schwarzer Tee, Gr&uuml;ner Jasmintee</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Sanddorn-Ingwer-Tee, Masala Milk mit Pu-Erh</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Smoothie</span>
+                        <span class="item-description">Spinat, Birne, Banane</span>
+                      </div>
+                      <span class="item-price">7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Vitamin Shot</span>
+                        <span class="item-description">Ingwer, Kurkuma, Yuzu</span>
+                      </div>
+                      <span class="item-price">8 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Frisch gepresster Orangensaft</span>
+                      </div>
+                      <span class="item-price">7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Kombucha</span>
+                      </div>
+                      <span class="item-price">8 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Auch mit Haferdrink erh&auml;ltlich</span>
+                      </div>
+                      <span class="item-price">+1 &euro;</span>
+                    </div>
+                  </div>
+
+                  <div class="menu-group">
+                    <p class="menu-group-label">Wein, Cocktails &amp; Bier</p>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Rose Sekt, Prosecco, Riesling, Pino Bianco</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Sovinion Blanc, Rose Provance, Primmitivo, Rjoha</span>
+                      </div>
+                      <span class="item-price">ab 8 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Cosmo, Aperol Spritz, Yuzu Gin Tonic</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Hausgemachte Beerenlimonade</span>
+                        <span class="item-description">Beerenmix, Sodawasser, Grenadine</span>
+                      </div>
+                      <span class="item-price">6 &euro;</span>
+                    </div>
+                    <div class="menu-item menu-item-priced">
+                      <div>
+                        <span class="item-name">Pils Altenauer, Dunkel Altenauer, Radler, Alkoholfreies Altenauer</span>
+                      </div>
+                      <span class="item-price">ab 7 &euro;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-pdf-row">
+              <a class="btn btn-dark" href="Bistro.pdf" target="_blank" rel="noreferrer">Aktuelle Karte als PDF</a>
+            </div>
+          </div>
+
+          <div class="menu-media fade-up delay-1">
+            <div class="menu-photo-main menu-photo-main-tall">
+              <img src="assets/dish-4.jpg" alt="Detail eines Gerichts im Kiku Bistro" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section visit-section" id="visit">
+        <div class="container visit-layout">
+          <div class="visit-media fade-up delay-1">
+            <figure class="visit-photo visit-photo-main">
+              <img src="assets/interior-kiku-144.jpg" alt="Detail aus dem Bistro in Quedlinburg" />
+            </figure>
+            <figure class="visit-photo visit-photo-secondary">
+              <img src="assets/hero-bread.jpg" alt="Licht und Backwaren im Kiku Bistro" />
+            </figure>
+          </div>
+
+          <div class="visit-copy fade-up">
+            <p class="eyebrow">Jeden Tag in der Steinbr&uuml;cke - direkt am Marktplatz.</p>
+            <h2>Bonjour et bon app&eacute;tit!</h2>
+            <p>Wir freuen uns auf euch.</p>
+
+            <div class="visit-info-grid">
+              <div class="visit-info-card">
+                <strong>Adresse</strong>
+                <p>Steinbr&uuml;cke 2<br />06484 Quedlinburg</p>
+              </div>
+              <div class="visit-info-card">
+                <strong>&Ouml;ffnungszeiten</strong>
+                <p>Mittwoch - Sonntag<br />9:00 - 17:00</p>
+                <p>Montag-Dienstag<br />Ruhetag</p>
+              </div>
+              <div class="visit-info-card">
+                <strong>Kontakt</strong>
+                <p><a href="tel:+4939464139064">+49 3946 4139064</a></p>
+                <p><a href="mailto:info@kiku-bistro.de">info@kiku-bistro.de</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="container contact-panel fade-up">
+          <div>
+            <p class="eyebrow">Kontakt</p>
+            <h2>Kiku Bistro</h2>
+          </div>
+          <div class="contact-actions">
+            <a class="btn btn-dark" href="mailto:info@kiku-bistro.de">E-Mail schreiben</a>
+            <a
+              class="btn btn-outline"
+              href="https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg"
+              target="_blank"
+              rel="noreferrer"
+              >Route planen</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="footer-logo-wrap">
+            <img src="assets/logo-white.png" alt="Kiku Bistro" />
+          </span>
+        </div>
+        <div class="footer-links">
+          <a href="impressum.html">Impressum &amp; Datenschutz</a>
+          <a href="agb.html">AGB</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document.querySelectorAll(".fade-up").forEach((element) => observer.observe(element));
+
+      const header = document.querySelector(".site-header");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mobileMenu = document.querySelector(".mobile-menu");
+
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("scrolled", window.scrollY > 20);
+      });
+
+      if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", () => {
+          const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+          menuToggle.setAttribute("aria-expanded", String(!expanded));
+          header.classList.toggle("menu-open", !expanded);
+        });
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            menuToggle.setAttribute("aria-expanded", "false");
+            header.classList.remove("menu-open");
+          });
+        });
+      }
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".tab").forEach((button) => button.classList.remove("active"));
+          document.querySelectorAll(".menu-panel").forEach((panel) => panel.classList.remove("active"));
+          tab.classList.add("active");
+          document.getElementById("tab-" + tab.dataset.tab).classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>

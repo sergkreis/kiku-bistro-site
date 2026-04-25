@@ -1,0 +1,9 @@
+bistro-extract.txt
+files.zip
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/

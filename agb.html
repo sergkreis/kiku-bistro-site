@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AGB | Kiku Bistro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="legal-page">
+    <header class="site-header scrolled">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">Kiku<em>Bistro</em></a>
+        <nav class="nav">
+          <a href="index.html#menu">Speisekarte</a>
+          <a href="index.html#visit">Besuch</a>
+          <a href="impressum.html">Impressum</a>
+        </nav>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Menü öffnen"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a class="header-cta" href="tel:+4939464139064">Reservierung</a>
+      </div>
+      <div class="mobile-menu" id="mobile-menu">
+        <a href="index.html#menu">Speisekarte</a>
+        <a href="index.html#visit">Besuch</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="index.html#contact">Kontakt</a>
+      </div>
+    </header>
+
+    <main class="legal-main">
+      <div class="container">
+        <article class="legal-shell">
+          <p class="label-tag">Rechtliches</p>
+          <h1>Allgemeine<br /><em>Geschäftsbedingungen</em></h1>
+
+          <h3>1. Geltungsbereich</h3>
+          <p>
+            Diese Allgemeinen Geschäftsbedingungen gelten für alle
+            Dienstleistungen und Bewirtungen im KIKU Bistro. Mit dem Besuch und
+            der Inanspruchnahme unserer Leistungen erklären Sie sich mit diesen
+            Bedingungen einverstanden.
+          </p>
+
+          <h3>2. Öffnungszeiten</h3>
+          <p>
+            Das KIKU Bistro ist Mittwoch bis Sonntag von 9:00 bis 17:00 Uhr
+            geöffnet. Montag und Dienstag sind Ruhetage.
+          </p>
+
+          <h3>3. Zahlung</h3>
+          <p>
+            Die Bezahlung erfolgt direkt im Bistro bar oder per Kreditkarte. Bitte
+            beachten Sie, dass Banknoten im Wert von 200 Euro und 500 Euro
+            möglicherweise nicht akzeptiert werden.
+          </p>
+
+          <h3>4. Gutscheine</h3>
+          <p>
+            Gutscheine können für Speisen und Getränke im KIKU Bistro eingelöst
+            werden. Sie sind nur im Original gültig. Eine Barauszahlung oder
+            Rückerstattung ist ausgeschlossen.
+          </p>
+
+          <h3>5. Aufbewahrung des Vertragstextes</h3>
+          <p>
+            Der Vertragstext wird von uns gespeichert, ist jedoch nicht
+            öffentlich zugänglich. Die entsprechenden Informationen können Ihnen
+            auf Wunsch zur Verfügung gestellt werden.
+          </p>
+
+          <h3>6. Schlussbestimmungen</h3>
+          <p>
+            Gerichtsstand ist, soweit gesetzlich zulässig, der Sitz des KIKU
+            Bistro. Es gilt deutsches Recht. Vertragssprache ist Deutsch.
+          </p>
+        </article>
+      </div>
+    </main>
+
+    <script>
+      const header = document.querySelector(".site-header");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mobileMenu = document.querySelector(".mobile-menu");
+
+      if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", () => {
+          const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+          menuToggle.setAttribute("aria-expanded", String(!expanded));
+          header.classList.toggle("menu-open", !expanded);
+        });
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            menuToggle.setAttribute("aria-expanded", "false");
+            header.classList.remove("menu-open");
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
