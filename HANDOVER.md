@@ -1,5 +1,11 @@
 # Kiku Bistro Site Handover
 
+Global projects index:
+
+```text
+C:\Users\Sergej\Documents\Codex\PROJECTS.md
+```
+
 ## Project
 
 Static website for Kiku Bistro in Quedlinburg.
