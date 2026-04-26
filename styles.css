@@ -338,8 +338,7 @@ button {
 .intro-layout,
 .menu-layout,
 .visit-layout,
-.footer-inner,
-.contact-panel {
+.footer-inner {
   display: grid;
   gap: 26px;
 }
@@ -373,8 +372,7 @@ button {
 
 .intro-statement h1,
 .section-heading h2,
-.visit-copy h2,
-.contact-panel h2 {
+.visit-copy h2 {
   font-family: "Playfair Display", Georgia, serif;
   font-weight: 700;
   line-height: 0.98;
@@ -674,18 +672,6 @@ button {
   min-height: 620px;
 }
 
-.contact-section {
-  padding-top: 28px;
-  padding-bottom: 68px;
-}
-
-.contact-panel {
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 28px 0 0;
-  border-top: 1px solid var(--line);
-}
-
 .menu-pdf-row {
   margin-top: 22px;
   display: flex;
@@ -693,24 +679,15 @@ button {
   gap: 12px;
 }
 
-.contact-panel h2 {
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-}
-
-.contact-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .site-footer {
-  padding: 0 0 36px;
+  padding: 28px 0 128px;
+  scroll-margin-top: 96px;
 }
 
 .footer-inner {
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 22px 28px;
+  padding: 30px 34px;
   border-radius: 8px;
   background: rgba(36, 66, 53, 0.96);
 }
@@ -719,8 +696,8 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 62px;
+  width: 220px;
+  height: 88px;
 }
 
 .footer-logo-wrap img {
@@ -732,8 +709,16 @@ button {
 .footer-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  justify-content: flex-end;
+  gap: 20px 26px;
   color: rgba(255, 253, 248, 0.82);
+  font-size: 1rem;
+}
+
+.footer-links a:hover {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
 
 .legal-page {
@@ -795,7 +780,6 @@ button {
   .intro-layout,
   .menu-layout,
   .visit-layout,
-  .contact-panel,
   .footer-inner {
     grid-template-columns: 1fr;
   }
@@ -876,10 +860,6 @@ button {
     min-height: 340px;
   }
 
-  .contact-actions {
-    justify-content: flex-start;
-  }
-
   .intro-photo {
     aspect-ratio: 4 / 3;
   }
@@ -898,6 +878,7 @@ button {
   }
 
   .footer-links {
+    justify-content: flex-start;
     gap: 10px 16px;
   }
 
