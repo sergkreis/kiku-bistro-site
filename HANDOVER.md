@@ -14,9 +14,9 @@ Repository:
 https://github.com/sergkreis/kiku-bistro-site
 
 Current live URL:
-https://kreisphoto.de/
+http://217.154.193.255/
 
-Important note: `kreisphoto.de` is currently used as a temporary domain for the Kiku Bistro site. Later it should be replaced with the real Kiku Bistro domain.
+Important note: the production domain is `kiku-bistro.de`. DNS still needs to be pointed to `217.154.193.255`, then HTTPS must be issued for `kiku-bistro.de` and `www.kiku-bistro.de`.
 
 ## Local Project Path
 
@@ -69,13 +69,13 @@ origin https://github.com/sergkreis/kiku-bistro-site.git
 Server:
 
 ```text
-212.227.28.224
+217.154.193.255
 ```
 
 OS:
 
 ```text
-Debian 12
+Ubuntu 24.04
 ```
 
 Web server:
@@ -93,20 +93,20 @@ Web root:
 nginx config:
 
 ```text
-/etc/nginx/conf.d/kiku-site.conf
+/etc/nginx/sites-available/kiku-site
 ```
 
 Current nginx domains:
 
 ```text
-kreisphoto.de
-www.kreisphoto.de
+kiku-bistro.de
+www.kiku-bistro.de
 ```
 
 Current TLS certificate:
 
 ```text
-/etc/letsencrypt/live/kreisphoto.de/
+not issued yet
 ```
 
 ## Current Server State
@@ -124,23 +124,21 @@ Open ports checked after deploy:
 ```text
 22
 80
-443
 ```
 
 Old backend service:
 
 ```text
-kiku-booking.service
+none on the production VPS
 ```
 
 Status after deploy:
 
 ```text
-disabled
-inactive
+not applicable
 ```
 
-It was previously listening on `127.0.0.1:8080`, but it is no longer used.
+The production VPS is clean and serves only the static site through nginx.
 
 ## Backup
 
@@ -168,7 +166,7 @@ assets/
 Then on the VPS:
 
 ```bash
-chown -R nginx:nginx /var/www/kiku-site
+chown -R www-data:www-data /var/www/kiku-site
 find /var/www/kiku-site -type d -exec chmod 755 {} +
 find /var/www/kiku-site -type f -exec chmod 644 {} +
 nginx -t
@@ -275,11 +273,12 @@ Recommended next security steps:
 When the real Kiku Bistro domain is ready:
 
 ```text
-1. Point DNS A record to 212.227.28.224.
-2. Update nginx server_name.
-3. Issue new Let's Encrypt certificate for the real domain.
-4. Update canonical links / metadata if added later.
-5. Reload nginx.
+1. Point DNS A record for kiku-bistro.de to 217.154.193.255.
+2. Point DNS A record for www.kiku-bistro.de to 217.154.193.255.
+3. Wait until DNS resolves to the production VPS.
+4. Issue Let's Encrypt certificate for kiku-bistro.de and www.kiku-bistro.de.
+5. Update nginx to redirect HTTP to HTTPS after the certificate is active.
+6. Reload nginx.
 ```
 
 ## Legal Tasks

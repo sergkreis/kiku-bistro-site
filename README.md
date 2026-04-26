@@ -4,7 +4,7 @@
 
 Текущий временный адрес:
 
-https://kreisphoto.de/
+http://217.154.193.255/
 
 Репозиторий:
 
@@ -14,7 +14,7 @@ https://github.com/sergkreis/kiku-bistro-site
 
 Сайт уже развернут на VPS и отдается через nginx как обычный статический сайт.
 
-Важно: `kreisphoto.de` сейчас используется как временный домен для проекта Kiku Bistro. Когда будет готов финальный домен, нужно будет обновить DNS, nginx и TLS-сертификат.
+Важно: production-домен проекта — `kiku-bistro.de`. DNS еще нужно направить на новый VPS `217.154.193.255`, после этого выпустить TLS-сертификат для `kiku-bistro.de` и `www.kiku-bistro.de`.
 
 ## Структура проекта
 
@@ -87,7 +87,7 @@ git push
 Текущий VPS:
 
 ```text
-212.227.28.224
+217.154.193.255
 ```
 
 Папка сайта на сервере:
@@ -99,14 +99,14 @@ git push
 nginx config:
 
 ```text
-/etc/nginx/conf.d/kiku-site.conf
+/etc/nginx/sites-available/kiku-site
 ```
 
 Текущие домены в nginx:
 
 ```text
-kreisphoto.de
-www.kreisphoto.de
+kiku-bistro.de
+www.kiku-bistro.de
 ```
 
 Для деплоя нужно копировать на сервер:
@@ -123,7 +123,7 @@ assets/
 После копирования файлов на сервер:
 
 ```bash
-chown -R nginx:nginx /var/www/kiku-site
+chown -R www-data:www-data /var/www/kiku-site
 find /var/www/kiku-site -type d -exec chmod 755 {} +
 find /var/www/kiku-site -type f -exec chmod 644 {} +
 nginx -t
