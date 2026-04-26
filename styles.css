@@ -259,19 +259,19 @@ button {
 
 .hero-brand {
   display: grid;
-  gap: 28px;
+  gap: 18px;
   justify-items: center;
   text-align: center;
-  width: min(1040px, 100%);
+  width: min(920px, 100%);
 }
 
 .hero-tagline {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+  font-size: clamp(1.45rem, 3.2vw, 2.8rem);
   line-height: 1.05;
   color: var(--white);
   text-wrap: balance;
-  max-width: 16ch;
+  max-width: 18ch;
 }
 
 .hero-logo-wrap {
@@ -282,13 +282,13 @@ button {
 }
 
 .hero-logo {
-  width: min(980px, 96%);
+  width: min(780px, 92%);
   object-fit: contain;
 }
 
 .hero-intro {
   max-width: 42rem;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
 }
 
 .hero-intro-light {
@@ -315,6 +315,7 @@ button {
 
 .section {
   padding: 56px 0;
+  scroll-margin-top: 96px;
 }
 
 .intro-layout,
@@ -460,7 +461,7 @@ button {
 
 .menu-stack {
   display: grid;
-  gap: 24px;
+  gap: 14px;
 }
 
 .menu-panel-title {
@@ -472,7 +473,7 @@ button {
 
 .menu-group {
   display: grid;
-  gap: 12px;
+  gap: 4px;
 }
 
 .menu-group-label {
@@ -517,25 +518,28 @@ button {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  padding: 14px 0;
+  padding: 7px 0;
   border-bottom: 1px solid rgba(36, 66, 53, 0.08);
 }
 
 .menu-item > div {
   display: grid;
-  gap: 6px;
+  gap: 2px;
 }
 
 .menu-item-priced {
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px;
+  justify-content: initial;
   align-items: start;
 }
 
 .item-name {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.28rem;
+  font-size: 1.12rem;
+  line-height: 1.12;
+  text-transform: uppercase;
   color: var(--green);
-  flex-shrink: 0;
 }
 
 .item-dots {
@@ -552,14 +556,16 @@ button {
 
 .item-description {
   display: block;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
+  line-height: 1.25;
   color: var(--text-muted);
 }
 
 .item-price {
-  flex-shrink: 0;
   font-size: 0.96rem;
   font-weight: 600;
+  line-height: 1.15;
+  text-align: right;
   color: var(--green);
 }
 
