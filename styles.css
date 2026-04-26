@@ -368,7 +368,7 @@ button {
   font-size: clamp(3.2rem, 7vw, 6rem);
   max-width: none;
   display: grid;
-  gap: 0.04em;
+  gap: 0.013em;
 }
 
 .intro-statement h1 span {
