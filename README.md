@@ -1,35 +1,35 @@
-# Kiku Bistro Website
+# Сайт Kiku Bistro
 
-Static website for **Kiku Bistro** in Quedlinburg.
+Статический сайт для **Kiku Bistro** в Кведлинбурге.
 
-Current temporary live URL:
+Текущий временный адрес:
 
 https://kreisphoto.de/
 
-Repository:
+Репозиторий:
 
 https://github.com/sergkreis/kiku-bistro-site
 
-## Status
+## Статус
 
-The site is currently deployed to a VPS and served by nginx as a static website.
+Сайт уже развернут на VPS и отдается через nginx как обычный статический сайт.
 
-Important: `kreisphoto.de` is a temporary domain for this project. When the final Kiku Bistro domain is ready, DNS, nginx, and the TLS certificate need to be updated.
+Важно: `kreisphoto.de` сейчас используется как временный домен для проекта Kiku Bistro. Когда будет готов финальный домен, нужно будет обновить DNS, nginx и TLS-сертификат.
 
-## Project Structure
+## Структура проекта
 
 ```text
 .
-|-- index.html          # Main page
-|-- styles.css          # Global styling
-|-- impressum.html      # Impressum and Datenschutz
-|-- agb.html            # Terms page
-|-- Bistro.pdf          # Current menu PDF
-|-- HANDOVER.md         # Operational handover for future chats/work
-`-- assets/             # Images and logo
+|-- index.html          # Главная страница
+|-- styles.css          # Основные стили
+|-- impressum.html      # Impressum и Datenschutz
+|-- agb.html            # AGB
+|-- Bistro.pdf          # Актуальное PDF-меню
+|-- HANDOVER.md         # Технический хэндовер проекта
+`-- assets/             # Изображения и логотип
 ```
 
-Key assets:
+Ключевые ассеты:
 
 ```text
 assets/logo-white.png
@@ -39,35 +39,39 @@ assets/dish-editorial.jpg
 assets/interior-kiku-144.jpg
 ```
 
-## Local Development
+## Локальный запуск
 
-This project has no build step and no package manager dependency.
+У проекта нет сборки, npm, backend или базы данных.
 
-Open directly in a browser:
+Можно открыть напрямую:
 
 ```text
 index.html
 ```
 
-Or run a local static server from the project folder:
+Или запустить простой локальный сервер из папки проекта:
 
 ```powershell
 python -m http.server 8080
 ```
 
-Then open:
+После этого открыть:
 
 ```text
 http://localhost:8080/
 ```
 
-## Git Workflow
+## Git workflow
 
-GitHub is the source of truth.
+GitHub является основным источником правды.
 
-Use the `main` branch.
+Рабочая ветка:
 
-Typical workflow:
+```text
+main
+```
+
+Обычный процесс:
 
 ```powershell
 git status
@@ -76,17 +80,17 @@ git commit -m "Update site"
 git push
 ```
 
-After pushing, deploy the updated static files to the VPS.
+После `push` обновленная версия деплоится на VPS.
 
-## VPS Deployment
+## VPS и деплой
 
-Current VPS:
+Текущий VPS:
 
 ```text
 212.227.28.224
 ```
 
-Web root:
+Папка сайта на сервере:
 
 ```text
 /var/www/kiku-site
@@ -98,14 +102,14 @@ nginx config:
 /etc/nginx/conf.d/kiku-site.conf
 ```
 
-Current domains in nginx:
+Текущие домены в nginx:
 
 ```text
 kreisphoto.de
 www.kreisphoto.de
 ```
 
-Deploy these files/directories:
+Для деплоя нужно копировать на сервер:
 
 ```text
 index.html
@@ -116,7 +120,7 @@ Bistro.pdf
 assets/
 ```
 
-After copying files to the server:
+После копирования файлов на сервер:
 
 ```bash
 chown -R nginx:nginx /var/www/kiku-site
@@ -126,17 +130,17 @@ nginx -t
 systemctl reload nginx
 ```
 
-## Server Notes
+## Состояние сервера
 
-The site is served directly by nginx.
+Сайт отдается напрямую через nginx.
 
-The old backend service was disabled:
+Старый backend-сервис отключен:
 
 ```text
 kiku-booking.service
 ```
 
-Expected public ports:
+Ожидаемые публичные порты:
 
 ```text
 22
@@ -144,74 +148,74 @@ Expected public ports:
 443
 ```
 
-Backup from the first deployment:
+Backup перед первым деплоем:
 
 ```text
 /root/kiku-backups/kiku-site-before-deploy-20260425-103724.tar.gz
 ```
 
-## Content Notes
+## Контент
 
-The current menu was transcribed from `Bistro.pdf`.
+Текущее меню было перенесено из `Bistro.pdf`.
 
-Breakfast prices are reliable. Some lunch and drinks prices should be verified against the final source menu because the PDF text extraction had column-order issues.
+Цены завтраков считаются надежными. Часть цен lunch и напитков нужно перепроверить по финальному меню, потому что PDF некорректно отдавал порядок колонок при извлечении текста.
 
-Before final public launch:
-
-```text
-1. Verify all menu prices.
-2. Verify opening hours.
-3. Verify phone, email, and address.
-4. Review Impressum, Datenschutz, and AGB.
-```
-
-## Design Direction
-
-The site should feel close to the original Wix version, but more modern and cleaner.
-
-Current direction:
+Перед финальной публикацией нужно проверить:
 
 ```text
-pale green main background
-dark green typography
-natural wood accents
-large photographic hero
-large Kiku Bistro logo
-editorial restaurant layout
-minimal card-like blocks
-readable menu grouped by sections
+1. Все цены меню.
+2. Часы работы.
+3. Телефон, email и адрес.
+4. Impressum, Datenschutz и AGB.
 ```
 
-## Next Improvements
+## Дизайн
 
-Recommended technical work:
+Задача дизайна: сохранить ощущение исходного Wix-сайта, но сделать сайт современнее, чище и визуально дороже.
+
+Текущее направление:
 
 ```text
-1. Optimize large images and create WebP versions.
-2. Add a simple deploy script.
-3. Set up SSH key access for the VPS.
-4. Disable root password login after key access is confirmed.
-5. Update nginx and Let's Encrypt when the final domain is ready.
+бледно-зеленый основной фон
+темно-зеленая типографика
+акценты натурального дерева
+крупный фотографический hero
+большой логотип Kiku Bistro
+editorial-верстка ресторанного сайта
+минимум карточек и прямоугольных блоков
+читабельное меню с группировкой по разделам
 ```
 
-Recommended content/design work:
+## Ближайшие улучшения
+
+Технические задачи:
 
 ```text
-1. Replace temporary photos with final room and food photos.
-2. Finalize menu prices.
-3. Review German copy.
-4. Check mobile spacing in a real browser.
+1. Оптимизировать большие изображения и сделать WebP-версии.
+2. Добавить простой deploy-скрипт.
+3. Настроить SSH-доступ по ключу.
+4. После проверки SSH-ключа отключить вход root по паролю.
+5. Обновить nginx и Let's Encrypt при переезде на финальный домен.
 ```
 
-## Handover
+Контент и дизайн:
 
-For full operational context, read:
+```text
+1. Заменить временные фото на финальные фото зала и блюд.
+2. Финально проверить цены меню.
+3. Вычитать немецкие тексты.
+4. Проверить мобильную верстку в браузере.
+```
+
+## Хэндовер
+
+Полный технический контекст проекта:
 
 ```text
 HANDOVER.md
 ```
 
-Global projects index on the local machine:
+Общий индекс проектов на локальной машине:
 
 ```text
 C:\Users\Sergej\Documents\Codex\PROJECTS.md
