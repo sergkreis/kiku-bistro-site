@@ -48,6 +48,14 @@ a {
   text-decoration: none;
 }
 
+a[x-apple-data-detectors],
+span[x-apple-data-detectors],
+.visit-info-card [x-apple-data-detectors] {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
 p,
 h1,
 h2,
@@ -108,6 +116,15 @@ button {
 .header-address span:first-child {
   color: var(--green);
   font-weight: 600;
+}
+
+.header-brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .nav {
@@ -366,10 +383,10 @@ button {
 
 .intro-statement h1 {
   font-size: clamp(3.2rem, 7vw, 6rem);
-  line-height: 0.72;
+  line-height: 0.76;
   max-width: none;
   display: grid;
-  gap: 0;
+  gap: 0.045em;
 }
 
 .intro-statement h1 span {
@@ -394,8 +411,7 @@ button {
   margin: 0;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
+  border-radius: 0;
   align-self: start;
 }
 
@@ -406,7 +422,7 @@ button {
 
 .story-bridge {
   padding-top: 0;
-  padding-bottom: 72px;
+  padding-bottom: 64px;
 }
 
 .story-bridge-inner {
@@ -418,8 +434,8 @@ button {
 
 .story-bridge-line {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.7rem, 2.7vw, 2.45rem);
-  line-height: 1.08;
+  font-size: clamp(1.16rem, 1.6vw, 1.42rem);
+  line-height: 1.2;
   color: var(--green);
 }
 
@@ -578,8 +594,7 @@ button {
 .menu-photo-main {
   overflow: hidden;
   min-height: 520px;
-  border-radius: 8px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 0;
 }
 
 .menu-photo-main-tall {
@@ -598,8 +613,7 @@ button {
 }
 
 .menu-photo-stack img {
-  border-radius: 10px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 0;
 }
 
 .visit-layout {
@@ -644,8 +658,7 @@ button {
 
 .visit-photo {
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 0;
 }
 
 .visit-photo img {
@@ -819,6 +832,7 @@ button {
   }
 
   .nav,
+  .header-brand,
   .header-cta {
     display: none;
   }

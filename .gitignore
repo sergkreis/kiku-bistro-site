@@ -1,6 +1,8 @@
 bistro-extract.txt
 files.zip
 *-check.png
+check-*.png
+review-*.png
 
 .DS_Store
 Thumbs.db
