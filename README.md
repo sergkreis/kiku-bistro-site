@@ -4,7 +4,7 @@
 
 Текущий временный адрес:
 
-http://217.154.193.255/
+https://kiku-bistro.de/
 
 Репозиторий:
 
@@ -14,7 +14,7 @@ https://github.com/sergkreis/kiku-bistro-site
 
 Сайт уже развернут на VPS и отдается через nginx как обычный статический сайт.
 
-Важно: production-домен проекта — `kiku-bistro.de`. DNS еще нужно направить на новый VPS `217.154.193.255`, после этого выпустить TLS-сертификат для `kiku-bistro.de` и `www.kiku-bistro.de`.
+Важно: production-домен проекта — `kiku-bistro.de`. DNS уже направлен на новый VPS `217.154.193.255`, HTTPS активен для `kiku-bistro.de` и `www.kiku-bistro.de`.
 
 ## Структура проекта
 

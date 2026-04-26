@@ -14,9 +14,9 @@ Repository:
 https://github.com/sergkreis/kiku-bistro-site
 
 Current live URL:
-http://217.154.193.255/
+https://kiku-bistro.de/
 
-Important note: the production domain is `kiku-bistro.de`. DNS still needs to be pointed to `217.154.193.255`, then HTTPS must be issued for `kiku-bistro.de` and `www.kiku-bistro.de`.
+Important note: the production domain is `kiku-bistro.de`. DNS points to `217.154.193.255`, and HTTPS is active for `kiku-bistro.de` and `www.kiku-bistro.de`.
 
 ## Local Project Path
 
@@ -106,7 +106,7 @@ www.kiku-bistro.de
 Current TLS certificate:
 
 ```text
-not issued yet
+/etc/letsencrypt/live/kiku-bistro.de/
 ```
 
 ## Current Server State
@@ -124,6 +124,7 @@ Open ports checked after deploy:
 ```text
 22
 80
+443
 ```
 
 Old backend service:
@@ -273,12 +274,10 @@ Recommended next security steps:
 When the real Kiku Bistro domain is ready:
 
 ```text
-1. Point DNS A record for kiku-bistro.de to 217.154.193.255.
-2. Point DNS A record for www.kiku-bistro.de to 217.154.193.255.
-3. Wait until DNS resolves to the production VPS.
-4. Issue Let's Encrypt certificate for kiku-bistro.de and www.kiku-bistro.de.
-5. Update nginx to redirect HTTP to HTTPS after the certificate is active.
-6. Reload nginx.
+Done:
+kiku-bistro.de and www.kiku-bistro.de point to 217.154.193.255.
+Let's Encrypt certificate is active.
+HTTP redirects to HTTPS.
 ```
 
 ## Legal Tasks
