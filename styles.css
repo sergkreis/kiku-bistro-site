@@ -555,12 +555,47 @@ button {
   align-items: start;
 }
 
+.menu-item-options {
+  display: grid;
+  gap: 10px;
+  padding: 7px 0 10px;
+  border-bottom: 1px solid rgba(36, 66, 53, 0.08);
+}
+
+.menu-option-heading {
+  display: block;
+}
+
+.menu-option-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px;
+  gap: 10px;
+  align-items: start;
+  padding-left: 22px;
+  position: relative;
+}
+
+.menu-option-row::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--green);
+}
+
 .item-name {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.12rem;
   line-height: 1.12;
   text-transform: uppercase;
   color: var(--green);
+}
+
+.item-name-option {
+  display: block;
 }
 
 .item-dots {
