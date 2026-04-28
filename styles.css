@@ -120,8 +120,8 @@ button {
 
 .header-brand {
   display: inline-flex;
-  width: 58px;
-  height: 58px;
+  width: 32px;
+  height: 64px;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
