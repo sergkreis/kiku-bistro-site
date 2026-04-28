@@ -944,7 +944,7 @@ button {
   }
 
   .footer-brand {
-    justify-self: start;
+    justify-self: center;
   }
 
   .legal-shell {
