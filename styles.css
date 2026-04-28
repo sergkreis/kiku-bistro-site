@@ -557,15 +557,14 @@ button {
 
 .menu-item-options {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px 18px;
+  grid-template-columns: 1fr;
+  gap: 12px;
   padding: 7px 0 10px;
   border-bottom: 1px solid rgba(36, 66, 53, 0.08);
 }
 
 .menu-option-heading {
   display: block;
-  grid-column: 1 / -1;
 }
 
 .menu-item-options > div {
@@ -574,8 +573,8 @@ button {
 
 .menu-option-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 6px;
+  grid-template-columns: minmax(0, 1fr) 74px;
+  gap: 10px;
   align-items: start;
   padding-left: 32px;
   position: relative;
@@ -629,8 +628,6 @@ button {
   line-height: 1.15;
   text-align: right;
   color: var(--green);
-  justify-self: end;
-  white-space: nowrap;
 }
 
 .menu-media {
@@ -930,29 +927,6 @@ button {
 
   .menu-item {
     flex-wrap: wrap;
-  }
-
-  .menu-item-options {
-    gap: 12px 8px;
-  }
-
-  .menu-option-row {
-    padding-left: 16px;
-  }
-
-  .menu-option-row::before {
-    left: 2px;
-    width: 5px;
-    height: 5px;
-  }
-
-  .item-name-option {
-    font-size: 0.98rem;
-  }
-
-  .menu-option-row .item-description {
-    font-size: 0.8rem;
-    line-height: 1.18;
   }
 
   .item-dots {
