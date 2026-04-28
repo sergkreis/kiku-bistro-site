@@ -939,12 +939,17 @@ button {
   }
 
   .footer-links {
-    justify-content: flex-start;
+    justify-content: center;
     gap: 10px 16px;
+    text-align: center;
   }
 
   .footer-brand {
     justify-self: center;
+  }
+
+  .footer-inner {
+    justify-items: center;
   }
 
   .legal-shell {
