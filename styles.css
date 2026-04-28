@@ -700,6 +700,10 @@ button {
   align-items: stretch;
 }
 
+.visit-media-single {
+  grid-template-columns: 1fr;
+}
+
 .visit-photo {
   overflow: hidden;
   border-radius: 0;
