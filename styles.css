@@ -557,7 +557,8 @@ button {
 
 .menu-item-options {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 12px;
   padding: 7px 0 10px;
   border-bottom: 1px solid rgba(36, 66, 53, 0.08);
 }
@@ -566,22 +567,26 @@ button {
   display: block;
 }
 
+.menu-item-options > div {
+  width: 100%;
+}
+
 .menu-option-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 74px;
   gap: 10px;
   align-items: start;
-  padding-left: 22px;
+  padding-left: 32px;
   position: relative;
 }
 
 .menu-option-row::before {
   content: "";
   position: absolute;
-  left: 4px;
+  left: 13px;
   top: 0.55em;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   background: var(--green);
 }
