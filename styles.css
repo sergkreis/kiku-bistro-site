@@ -364,7 +364,7 @@ button {
 
 .intro-statement {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   align-content: start;
 }
 
@@ -391,6 +391,7 @@ button {
   max-width: none;
   display: grid;
   gap: 0.045em;
+  margin: -0.08em 0 0.08em;
 }
 
 .intro-statement h1 span {
@@ -409,6 +410,12 @@ button {
 
 .intro-accent {
   font-size: 1.08rem;
+}
+
+.intro-statement p,
+.visit-copy p,
+.visit-info-card p {
+  line-height: 1.55;
 }
 
 .intro-photo {
