@@ -5,13 +5,13 @@ Production Matomo runs on the Kiku Bistro VPS in `/opt/kiku-matomo`.
 Public URL:
 
 ```text
-https://kiku-bistro.de/analytics/
+https://analytics.kiku-bistro.de/
 ```
 
 The public site tracks to:
 
 ```text
-/analytics/matomo.php
+https://analytics.kiku-bistro.de/matomo.php
 ```
 
 Current privacy mode:
