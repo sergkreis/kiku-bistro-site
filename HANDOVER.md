@@ -34,7 +34,7 @@ Then open this HANDOVER.md before making changes.
 Локальная папка:
 
 ```text
-C:\Users\Sergej\Documents\Codex\2026-04-20-kiku-bistro-https-info74051613-wixsite-com
+C:\Users\Sergej\Documents\kiku-bistro
 ```
 
 GitHub:
