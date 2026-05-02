@@ -19,6 +19,23 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css?v=20260501-1" />
+    <script>
+      const _paq = (window._paq = window._paq || []);
+      _paq.push(["setTrackerUrl", "/analytics/matomo.php"]);
+      _paq.push(["setSiteId", "1"]);
+      _paq.push(["disableCookies"]);
+      _paq.push(["disableBrowserFeatureDetection"]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+
+      (function () {
+        const script = document.createElement("script");
+        const firstScript = document.getElementsByTagName("script")[0];
+        script.async = true;
+        script.src = "/analytics/matomo.js";
+        firstScript.parentNode.insertBefore(script, firstScript);
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header" id="top">
@@ -435,7 +452,26 @@
           document.querySelectorAll(".menu-panel").forEach((panel) => panel.classList.remove("active"));
           tab.classList.add("active");
           document.getElementById("tab-" + tab.dataset.tab).classList.add("active");
+          trackEvent("Speisekarte", "Tab", tab.dataset.tab);
         });
+      });
+
+      const trackEvent = (category, action, name) => {
+        if (window._paq) {
+          window._paq.push(["trackEvent", category, action, name]);
+        }
+      };
+
+      document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+        link.addEventListener("click", () => trackEvent("Kontakt", "E-Mail", link.href));
+      });
+
+      document.querySelectorAll('a[href*="maps.google.com"]').forEach((link) => {
+        link.addEventListener("click", () => trackEvent("Kontakt", "Route planen", link.href));
+      });
+
+      document.querySelectorAll('a[href$=".pdf"], a[href$=".PDF"]').forEach((link) => {
+        link.addEventListener("click", () => trackEvent("Speisekarte", "PDF", link.href));
       });
     </script>
   </body>

@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mariadb:11
+    command: --max-allowed-packet=64MB --innodb-buffer-pool-size=128M --performance-schema=OFF
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: "change-me"
+      MARIADB_DATABASE: matomo
+      MARIADB_USER: matomo
+      MARIADB_PASSWORD: "change-me"
+    volumes:
+      - db:/var/lib/mysql
+
+  matomo:
+    image: matomo:5-apache
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      MATOMO_DATABASE_HOST: db
+      MATOMO_DATABASE_ADAPTER: mysql
+      MATOMO_DATABASE_TABLES_PREFIX: matomo_
+      MATOMO_DATABASE_USERNAME: matomo
+      MATOMO_DATABASE_PASSWORD: "change-me"
+      MATOMO_DATABASE_DBNAME: matomo
+    volumes:
+      - matomo:/var/www/html
+    ports:
+      - "127.0.0.1:8081:80"
+
+volumes:
+  db:
+  matomo:
