@@ -2,41 +2,68 @@
 
 Статический сайт для **Kiku Bistro** в Кведлинбурге.
 
-Текущий временный адрес:
+Production:
 
+```text
 https://kiku-bistro.de/
+```
 
 Репозиторий:
 
+```text
 https://github.com/sergkreis/kiku-bistro-site
+```
+
+Аналитика:
+
+```text
+https://analytics.kiku-bistro.de/
+```
 
 ## Статус
 
-Сайт уже развернут на VPS и отдается через nginx как обычный статический сайт.
+Сайт развернут на отдельном production VPS и отдается через nginx как обычный статический сайт.
 
-Важно: production-домен проекта — `kiku-bistro.de`. DNS уже направлен на новый VPS `217.154.193.255`, HTTPS активен для `kiku-bistro.de` и `www.kiku-bistro.de`.
+DNS направлен на VPS:
+
+```text
+217.154.193.255
+```
+
+HTTPS активен для:
+
+```text
+kiku-bistro.de
+www.kiku-bistro.de
+analytics.kiku-bistro.de
+```
 
 ## Структура проекта
 
 ```text
 .
-|-- index.html          # Главная страница
-|-- styles.css          # Основные стили
-|-- impressum.html      # Impressum и Datenschutz
-|-- agb.html            # AGB
-|-- Bistro.pdf          # Актуальное PDF-меню
-|-- HANDOVER.md         # Технический хэндовер проекта
-`-- assets/             # Изображения и логотип
+|-- index.html                  # главная страница
+|-- styles.css                  # основные стили
+|-- impressum.html              # Impressum и Datenschutz
+|-- agb.html                    # AGB
+|-- Bistro.pdf                  # актуальное PDF-меню
+|-- HANDOVER.md                 # технический handover проекта
+|-- infra/
+|   `-- matomo/                 # документация и пример Matomo setup
+`-- assets/                     # изображения, логотипы, favicon
 ```
 
 Ключевые ассеты:
 
 ```text
 assets/logo-white.png
+assets/header-flower.png
 assets/hero-bread.jpg
-assets/dish-4.jpg
-assets/dish-editorial.jpg
-assets/interior-kiku-144.jpg
+assets/menu-breakfast.png
+assets/menu-main.png
+assets/menu-granola.jpg
+assets/visit-shakshuka.jpg
+assets/visit-french-toast.jpg
 ```
 
 ## Локальный запуск
@@ -55,7 +82,7 @@ index.html
 python -m http.server 8080
 ```
 
-После этого открыть:
+Потом открыть:
 
 ```text
 http://localhost:8080/
@@ -73,18 +100,13 @@ main
 
 Обычный процесс:
 
-```powershell
-git status
-git add .
-git commit -m "Update site"
-git push
+```text
+edit locally -> check -> commit -> push -> deploy to VPS
 ```
-
-После `push` обновленная версия деплоится на VPS.
 
 ## VPS и деплой
 
-Текущий VPS:
+Production VPS:
 
 ```text
 217.154.193.255
@@ -102,14 +124,13 @@ nginx config:
 /etc/nginx/sites-available/kiku-site
 ```
 
-Текущие домены в nginx:
+Matomo:
 
 ```text
-kiku-bistro.de
-www.kiku-bistro.de
+/opt/kiku-matomo
 ```
 
-Для деплоя нужно копировать на сервер:
+Для деплоя обычно копируются:
 
 ```text
 index.html
@@ -120,7 +141,7 @@ Bistro.pdf
 assets/
 ```
 
-После копирования файлов на сервер:
+После копирования:
 
 ```bash
 chown -R www-data:www-data /var/www/kiku-site
@@ -130,84 +151,36 @@ nginx -t
 systemctl reload nginx
 ```
 
-## Состояние сервера
+## Matomo
 
-Сайт отдается напрямую через nginx.
-
-Старый backend-сервис отключен:
+Публичная админка:
 
 ```text
-kiku-booking.service
+https://analytics.kiku-bistro.de/
 ```
 
-Ожидаемые публичные порты:
+Сайт отправляет аналитику на:
 
 ```text
-22
-80
-443
+https://analytics.kiku-bistro.de/matomo.php
 ```
 
-Backup перед первым деплоем:
+Настройки приватности:
 
 ```text
-/root/kiku-backups/kiku-site-before-deploy-20260425-103724.tar.gz
+без tracking cookies
+browser feature detection отключен
+IP сокращается
+данные хранятся на собственном VPS
 ```
 
-## Контент
-
-Текущее меню было перенесено из `Bistro.pdf`.
-
-Цены завтраков считаются надежными. Часть цен lunch и напитков нужно перепроверить по финальному меню, потому что PDF некорректно отдавал порядок колонок при извлечении текста.
-
-Перед финальной публикацией нужно проверить:
+Пароли и production compose не коммитить. Данные админки Matomo находятся только на сервере:
 
 ```text
-1. Все цены меню.
-2. Часы работы.
-3. Телефон, email и адрес.
-4. Impressum, Datenschutz и AGB.
+/opt/kiku-matomo/.matomo-admin
 ```
 
-## Дизайн
-
-Задача дизайна: сохранить ощущение исходного Wix-сайта, но сделать сайт современнее, чище и визуально дороже.
-
-Текущее направление:
-
-```text
-бледно-зеленый основной фон
-темно-зеленая типографика
-акценты натурального дерева
-крупный фотографический hero
-большой логотип Kiku Bistro
-editorial-верстка ресторанного сайта
-минимум карточек и прямоугольных блоков
-читабельное меню с группировкой по разделам
-```
-
-## Ближайшие улучшения
-
-Технические задачи:
-
-```text
-1. Оптимизировать большие изображения и сделать WebP-версии.
-2. Добавить простой deploy-скрипт.
-3. Настроить SSH-доступ по ключу.
-4. После проверки SSH-ключа отключить вход root по паролю.
-5. Обновить nginx и Let's Encrypt при переезде на финальный домен.
-```
-
-Контент и дизайн:
-
-```text
-1. Заменить временные фото на финальные фото зала и блюд.
-2. Финально проверить цены меню.
-3. Вычитать немецкие тексты.
-4. Проверить мобильную верстку в браузере.
-```
-
-## Хэндовер
+## Handover
 
 Полный технический контекст проекта:
 

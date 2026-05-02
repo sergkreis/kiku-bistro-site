@@ -1,125 +1,128 @@
-# Kiku Bistro Site Handover
+# Kiku Bistro - Handover
 
-Global projects index:
+Последнее обновление: 2026-05-02
+
+## Быстрый контекст
+
+Kiku Bistro - статический сайт бистро в Quedlinburg. Сайт уже работает на production-домене:
+
+```text
+https://kiku-bistro.de/
+```
+
+Аналитика Matomo работает на отдельном поддомене:
+
+```text
+https://analytics.kiku-bistro.de/
+```
+
+Глобальный индекс проектов:
 
 ```text
 C:\Users\Sergej\Documents\Codex\PROJECTS.md
 ```
 
-## Project
+В новом чате начинать так:
 
-Static website for Kiku Bistro in Quedlinburg.
+```text
+Open C:\Users\Sergej\Documents\Codex\PROJECTS.md and continue Kiku Bistro.
+Then open this HANDOVER.md before making changes.
+```
 
-Repository:
-https://github.com/sergkreis/kiku-bistro-site
+## Пути и репозиторий
 
-Current live URL:
-https://kiku-bistro.de/
-
-Important note: the production domain is `kiku-bistro.de`. DNS points to `217.154.193.255`, and HTTPS is active for `kiku-bistro.de` and `www.kiku-bistro.de`.
-
-## Local Project Path
+Локальная папка:
 
 ```text
 C:\Users\Sergej\Documents\Codex\2026-04-20-kiku-bistro-https-info74051613-wixsite-com
 ```
 
-## Main Files
+GitHub:
 
 ```text
-index.html
-styles.css
-impressum.html
-agb.html
-Bistro.pdf
-assets/
+https://github.com/sergkreis/kiku-bistro-site.git
 ```
 
-The site is plain static HTML/CSS/JS, with no build step.
-
-## Git Workflow
-
-GitHub is the source of truth.
-
-Normal workflow:
-
-```text
-edit local files
-git status
-git add .
-git commit -m "Describe change"
-git push
-deploy to VPS
-```
-
-Current branch:
+Рабочая ветка:
 
 ```text
 main
 ```
 
-Remote:
+GitHub является источником правды. VPS-копия не считается источником правды.
+
+## Технологии
 
 ```text
-origin https://github.com/sergkreis/kiku-bistro-site.git
+Plain static HTML/CSS/JS
+nginx на VPS
+Docker Compose для Matomo
+Без npm/build step для сайта
 ```
 
-## VPS
+## Основные файлы
 
-Server:
+```text
+index.html                 - главная страница
+styles.css                 - стили сайта
+impressum.html             - Impressum и Datenschutz
+agb.html                   - AGB
+Bistro.pdf                 - актуальное PDF-меню
+assets/                    - изображения, логотипы, favicon
+infra/matomo/              - документация и пример compose для Matomo
+README.md                  - публичное описание проекта
+HANDOVER.md                - этот технический handover
+```
+
+Важные ассеты:
+
+```text
+assets/logo-white.png
+assets/header-flower.png
+assets/favicon.ico
+assets/favicon-32.png
+assets/apple-touch-icon.png
+assets/hero-bread.jpg
+assets/dish-4.jpg
+assets/dish-editorial.jpg
+assets/menu-breakfast.png
+assets/menu-main.png
+assets/menu-granola.jpg
+assets/visit-shakshuka.jpg
+assets/visit-french-toast.jpg
+assets/interior-kiku-144.jpg
+```
+
+## Production
+
+Production VPS:
 
 ```text
 217.154.193.255
-```
-
-OS:
-
-```text
 Ubuntu 24.04
-```
-
-Web server:
-
-```text
 nginx
+Docker + Docker Compose
 ```
 
-Web root:
+Production paths:
 
 ```text
-/var/www/kiku-site
+Web root: /var/www/kiku-site
+nginx config: /etc/nginx/sites-available/kiku-site
+Site TLS certificate: /etc/letsencrypt/live/kiku-bistro.de/
+Analytics TLS certificate: /etc/letsencrypt/live/analytics.kiku-bistro.de/
+Matomo stack: /opt/kiku-matomo
 ```
 
-nginx config:
-
-```text
-/etc/nginx/sites-available/kiku-site
-```
-
-Current nginx domains:
+Домены:
 
 ```text
 kiku-bistro.de
 www.kiku-bistro.de
+analytics.kiku-bistro.de
 ```
 
-Current TLS certificate:
-
-```text
-/etc/letsencrypt/live/kiku-bistro.de/
-```
-
-## Current Server State
-
-The Kiku Bistro static site is deployed to:
-
-```text
-/var/www/kiku-site
-```
-
-nginx serves the site directly.
-
-Open ports checked after deploy:
+Ожидаемые публичные порты:
 
 ```text
 22
@@ -127,33 +130,99 @@ Open ports checked after deploy:
 443
 ```
 
-Old backend service:
+HTTP перенаправляется на HTTPS. Старый путь аналитики:
 
 ```text
-none on the production VPS
+https://kiku-bistro.de/analytics/
 ```
 
-Status after deploy:
+редиректит на:
 
 ```text
-not applicable
+https://analytics.kiku-bistro.de/
 ```
 
-The production VPS is clean and serves only the static site through nginx.
+## Matomo Analytics
 
-## Backup
-
-A server-side backup was created before replacing the previous site:
+Matomo установлен на VPS в Docker Compose:
 
 ```text
-/root/kiku-backups/kiku-site-before-deploy-20260425-103724.tar.gz
+/opt/kiku-matomo
 ```
 
-## Manual Deploy Notes
+Контейнеры:
 
-There is currently no automated deploy script.
+```text
+kiku-matomo-app  -> 127.0.0.1:8081
+kiku-matomo-db   -> MariaDB
+```
 
-Manual deploy means copying these local files/directories to `/var/www/kiku-site`:
+Публичный URL админки:
+
+```text
+https://analytics.kiku-bistro.de/
+```
+
+Tracking endpoint на сайте:
+
+```text
+https://analytics.kiku-bistro.de/matomo.php
+```
+
+Tracking script:
+
+```text
+https://analytics.kiku-bistro.de/matomo.js
+```
+
+Site ID:
+
+```text
+1
+```
+
+Privacy mode:
+
+```text
+Matomo self-hosted
+tracking cookies отключены
+browser feature detection отключен
+IP сокращается через ip_address_mask_length = 2
+```
+
+Отслеживаются:
+
+```text
+page views
+menu tab clicks
+PDF menu clicks/downloads
+email link clicks
+Google Maps route clicks
+```
+
+Matomo admin credentials не коммитить. Они сохранены только на VPS:
+
+```text
+/opt/kiku-matomo/.matomo-admin
+```
+
+Production compose и пароли БД не коммитить. В репозитории есть только безопасный пример:
+
+```text
+infra/matomo/docker-compose.example.yml
+```
+
+## Деплой
+
+Автоматического deploy script пока нет. Текущий процесс:
+
+```text
+edit local files -> visual/test check -> git status -> commit -> push -> deploy to VPS
+```
+
+Не деплоить на production без явного разрешения.
+
+Файлы, которые обычно копируются на VPS:
 
 ```text
 index.html
@@ -164,7 +233,7 @@ Bistro.pdf
 assets/
 ```
 
-Then on the VPS:
+После копирования на VPS:
 
 ```bash
 chown -R www-data:www-data /var/www/kiku-site
@@ -174,150 +243,163 @@ nginx -t
 systemctl reload nginx
 ```
 
-## Design Direction
+Для изменений nginx:
 
-The user wants a modern version of the original Wix feeling, not a rectangular/card-heavy layout.
-
-Important design preferences:
-
-- main color should feel like pale green, close to the old Wix site
-- accent colors: dark green and natural wood
-- large photographic hero with bread
-- large white Kiku Bistro logo at the top
-- editorial layout, spacious, restaurant-like
-- avoid obvious box/card sections
-- menu should be readable and grouped by section
-
-Hero / intro copy currently includes:
-
-```text
-Sehr französisch. Sehr entspannt. Sehr lebendig.
-
-Das Bistro Kiku ist da.
-
-Als kleiner Bruder des Michelin-gelisteten Restaurant Kiku bringt es große Küche in lockerer Atmosphäre auf den Tisch.
-
-Chef Jan Fribus interpretiert seine besten Rezepte neu - er backt außerdem Croissants, Brot und Kuchen täglich selbst und überrascht mit einem außergewöhnlichen Tagesangebot.
-
-Frühstück. Lunch. Etwas zwischendurch.
-
-Unkompliziert. Und in höchster Qualität.
-
-Jeden Tag in der Steinbrücke - direkt am Marktplatz.
-
-Bonjour et bon appétit!
-
-Wir freuen uns auf euch.
+```bash
+nginx -t
+systemctl reload nginx
 ```
 
-## Menu Notes
+## Проверка перед публикацией
 
-The current menu was transcribed from `Bistro.pdf`.
+Минимальная проверка:
 
-Breakfast prices are reliable.
+```text
+git status
+открыть главную страницу
+проверить desktop и mobile
+проверить меню
+проверить footer/contact
+проверить impressum.html
+проверить agb.html
+проверить отсутствие JS-ошибок
+```
 
-Some lunch and drinks prices were matched from the PDF, but the PDF text extraction had column-order issues. When the final menu arrives, verify and update all prices from the source.
+Для аналитики:
 
-The menu tabs are:
+```text
+https://analytics.kiku-bistro.de/ открывается
+https://analytics.kiku-bistro.de/matomo.js отдается 200
+https://analytics.kiku-bistro.de/matomo.php принимает события
+```
+
+Последняя проверка 2026-05-02:
+
+```text
+DNS analytics.kiku-bistro.de -> 217.154.193.255
+SSL для analytics.kiku-bistro.de выпущен
+тестовое событие записалось в Matomo DB
+```
+
+## Git workflow
+
+```text
+main - рабочая ветка
+GitHub - источник правды
+не коммитить секреты
+не коммитить временные скриншоты без необходимости
+не трогать чужие незакоммиченные изменения без причины
+```
+
+Последние важные коммиты:
+
+```text
+e831b6e Move Matomo analytics to subdomain
+bf706bf Fix Matomo tracker initialization
+6edc196 Add Matomo analytics tracking
+c9d9150 Normalize section spacing
+adf9d0e Center mobile footer content
+01db8a9 Restore eggs benedikt menu layout
+```
+
+## Дизайн-направление
+
+Цель: сохранить ощущение исходного Wix-сайта, но сделать сайт современнее, чище и визуально дороже.
+
+Предпочтения:
+
+```text
+основной фон - бледно-зеленый
+акценты - темно-зеленый и натуральное дерево
+hero на весь viewport нравится пользователю
+крупный белый Kiku Bistro логотип поверх хлебного hero
+минимум карточек и прямоугольных блоков
+editorial layout
+много качественных фото еды и зала
+меню должно быть читабельным, с аккуратными ценами
+```
+
+Не менять без отдельного обсуждения:
+
+```text
+hero во весь viewport
+мобильную концепцию навигации
+общий pale-green стиль
+```
+
+## Меню
+
+Текущее меню обновлялось из актуального PDF и изображений меню.
+
+Основные вкладки:
 
 ```text
 Frühstück
 Ab 12:00 Uhr
-Getränke
 ```
 
-Lunch is grouped into:
+Вкладка напитков удалена.
+
+Важно по Eggs Benedikt:
 
 ```text
-Vorspeisen
-Hauptgänge
-Desserts
+EGGS BENEDIKT AUF DER BRIOCHE
+- MIT AVOCADO
+  Pochierte Eier, Avocado, Tomate, Hollandaise
+  14 €
+- MIT LACHS
+  Pochierte Eier, Avocado, Hollandaise
+  18 €
+- ROASTBEEF
+  Pochierte Eier, Avocado, Unagi-Béarnaise
+  18 €
 ```
 
-Drinks are grouped into:
+Эта позиция должна отображаться как группа с подпунктами, а не как три отдельные карточки.
+
+## Открытые задачи
+
+Технические:
 
 ```text
-Kaffee & Specials
-Tee & Hausgemachte Getränke
-Wein, Cocktails & Bier
+1. Сделать deploy script.
+2. Оптимизировать изображения: WebP/responsive sizes.
+3. Настроить SSH key authentication.
+4. После SSH key отключить root password login.
+5. Удалить или перенести старые review/check PNG, если они больше не нужны.
 ```
 
-## Assets
-
-Important current assets:
+Контент/дизайн:
 
 ```text
-assets/logo-white.png
-assets/hero-bread.jpg
-assets/dish-4.jpg
-assets/dish-editorial.jpg
-assets/interior-kiku-144.jpg
+1. Проверять все новые цены меню по финальному источнику.
+2. Добавлять новые фото по мере готовности.
+3. Периодически делать Playwright дизайн-ревью desktop/mobile.
+4. Проверять немецкий copy перед публикацией.
 ```
 
-Image sizes are currently large. This should be optimized before final launch.
-
-## Important Security Tasks
-
-The VPS root password was shared in chat during setup. It should be changed.
-
-Recommended next security steps:
+Юридическое:
 
 ```text
-1. Add SSH key authentication.
-2. Disable password login for root.
-3. Keep nginx and certbot active.
-4. Remove unused backend files/services if no longer needed.
+1. Impressum проверить финально.
+2. Datenschutz проверить под реальный hosting + Matomo setup.
+3. AGB проверить финально.
 ```
 
-## Domain Migration Tasks
-
-When the real Kiku Bistro domain is ready:
+Безопасность VPS:
 
 ```text
-Done:
-kiku-bistro.de and www.kiku-bistro.de point to 217.154.193.255.
-Let's Encrypt certificate is active.
-HTTP redirects to HTTPS.
+Root password передавался в чат при настройке VPS. Его нужно заменить.
+Рекомендуется добавить SSH key authentication и отключить password login для root.
+Matomo admin password тоже лучше заменить после первой стабилизации.
 ```
 
-## Legal Tasks
-
-Before final public launch:
+## Запрещено
 
 ```text
-1. Verify Impressum details.
-2. Verify Datenschutz text for the real hosting setup.
-3. Verify AGB text.
-4. Confirm opening hours and contact details.
-```
-
-## Good Next Improvements
-
-Recommended next technical improvements:
-
-```text
-1. Create a deploy script.
-2. Optimize images to WebP / responsive sizes.
-3. Add a simple README.md.
-4. Add cache-busting or asset versioning if needed.
-5. Review mobile layout in a browser.
-```
-
-Recommended next content/design improvements:
-
-```text
-1. Verify all menu prices from final source.
-2. Replace temporary photos with final room/food photos.
-3. Fine-tune typography and spacing.
-4. Recheck German copy.
-```
-
-## Quick Start For A New Chat
-
-Use this prompt:
-
-```text
-Open HANDOVER.md in the Kiku Bistro project and continue from there.
-Local path:
-C:\Users\Sergej\Documents\Codex\2026-04-20-kiku-bistro-https-info74051613-wixsite-com
+Не коммитить секреты.
+Не коммитить production docker-compose с паролями.
+Не деплоить без явного разрешения.
+Не считать VPS-копию источником правды.
+Не удалять backup без отдельного решения.
 ```
