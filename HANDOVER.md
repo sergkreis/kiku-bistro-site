@@ -70,9 +70,19 @@ agb.html                   - AGB
 Bistro.pdf                 - актуальное PDF-меню
 assets/                    - изображения, логотипы, favicon
 infra/matomo/              - документация и пример compose для Matomo
+infra/private/             - приватная локальная инфраструктурная документация, не коммитить
 README.md                  - публичное описание проекта
 HANDOVER.md                - этот технический handover
 ```
+
+Приватная документация по Proxmox/Home Assistant для Kiku Bistro лежит здесь:
+
+```text
+infra/private/KIKU_PROXMOX_SERVER.md
+```
+
+Эта папка находится в `.gitignore`. Не коммитить и не переносить содержимое
+этого файла в публичные документы.
 
 Важные ассеты:
 
@@ -113,6 +123,27 @@ Site TLS certificate: /etc/letsencrypt/live/kiku-bistro.de/
 Analytics TLS certificate: /etc/letsencrypt/live/analytics.kiku-bistro.de/
 Matomo stack: /opt/kiku-matomo
 ```
+
+SSH access for Codex/local maintenance:
+
+```text
+User: root
+Host: 217.154.193.255
+Local private key: C:\Users\Sergej\.ssh\id_ed25519
+Public key fingerprint: SHA256:7pXp49ZvSWjYVfqTr3sqE8bcSiWzoeSPu9DAcQErlHw
+Public key comment: sergej@Mega-PC
+Server authorized_keys path: /root/.ssh/authorized_keys
+```
+
+Public key currently added on the VPS:
+
+```text
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILP6GvbOHXF5ql263+j/dPsf5TXffL+igwsFPw4c1jbX sergej@Mega-PC
+```
+
+Do not commit or paste the private key. Password login is still enabled as of
+2026-05-02 and should be disabled only after confirming key-based access works
+from the local machine.
 
 Домены:
 
@@ -281,6 +312,78 @@ SSL для analytics.kiku-bistro.de выпущен
 тестовое событие записалось в Matomo DB
 ```
 
+## VPS health check 2026-05-02
+
+Codex connected over SSH as `root` using the local key above and performed a
+read-only health check.
+
+VM resources:
+
+```text
+OS: Ubuntu 24.04.4 LTS
+CPU: 1 vCPU
+RAM: 848 MiB
+Swap: 1.0 GiB
+Disk: 8.7G total, 5.2G used, 3.5G free, 60%
+Uptime: 6 days
+Load average: 0.00, 0.00, 0.00
+```
+
+Services:
+
+```text
+nginx: active
+nginx -t: successful
+/var/www/kiku-site: 4.6M
+kiku-matomo-app: matomo:5-apache, bound to 127.0.0.1:8081
+kiku-matomo-db: mariadb:11, internal Docker port 3306 only
+Matomo tracker cache: writable as www-data
+Failed systemd units: 0
+OOM / killed process in kernel log: none found
+nginx/docker warnings in last 24h: none found
+```
+
+Resource conclusion:
+
+```text
+The static site is very light for the VM.
+nginx uses about 7 MB RAM.
+Matomo app is the main memory user at about 275 MB RAM.
+MariaDB uses about 27-31 MB RAM.
+Available RAM during check was about 186-211 MB.
+Swap was already used at about 184-191 MB.
+```
+
+Current VPS security state:
+
+```text
+SSH port 22 is public.
+HTTP 80 and HTTPS 443 are public.
+Matomo app port 8081 listens only on 127.0.0.1.
+MariaDB is not exposed publicly.
+UFW is inactive.
+fail2ban is not installed/active.
+sshd effective config:
+  PermitRootLogin yes
+  PasswordAuthentication yes
+  PubkeyAuthentication yes
+SSH brute-force noise in last 24h:
+  Failed password: about 8906
+  Invalid user: about 1224
+```
+
+Security priority:
+
+```text
+1. Confirm root key login works from the local machine.
+2. Create/use a non-root sudo user if desired.
+3. Disable SSH password login.
+4. Disable direct root login or set PermitRootLogin prohibit-password at minimum.
+5. Enable firewall for 22, 80, 443 only.
+6. Install and enable fail2ban or equivalent sshd protection.
+7. Replace the root password that was shared during setup.
+```
+
 ## Git workflow
 
 ```text
@@ -364,9 +467,12 @@ EGGS BENEDIKT AUF DER BRIOCHE
 ```text
 1. Сделать deploy script.
 2. Оптимизировать изображения: WebP/responsive sizes.
-3. Настроить SSH key authentication.
-4. После SSH key отключить root password login.
-5. Удалить или перенести старые review/check PNG, если они больше не нужны.
+3. SSH key authentication для root настроен на VPS.
+4. После подтверждения доступа по ключу отключить SSH password login.
+5. Отключить direct root login или оставить только prohibit-password.
+6. Включить UFW/firewall для 22, 80, 443.
+7. Установить fail2ban или аналог для sshd.
+8. Удалить или перенести старые review/check PNG, если они больше не нужны.
 ```
 
 Контент/дизайн:
@@ -390,7 +496,10 @@ EGGS BENEDIKT AUF DER BRIOCHE
 
 ```text
 Root password передавался в чат при настройке VPS. Его нужно заменить.
-Рекомендуется добавить SSH key authentication и отключить password login для root.
+SSH key authentication для root добавлен 2026-05-02.
+PasswordAuthentication и PermitRootLogin пока включены.
+UFW inactive, fail2ban не установлен/не активен.
+Рекомендуется отключить password login, ограничить root login и включить защиту sshd.
 Matomo admin password тоже лучше заменить после первой стабилизации.
 ```
 
