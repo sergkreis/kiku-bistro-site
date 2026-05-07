@@ -1,6 +1,6 @@
 # Kiku Bistro - Handover
 
-Последнее обновление: 2026-05-02
+Последнее обновление: 2026-05-07
 
 ## Быстрый контекст
 
@@ -100,6 +100,7 @@ assets/menu-main.png
 assets/menu-granola.jpg
 assets/visit-shakshuka.jpg
 assets/visit-french-toast.jpg
+assets/visit-window-guest.jpg
 assets/interior-kiku-144.jpg
 ```
 
@@ -251,6 +252,14 @@ infra/matomo/docker-compose.example.yml
 edit local files -> visual/test check -> git status -> commit -> push -> deploy to VPS
 ```
 
+Последний production deploy: 2026-05-07.
+
+```text
+Commit: eb98637 Update hours and visit photo
+Предыдущий menu commit: 8313df3 Update Bistro menu
+Проверка после деплоя: https://kiku-bistro.de/ 200, Bistro.pdf 200, новая картинка 200
+```
+
 Не деплоить на production без явного разрешения.
 
 Файлы, которые обычно копируются на VPS:
@@ -397,12 +406,12 @@ GitHub - источник правды
 Последние важные коммиты:
 
 ```text
+eb98637 Update hours and visit photo
+8313df3 Update Bistro menu
+75f9e4d Update project handover docs
 e831b6e Move Matomo analytics to subdomain
 bf706bf Fix Matomo tracker initialization
 6edc196 Add Matomo analytics tracking
-c9d9150 Normalize section spacing
-adf9d0e Center mobile footer content
-01db8a9 Restore eggs benedikt menu layout
 ```
 
 ## Дизайн-направление
@@ -445,6 +454,28 @@ Ab 12:00 Uhr
 ```
 
 Вкладка напитков удалена.
+Порядок позиций на сайте должен повторять порядок в актуальном PDF-меню.
+
+Последнее обновление меню и PDF выполнено 2026-05-07 из файла `Bistro new1.pdf`:
+
+```text
+Bistro.pdf заменен актуальным PDF.
+Frühstück и Ab 12:00 Uhr обновлены по позициям, описаниям, ценам и порядку.
+Напитки из PDF не выводятся на сайте как отдельная вкладка.
+```
+
+Актуальные часы на сайте после обновления 2026-05-07:
+
+```text
+Montag - Dienstag: Ruhetag
+Mittwoch - Sonntag: 9:30 - 20:00
+```
+
+Нижнее фото в секции `#visit` заменено на:
+
+```text
+assets/visit-window-guest.jpg
+```
 
 Важно по Eggs Benedikt:
 

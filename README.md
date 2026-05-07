@@ -64,6 +64,18 @@ assets/menu-main.png
 assets/menu-granola.jpg
 assets/visit-shakshuka.jpg
 assets/visit-french-toast.jpg
+assets/visit-window-guest.jpg
+```
+
+## Актуальный контент
+
+Последнее обновление сайта: 2026-05-07.
+
+```text
+Часы работы: Mittwoch - Sonntag, 9:30 - 20:00; Montag - Dienstag, Ruhetag.
+Bistro.pdf обновлен по новому PDF-меню.
+Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF.
+Нижнее фото visit-секции: assets/visit-window-guest.jpg
 ```
 
 ## Локальный запуск
