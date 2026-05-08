@@ -52,3 +52,30 @@ https://kiku-bistro.de/analytics/ -> https://analytics.kiku-bistro.de/
 
 Do not commit production passwords. The production compose file and admin
 credentials live only on the server.
+
+
+## City geolocation and goals update
+
+Updated on 2026-05-08.
+
+```text
+GeoIP provider: geoip2php
+GeoIP database: /var/www/html/misc/DBIP-City.mmdb
+GeoIP update URL: DBIP City Lite monthly download
+GeoIP update period: month
+```
+
+New visits can show country, region and city in Matomo. Older visits may keep an
+empty city because they were tracked before the city database was installed and
+stored with masked IPs.
+
+Goals configured in Matomo for site ID 1:
+
+```text
+Route geplant       -> event_action contains "Route planen"
+E-Mail Klick        -> event_action contains "E-Mail"
+PDF Menue geoeffnet -> event_action contains "PDF"
+```
+
+The public site uses `enableHeartBeatTimer` in the Matomo JavaScript tracker so
+single-page visits get more accurate time-on-site measurements.

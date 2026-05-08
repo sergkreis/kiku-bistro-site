@@ -226,10 +226,30 @@ IP сокращается через ip_address_mask_length = 2
 
 ```text
 page views
+visit duration via Matomo heartbeat timer
+traffic sources / referrers
+city/country for new visits via DBIP GeoIP
 menu tab clicks
 PDF menu clicks/downloads
 email link clicks
 Google Maps route clicks
+```
+
+City geolocation update 2026-05-08:
+
+```text
+GeoIP provider: geoip2php
+GeoIP DB: /var/www/html/misc/DBIP-City.mmdb
+GeoIP auto-update URL: DBIP City Lite monthly download
+New visits can show country, region and city. Older masked visits may not recover city data.
+```
+
+Goals configured 2026-05-08:
+
+```text
+Route geplant       -> event_action contains "Route planen"
+E-Mail Klick        -> event_action contains "E-Mail"
+PDF Menue geoeffnet -> event_action contains "PDF"
 ```
 
 Matomo admin credentials не коммитить. Они сохранены только на VPS:
