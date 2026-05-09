@@ -69,11 +69,11 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-05-07.
+Последнее обновление сайта: 2026-05-09.
 
 ```text
 Часы работы: Mittwoch - Sonntag, 9:30 - 20:00; Montag - Dienstag, Ruhetag.
-Bistro.pdf обновлен по новому PDF-меню.
+Bistro.pdf обновлен по новому PDF-меню `Bistro new.pdf`.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
 ```
