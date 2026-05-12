@@ -79,3 +79,26 @@ PDF Menue geoeffnet -> event_action contains "PDF"
 
 The public site uses `enableHeartBeatTimer` in the Matomo JavaScript tracker so
 single-page visits get more accurate time-on-site measurements.
+
+## Instagram UTM links
+
+Use these links when placing Kiku Bistro URLs in Instagram. Matomo will group
+them as Instagram traffic and separate bio, stories and posts by `utm_content`.
+
+```text
+Bio:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=bio
+
+Stories:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=story
+
+Posts:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=post
+```
+
+For one-off campaigns, keep `utm_source=instagram` and `utm_medium=social`, then
+change only `utm_campaign`, for example:
+
+```text
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=menu_may_2026&utm_content=story
+```

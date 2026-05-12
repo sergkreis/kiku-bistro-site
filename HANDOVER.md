@@ -252,6 +252,22 @@ E-Mail Klick        -> event_action contains "E-Mail"
 PDF Menue geoeffnet -> event_action contains "PDF"
 ```
 
+Instagram UTM standard:
+
+```text
+Bio:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=bio
+
+Stories:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=story
+
+Posts:
+https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=instagram&utm_content=post
+```
+
+For a temporary campaign, keep `utm_source=instagram` and `utm_medium=social`,
+then change only `utm_campaign`, for example `menu_may_2026`.
+
 Matomo admin credentials не коммитить. Они сохранены только на VPS:
 
 ```text
