@@ -1,0 +1,22 @@
+[Unit]
+Description=Kiku Bistro reservation backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/kiku-reservations
+EnvironmentFile=/etc/kiku-reservations.env
+ExecStart=/usr/bin/python3 /opt/kiku-reservations/server.py
+Restart=on-failure
+RestartSec=5
+User=www-data
+Group=www-data
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/kiku-reservations
+
+[Install]
+WantedBy=multi-user.target

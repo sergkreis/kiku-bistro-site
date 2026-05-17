@@ -252,6 +252,65 @@ E-Mail Klick        -> event_action contains "E-Mail"
 PDF Menue geoeffnet -> event_action contains "PDF"
 ```
 
+## Reservation preview 2026-05-17
+
+Local full reservation prototype added, not deployed to production.
+
+Files:
+
+```text
+server.py      - local Python stdlib server, API, SQLite storage
+booking.js     - public reservation form behavior
+admin.html     - local reservation admin
+data/          - local SQLite data, ignored by git
+```
+
+Local run:
+
+```powershell
+python server.py
+```
+
+URLs:
+
+```text
+Website: http://127.0.0.1:8080/
+Admin:   http://127.0.0.1:8080/admin.html
+```
+
+Current behavior:
+
+```text
+Opening days: Wednesday-Sunday
+Opening time: 9:30-20:00
+Last seating: 18:00
+Slot size: 30 minutes
+Reservation duration: 2 hours
+Tables: 4 tables for 2 guests, 1 table for 4 guests
+Auto-confirmation: up to 4 guests when a matching table is available
+5+ guests: status pending, restaurant confirms manually
+Guest email is required.
+Restaurant notification email: info@kiku-bistro.de
+Statuses: pending, confirmed, seated, cancelled, no_show
+```
+
+Important before production:
+
+```text
+Admin uses KIKU_ADMIN_PASSWORD, or local default kiku-local when unset.
+Email notifications are wired through SMTP env vars:
+KIKU_SMTP_HOST, KIKU_SMTP_PORT, KIKU_SMTP_SECURITY, KIKU_SMTP_USER, KIKU_SMTP_PASSWORD, KIKU_SMTP_FROM.
+STRATO SMTP settings confirmed 2026-05-17:
+KIKU_SMTP_HOST=smtp.strato.de
+KIKU_SMTP_PORT=465
+KIKU_SMTP_SECURITY=ssl
+KIKU_SMTP_USER=info@kiku-bistro.de
+KIKU_SMTP_FROM=info@kiku-bistro.de
+Without SMTP settings, emails are skipped and logged locally.
+Datenschutz text must be reviewed before collecting real guest data.
+Do not deploy this reservation system without explicit approval and server plan.
+```
+
 Instagram UTM standard:
 
 ```text

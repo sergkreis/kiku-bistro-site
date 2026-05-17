@@ -12,3 +12,7 @@ desktop.ini
 .idea/
 
 infra/private/
+data/
+__pycache__/
+.env
+*.local.env

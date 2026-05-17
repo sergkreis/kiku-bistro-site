@@ -101,6 +101,43 @@ python -m http.server 8080
 http://localhost:8080/
 ```
 
+### Local reservation preview
+
+The local reservation system uses Python stdlib + SQLite and is not deployed to
+production yet.
+
+Start it from the project root:
+
+```powershell
+python server.py
+```
+
+Open:
+
+```text
+Website: http://127.0.0.1:8080/
+Admin:   http://127.0.0.1:8080/admin.html
+```
+
+Local reservation data is stored in `data/reservations.sqlite3`, which is ignored
+by git. The admin page uses `KIKU_ADMIN_PASSWORD`, or `kiku-local` locally when
+no password is configured.
+
+Local reservation rules:
+
+```text
+Tables: 4x2 seats, 1x4 seats
+Reservation duration: 2 hours
+Booking windows: every 30 minutes
+Last seating: 18:00
+Auto-confirmation: up to 4 guests
+5+ guests: pending request, restaurant confirms manually
+Guest email: required
+Restaurant notifications: info@kiku-bistro.de
+SMTP env vars: KIKU_SMTP_HOST, KIKU_SMTP_PORT, KIKU_SMTP_SECURITY, KIKU_SMTP_USER, KIKU_SMTP_PASSWORD, KIKU_SMTP_FROM
+STRATO SMTP: smtp.strato.de, port 465, SSL/TLS
+```
+
 ## Git workflow
 
 GitHub является основным источником правды.

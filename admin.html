@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiku Bistro | Reservierungen</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="styles.css?v=20260517-2" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="header-address" href="index.html">
+          <span>Kiku Bistro</span>
+          <span>Reservierungen lokal</span>
+        </a>
+        <a class="header-brand" href="index.html" aria-label="Kiku Bistro">
+          <img src="assets/header-flower.png?v=20260428-1" alt="" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Website</a>
+          <a href="#reservierungen">Reservierungen</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-main" id="reservierungen">
+      <div class="container admin-top">
+        <p class="eyebrow">Lokale Verwaltung</p>
+        <h1>Reservierungen</h1>
+        <p class="admin-muted">
+          Neue Reservierungen bis 4 Personen sind automatisch bestaetigt. Gruppen ab 5
+          Personen erscheinen als Anfrage und koennen hier bestaetigt oder storniert werden.
+        </p>
+      </div>
+
+      <section class="container admin-panel" id="admin-login-panel">
+        <form class="admin-login" id="admin-login-form">
+          <label>
+            <span>Admin Passwort</span>
+            <input type="password" id="admin-password" autocomplete="current-password" required />
+          </label>
+          <button class="btn btn-dark" type="submit">Einloggen</button>
+          <p class="reservation-message" id="admin-login-message" role="status"></p>
+        </form>
+      </section>
+
+      <section class="container admin-panel admin-panel-hidden" id="admin-reservations-panel">
+        <div class="admin-actions">
+          <label>
+            <span>Datum</span>
+            <input type="date" id="admin-date" />
+          </label>
+          <button class="btn btn-dark" type="button" id="admin-refresh">Aktualisieren</button>
+          <button class="btn btn-outline" type="button" id="admin-logout">Logout</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Zeit</th>
+                <th>Personen</th>
+                <th>Name</th>
+                <th>Telefon</th>
+                <th>E-Mail</th>
+                <th>Notiz</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-reservations">
+              <tr>
+                <td colspan="7" class="admin-muted">Reservierungen werden geladen...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const loginPanel = document.getElementById("admin-login-panel");
+      const reservationsPanel = document.getElementById("admin-reservations-panel");
+      const loginForm = document.getElementById("admin-login-form");
+      const loginMessage = document.getElementById("admin-login-message");
+      const dateInput = document.getElementById("admin-date");
+      const refreshButton = document.getElementById("admin-refresh");
+      const logoutButton = document.getElementById("admin-logout");
+      const body = document.getElementById("admin-reservations");
+      const statuses = [
+        { value: "pending", label: "Anfrage" },
+        { value: "confirmed", label: "Bestaetigt" },
+        { value: "seated", label: "Gast da" },
+        { value: "cancelled", label: "Storniert" },
+        { value: "no_show", label: "Nicht gekommen" },
+      ];
+
+      const toLocalDate = (date) => {
+        const offset = date.getTimezoneOffset();
+        return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+      };
+
+      dateInput.value = toLocalDate(new Date());
+
+      const escapeHtml = (value) =>
+        String(value || "").replace(/[&<>"']/g, (char) => {
+          const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+          return map[char];
+        });
+
+      const showAdmin = async () => {
+        loginPanel.classList.add("admin-panel-hidden");
+        reservationsPanel.classList.remove("admin-panel-hidden");
+        await loadReservations();
+      };
+
+      const showLogin = () => {
+        reservationsPanel.classList.add("admin-panel-hidden");
+        loginPanel.classList.remove("admin-panel-hidden");
+      };
+
+      const renderEmpty = () => {
+        body.innerHTML = '<tr><td colspan="7" class="admin-muted">Keine Reservierungen fuer dieses Datum.</td></tr>';
+      };
+
+      const updateStatus = async (id, status) => {
+        const response = await fetch(`/api/reservations/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        });
+        if (response.status === 401) {
+          showLogin();
+          return;
+        }
+        await loadReservations();
+      };
+
+      const renderReservations = (reservations) => {
+        body.innerHTML = "";
+        if (!reservations.length) {
+          renderEmpty();
+          return;
+        }
+
+        reservations.forEach((reservation) => {
+          const row = document.createElement("tr");
+          const phone = escapeHtml(reservation.phone);
+          const email = escapeHtml(reservation.email);
+          const statusOptions = statuses
+            .map(
+              (status) =>
+                `<option value="${status.value}" ${status.value === reservation.status ? "selected" : ""}>${status.label}</option>`
+            )
+            .join("");
+
+          row.innerHTML = `
+            <td>${escapeHtml(reservation.time)}</td>
+            <td>${escapeHtml(reservation.guests)}</td>
+            <td>${escapeHtml(reservation.name)}</td>
+            <td><a href="tel:${phone}">${phone}</a></td>
+            <td>${email ? `<a href="mailto:${email}">${email}</a>` : ""}</td>
+            <td>${escapeHtml(reservation.note)}</td>
+            <td>
+              <select class="admin-status" data-id="${reservation.id}">
+                ${statusOptions}
+              </select>
+            </td>
+          `;
+          body.append(row);
+        });
+
+        body.querySelectorAll(".admin-status").forEach((select) => {
+          select.addEventListener("change", () => updateStatus(select.dataset.id, select.value));
+        });
+      };
+
+      const loadReservations = async () => {
+        const selectedDate = dateInput.value;
+        body.innerHTML = '<tr><td colspan="7" class="admin-muted">Reservierungen werden geladen...</td></tr>';
+
+        const response = await fetch(`/api/reservations?date=${encodeURIComponent(selectedDate)}`);
+        if (response.status === 401) {
+          showLogin();
+          return;
+        }
+        const data = await response.json();
+        renderReservations(data.reservations || []);
+      };
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginMessage.textContent = "";
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: document.getElementById("admin-password").value }),
+        });
+        if (!response.ok) {
+          loginMessage.textContent = "Falsches Passwort.";
+          loginMessage.dataset.type = "error";
+          return;
+        }
+        await showAdmin();
+      });
+
+      logoutButton.addEventListener("click", async () => {
+        await fetch("/api/admin/logout", { method: "POST" });
+        showLogin();
+      });
+
+      dateInput.addEventListener("change", loadReservations);
+      refreshButton.addEventListener("click", loadReservations);
+
+      fetch("/api/admin/session")
+        .then((response) => response.json())
+        .then((data) => (data.authenticated ? showAdmin() : showLogin()))
+        .catch(showLogin);
+    </script>
+  </body>
+</html>

@@ -18,7 +18,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260501-1" />
+    <link rel="stylesheet" href="styles.css?v=20260517-3" />
     <script>
       var _paq = (window._paq = window._paq || []);
       _paq.push(["setTrackerUrl", "https://analytics.kiku-bistro.de/matomo.php"]);
@@ -51,6 +51,7 @@
         <nav class="nav">
           <a href="#about">Bistro</a>
           <a href="#menu">Speisekarte</a>
+          <a href="#reservierung">Reservieren</a>
           <a href="#visit">Kontakt</a>
         </nav>
         <button
@@ -75,6 +76,7 @@
       <div class="mobile-menu" id="mobile-menu">
         <a href="#about">Bistro</a>
         <a href="#menu">Speisekarte</a>
+        <a href="#reservierung">Reservieren</a>
         <a href="#visit">Kontakt</a>
         <a href="impressum.html">Impressum &amp; Datenschutz</a>
         <a href="agb.html">AGB</a>
@@ -100,6 +102,7 @@
               </p>
               <div class="hero-actions">
                 <a class="btn btn-light-solid" href="#menu">Zur Speisekarte</a>
+                <a class="btn btn-light-outline" href="#reservierung">Tisch reservieren</a>
                 <a
                   class="btn btn-light-outline"
                   href="https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg"
@@ -345,6 +348,74 @@
         </div>
       </section>
 
+      <section class="section reservation-section" id="reservierung">
+        <div class="container reservation-layout">
+          <div class="reservation-copy fade-up">
+            <p class="eyebrow">Reservierung</p>
+            <h2>Tisch im Kiku Bistro reservieren.</h2>
+            <p>
+              W&auml;hlen Sie Datum, Uhrzeit und Personenzahl. Verf&uuml;gbare Zeiten
+              werden automatisch nach den aktuellen Reservierungen berechnet.
+            </p>
+            <div class="reservation-facts">
+              <p><strong>&Ouml;ffnungszeiten</strong> Mittwoch bis Sonntag, 9:30 - 20:00</p>
+              <p><strong>Dauer</strong> Reservierungen werden f&uuml;r 2 Stunden eingeplant.</p>
+              <p><strong>Gruppen</strong> Bis 4 Personen best&auml;tigen wir automatisch, ab 5 Personen melden wir uns pers&ouml;nlich.</p>
+            </div>
+          </div>
+
+          <form class="reservation-form fade-up delay-1" id="reservation-form">
+            <div class="form-row form-row-two">
+              <label>
+                <span>Datum</span>
+                <input type="date" name="date" required />
+              </label>
+              <label>
+                <span>Personen</span>
+                <input type="number" name="guests" min="1" max="12" value="2" required />
+              </label>
+            </div>
+
+            <label>
+              <span>Uhrzeit</span>
+              <input type="hidden" name="time" required />
+              <div class="time-grid" id="reservation-time-grid" role="radiogroup" aria-label="Uhrzeit" tabindex="-1">
+                <p class="time-grid-empty">Bitte Datum w&auml;hlen</p>
+              </div>
+            </label>
+
+            <div class="form-row form-row-two">
+              <label>
+                <span>Name</span>
+                <input type="text" name="name" autocomplete="name" required />
+              </label>
+              <label>
+                <span>Telefon</span>
+                <input type="tel" name="phone" autocomplete="tel" required />
+              </label>
+            </div>
+
+            <label>
+              <span>E-Mail</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+
+            <label>
+              <span>Nachricht optional</span>
+              <textarea name="note" rows="4"></textarea>
+            </label>
+
+            <label class="form-consent">
+              <input type="checkbox" name="privacy" required />
+              <span>Ich stimme zu, dass meine Angaben zur Bearbeitung der Reservierung gespeichert werden.</span>
+            </label>
+
+            <button class="btn btn-dark" type="submit">Reservierung best&auml;tigen</button>
+            <p class="reservation-message" id="reservation-message" role="status"></p>
+          </form>
+        </div>
+      </section>
+
       <section class="section visit-section" id="visit">
         <div class="container visit-layout">
           <div class="visit-media visit-media-single fade-up delay-1">
@@ -403,6 +474,7 @@
       </div>
     </footer>
 
+    <script src="booking.js?v=20260517-5"></script>
     <script>
       const observer = new IntersectionObserver(
         (entries) => {
@@ -415,7 +487,13 @@
         { threshold: 0.12 }
       );
 
-      document.querySelectorAll(".fade-up").forEach((element) => observer.observe(element));
+      document.querySelectorAll(".fade-up").forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          element.classList.add("visible");
+        }
+        observer.observe(element);
+      });
 
       const header = document.querySelector(".site-header");
       const menuToggle = document.querySelector(".menu-toggle");
