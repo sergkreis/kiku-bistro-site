@@ -15,6 +15,7 @@ from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 ROOT = Path(__file__).resolve().parent
@@ -33,6 +34,10 @@ AUTO_CONFIRM_MAX_GUESTS = 4
 ACTIVE_STATUSES = {"confirmed", "seated"}
 VALID_STATUSES = {"pending", "confirmed", "seated", "cancelled", "no_show"}
 RESTAURANT_EMAIL = "info@kiku-bistro.de"
+try:
+    RESTAURANT_TZ = ZoneInfo("Europe/Berlin")
+except ZoneInfoNotFoundError:
+    RESTAURANT_TZ = None
 
 KIKU_ENV = os.environ.get("KIKU_ENV", "local")
 ADMIN_PASSWORD = os.environ.get("KIKU_ADMIN_PASSWORD")
@@ -152,6 +157,16 @@ def combine(day: date, value: str | time) -> datetime:
     return datetime.combine(day, slot_time)
 
 
+def restaurant_now() -> datetime:
+    if RESTAURANT_TZ is None:
+        return datetime.now().astimezone().replace(tzinfo=None)
+    return datetime.now(RESTAURANT_TZ).replace(tzinfo=None)
+
+
+def is_future_slot(day: date, slot: str | time) -> bool:
+    return combine(day, slot) > restaurant_now()
+
+
 def is_open_day(day: date) -> bool:
     return day.weekday() in OPEN_DAYS
 
@@ -166,6 +181,10 @@ def slot_times(day: date) -> list[str]:
         slots.append(current.strftime("%H:%M"))
         current += timedelta(minutes=SLOT_MINUTES)
     return slots
+
+
+def bookable_slot_times(day: date) -> list[str]:
+    return [slot for slot in slot_times(day) if is_future_slot(day, slot)]
 
 
 def overlaps(start_a: datetime, end_a: datetime, start_b: datetime, end_b: datetime) -> bool:
@@ -286,12 +305,14 @@ def validate_reservation(payload: dict) -> tuple[dict, list[str]]:
     cleaned.update({"name": name, "phone": phone, "email": email, "note": note})
 
     if booking_day and booking_time:
-        today = date.today()
+        today = restaurant_now().date()
         if booking_day < today:
             errors.append("Reservierungen in der Vergangenheit sind nicht möglich.")
+        if booking_day == today and not is_future_slot(booking_day, booking_time):
+            errors.append("Diese Uhrzeit liegt bereits in der Vergangenheit.")
         if not is_open_day(booking_day):
             errors.append("Montag und Dienstag sind Ruhetage.")
-        if booking_time.strftime("%H:%M") not in slot_times(booking_day):
+        if booking_time.strftime("%H:%M") not in bookable_slot_times(booking_day):
             errors.append("Bitte eine verfügbare Uhrzeit auswählen.")
 
     if booking_day and booking_time and "guests" in cleaned and cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS:
@@ -494,7 +515,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
             guests = 2
 
         slots = []
-        for slot in slot_times(day):
+        for slot in bookable_slot_times(day):
             availability = availability_for_party(day, slot, guests)
             slots.append({"time": slot, "capacity": SEAT_CAPACITY, **availability})
 
@@ -513,7 +534,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
 
     def handle_reservations(self, query: str) -> None:
         params = parse_qs(query)
-        selected_date = (params.get("date") or [date.today().isoformat()])[0]
+        selected_date = (params.get("date") or [restaurant_now().date().isoformat()])[0]
         try:
             parse_date(selected_date)
         except ValueError:
@@ -534,7 +555,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
 
     def handle_reservations_csv(self, query: str) -> None:
         params = parse_qs(query)
-        selected_date = (params.get("date") or [date.today().isoformat()])[0]
+        selected_date = (params.get("date") or [restaurant_now().date().isoformat()])[0]
         try:
             parse_date(selected_date)
         except ValueError:

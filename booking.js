@@ -17,6 +17,9 @@
   dateInput.min = toLocalDate(today);
   dateInput.value = toLocalDate(today);
 
+  const isPastDate = (value) => value && value < toLocalDate(new Date());
+  const isFutureSlot = (dateValue, timeValue) => new Date(`${dateValue}T${timeValue}:00`) > new Date();
+
   const setMessage = (text, type) => {
     message.textContent = text;
     message.dataset.type = type || "";
@@ -48,6 +51,11 @@
     setMessage("", "");
 
     if (!selectedDate) return;
+    if (isPastDate(selectedDate)) {
+      timeGrid.innerHTML = '<p class="time-grid-empty">Nicht verfuegbar</p>';
+      setMessage("Reservierungen in der Vergangenheit sind nicht moeglich.", "error");
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -65,7 +73,7 @@
         return;
       }
 
-      const availableSlots = data.slots.filter((slot) => slot.available);
+      const availableSlots = data.slots.filter((slot) => slot.available && isFutureSlot(selectedDate, slot.time));
       if (!availableSlots.length) {
         timeGrid.innerHTML = '<p class="time-grid-empty">Keine passende Zeit frei</p>';
         setMessage("Fuer diese Personenzahl ist an diesem Tag kein freier Slot verfuegbar.", "error");
@@ -104,6 +112,16 @@
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (isPastDate(dateInput.value)) {
+      setMessage("Reservierungen in der Vergangenheit sind nicht moeglich.", "error");
+      return;
+    }
+    if (timeInput.value && !isFutureSlot(dateInput.value, timeInput.value)) {
+      setMessage("Diese Uhrzeit liegt bereits in der Vergangenheit.", "error");
+      clearSelectedTime();
+      await loadAvailability();
+      return;
+    }
     if (!timeInput.value) {
       setMessage("Bitte eine Uhrzeit waehlen.", "error");
       timeGrid.focus();
