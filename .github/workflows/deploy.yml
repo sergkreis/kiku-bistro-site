@@ -1,0 +1,47 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.KIKU_DEPLOY_SSH_KEY }}" > ~/.ssh/kiku_deploy_key
+          chmod 600 ~/.ssh/kiku_deploy_key
+          ssh-keyscan -p "${{ secrets.KIKU_DEPLOY_PORT || 22 }}" -H "${{ secrets.KIKU_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy from GitHub on VPS
+        run: |
+          ssh -i ~/.ssh/kiku_deploy_key \
+            -p "${{ secrets.KIKU_DEPLOY_PORT || 22 }}" \
+            -o BatchMode=yes \
+            "${{ secrets.KIKU_DEPLOY_USER }}@${{ secrets.KIKU_DEPLOY_HOST }}" \
+            'set -euo pipefail
+             if [ ! -d /opt/kiku-bistro-site/.git ]; then
+               rm -rf /opt/kiku-bistro-site
+               git clone --depth 1 --branch main https://github.com/sergkreis/kiku-bistro-site.git /opt/kiku-bistro-site
+             else
+               git -C /opt/kiku-bistro-site fetch --prune origin main
+               git -C /opt/kiku-bistro-site reset --hard origin/main
+             fi
+             bash /opt/kiku-bistro-site/scripts/deploy-production.sh'
+
+      - name: Smoke test
+        run: |
+          curl --fail --silent --show-error https://kiku-bistro.de/api/health
+          curl --fail --silent --show-error https://admin.kiku-bistro.de/api/health

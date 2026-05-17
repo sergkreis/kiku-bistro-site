@@ -79,6 +79,44 @@ Bistro.pdf обновлен по новому PDF-меню `Bistro new.pdf`.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
 ```
 
+## Production reservations and deploy
+
+Reservations are live in production.
+
+```text
+Booking form: https://kiku-bistro.de/#reservierung
+Reservation admin: https://admin.kiku-bistro.de/
+Reservation API: https://kiku-bistro.de/api/
+Analytics admin: https://analytics.kiku-bistro.de/
+```
+
+Production reservation backend:
+
+```text
+Service: kiku-reservations
+Backend path: /opt/kiku-reservations
+Database: /var/lib/kiku-reservations/reservations.sqlite3
+Env file with secrets: /etc/kiku-reservations.env
+```
+
+Production deploy is automated through GitHub Actions.
+
+```text
+Workflow: .github/workflows/deploy.yml
+Deploy script: scripts/deploy-production.sh
+Trigger: push to main, or manual workflow_dispatch
+VPS checkout: /opt/kiku-bistro-site
+```
+
+Required GitHub repository secrets:
+
+```text
+KIKU_DEPLOY_HOST
+KIKU_DEPLOY_USER
+KIKU_DEPLOY_PORT
+KIKU_DEPLOY_SSH_KEY
+```
+
 ## Локальный запуск
 
 У проекта нет сборки, npm, backend или базы данных.

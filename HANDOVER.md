@@ -252,6 +252,57 @@ E-Mail Klick        -> event_action contains "E-Mail"
 PDF Menue geoeffnet -> event_action contains "PDF"
 ```
 
+## Production reservations and GitHub deploy 2026-05-17
+
+Reservations are deployed to production.
+
+```text
+Booking form: https://kiku-bistro.de/#reservierung
+Reservation admin: https://admin.kiku-bistro.de/
+Analytics admin: https://analytics.kiku-bistro.de/
+```
+
+Reservation backend:
+
+```text
+Service: kiku-reservations
+Backend path: /opt/kiku-reservations
+Database: /var/lib/kiku-reservations/reservations.sqlite3
+Env file with secrets: /etc/kiku-reservations.env
+```
+
+Deploy is GitHub based:
+
+```text
+Workflow: .github/workflows/deploy.yml
+Deploy script: scripts/deploy-production.sh
+VPS checkout: /opt/kiku-bistro-site
+Trigger: push to main, or manual workflow_dispatch
+```
+
+Required GitHub repository secrets:
+
+```text
+KIKU_DEPLOY_HOST
+KIKU_DEPLOY_USER
+KIKU_DEPLOY_PORT
+KIKU_DEPLOY_SSH_KEY
+```
+
+Current reservation rules:
+
+```text
+Tables: 4 tables for 2 guests, 1 table for 4 guests
+Reservation duration: 2 hours
+Booking windows: every 30 minutes
+Last seating: 18:00
+Past dates and past same-day slots are blocked on frontend and backend
+Auto-confirmation: up to 4 guests when a matching table is available
+5+ guests: pending request, restaurant confirms manually
+Guest email is required
+Restaurant notification email: info@kiku-bistro.de
+```
+
 ## Reservation preview 2026-05-17
 
 Local full reservation prototype added, not deployed to production.
