@@ -28,6 +28,7 @@ install -o www-data -g www-data -m 644 "$CHECKOUT/agb.html" "$WEBROOT/agb.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/Bistro.pdf" "$WEBROOT/Bistro.pdf"
 install -o www-data -g www-data -m 644 "$CHECKOUT/admin.html" "$WEBROOT/admin.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/reservation.html" "$WEBROOT/reservation.html"
+install -o www-data -g www-data -m 644 "$CHECKOUT/reservierung.html" "$WEBROOT/reservierung.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/booking.js" "$WEBROOT/booking.js"
 rsync -a --delete --chown=www-data:www-data "$CHECKOUT/assets/" "$WEBROOT/assets/"
 
@@ -43,6 +44,10 @@ systemctl restart kiku-reservations
 nginx -t
 systemctl reload nginx
 
-echo "deployed_commit=$(git -C "$CHECKOUT" rev-parse --short HEAD)"
-echo "kiku-reservations=$(systemctl is-active kiku-reservations)"
-echo "nginx=$(systemctl is-active nginx)"
+deployed_commit="$(git -C "$CHECKOUT" rev-parse --short HEAD)"
+reservation_service="$(systemctl is-active kiku-reservations)"
+nginx_service="$(systemctl is-active nginx)"
+
+echo "deployed_commit=$deployed_commit"
+echo "kiku-reservations=$reservation_service"
+echo "nginx=$nginx_service"
