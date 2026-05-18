@@ -27,6 +27,7 @@ install -o www-data -g www-data -m 644 "$CHECKOUT/impressum.html" "$WEBROOT/impr
 install -o www-data -g www-data -m 644 "$CHECKOUT/agb.html" "$WEBROOT/agb.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/Bistro.pdf" "$WEBROOT/Bistro.pdf"
 install -o www-data -g www-data -m 644 "$CHECKOUT/admin.html" "$WEBROOT/admin.html"
+install -o www-data -g www-data -m 644 "$CHECKOUT/reservation.html" "$WEBROOT/reservation.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/booking.js" "$WEBROOT/booking.js"
 rsync -a --delete --chown=www-data:www-data "$CHECKOUT/assets/" "$WEBROOT/assets/"
 

@@ -37,10 +37,7 @@
     if (slot.requiresConfirmation) {
       return "Anfrage";
     }
-    if (guests >= 3) {
-      return "4er-Tisch";
-    }
-    return "frei";
+    return `${slot.remaining} frei`;
   };
 
   const loadAvailability = async () => {
@@ -69,7 +66,7 @@
 
       if (!data.open) {
         timeGrid.innerHTML = '<p class="time-grid-empty">Ruhetag</p>';
-        setMessage("Montag und Dienstag sind Ruhetage.", "error");
+        setMessage(data.closed ? `An diesem Tag geschlossen. ${data.closedReason || ""}` : "Montag und Dienstag sind Ruhetage.", "error");
         return;
       }
 

@@ -6,20 +6,20 @@
     <title>Kiku Bistro | Reservierungen</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="assets/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="styles.css?v=20260517-2" />
+    <link rel="stylesheet" href="styles.css?v=20260518-1" />
   </head>
   <body class="admin-page">
     <header class="site-header">
       <div class="container header-inner">
-        <a class="header-address" href="index.html">
+        <a class="header-address" href="https://kiku-bistro.de/">
           <span>Kiku Bistro</span>
           <span>Reservierungen</span>
         </a>
-        <a class="header-brand" href="index.html" aria-label="Kiku Bistro">
+        <a class="header-brand" href="https://kiku-bistro.de/" aria-label="Kiku Bistro">
           <img src="assets/header-flower.png?v=20260428-1" alt="" />
         </a>
         <nav class="nav">
-          <a href="index.html">Website</a>
+          <a href="https://kiku-bistro.de/">Website</a>
           <a href="#reservierungen">Reservierungen</a>
         </nav>
       </div>
@@ -30,8 +30,8 @@
         <p class="eyebrow">Verwaltung</p>
         <h1>Reservierungen</h1>
         <p class="admin-muted">
-          Neue Reservierungen bis 4 Personen sind automatisch bestaetigt. Gruppen ab 5
-          Personen erscheinen als Anfrage und koennen hier bestaetigt oder storniert werden.
+          Pro Uhrzeit sind standardmaessig 3 aktive Reservierungen moeglich. Anfragen,
+          bestaetigte Reservierungen und anwesende Gaeste belegen einen Platz.
         </p>
       </div>
 
@@ -52,30 +52,65 @@
             <span>Datum</span>
             <input type="date" id="admin-date" />
           </label>
+          <label>
+            <span>Ansicht</span>
+            <select id="admin-view">
+              <option value="1">Tag</option>
+              <option value="7">Woche</option>
+            </select>
+          </label>
           <button class="btn btn-dark" type="button" id="admin-refresh">Aktualisieren</button>
           <button class="btn btn-outline" type="button" id="admin-logout">Logout</button>
         </div>
 
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Zeit</th>
-                <th>Personen</th>
-                <th>Name</th>
-                <th>Telefon</th>
-                <th>E-Mail</th>
-                <th>Notiz</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="admin-reservations">
-              <tr>
-                <td colspan="7" class="admin-muted">Reservierungen werden geladen...</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="admin-grid">
+          <section class="admin-subpanel">
+            <h2>Reservierung anlegen</h2>
+            <form class="admin-create" id="admin-create-form">
+              <div class="form-row form-row-two">
+                <label><span>Datum</span><input type="date" name="date" required /></label>
+                <label>
+                  <span>Uhrzeit</span>
+                  <select name="time" required></select>
+                </label>
+              </div>
+              <div class="form-row form-row-two">
+                <label><span>Personen</span><input type="number" name="guests" min="1" max="12" value="2" required /></label>
+                <label>
+                  <span>Status</span>
+                  <select name="status">
+                    <option value="confirmed">Bestaetigt</option>
+                    <option value="pending">Anfrage</option>
+                  </select>
+                </label>
+              </div>
+              <div class="form-row form-row-two">
+                <label><span>Name</span><input type="text" name="name" required /></label>
+                <label><span>Telefon</span><input type="tel" name="phone" required /></label>
+              </div>
+              <label><span>E-Mail optional</span><input type="email" name="email" /></label>
+              <label><span>Notiz</span><textarea name="note" rows="3"></textarea></label>
+              <label class="form-consent admin-checkbox">
+                <input type="checkbox" name="notifyGuest" />
+                <span>Gast per E-Mail informieren, wenn E-Mail vorhanden ist</span>
+              </label>
+              <button class="btn btn-dark" type="submit">Reservierung speichern</button>
+              <p class="reservation-message" id="admin-create-message" role="status"></p>
+            </form>
+          </section>
+
+          <section class="admin-subpanel">
+            <h2>Tag steuern</h2>
+            <div class="admin-close-row">
+              <label><span>Grund</span><input type="text" id="admin-close-reason" placeholder="Urlaub, Veranstaltung ..." /></label>
+              <button class="btn btn-dark" type="button" id="admin-close-day">Tag schliessen</button>
+              <button class="btn btn-outline" type="button" id="admin-open-day">Tag oeffnen</button>
+            </div>
+            <div class="admin-slot-settings" id="admin-slot-settings"></div>
+          </section>
         </div>
+
+        <div id="admin-week"></div>
       </section>
     </main>
 
@@ -85,9 +120,15 @@
       const loginForm = document.getElementById("admin-login-form");
       const loginMessage = document.getElementById("admin-login-message");
       const dateInput = document.getElementById("admin-date");
+      const viewInput = document.getElementById("admin-view");
       const refreshButton = document.getElementById("admin-refresh");
       const logoutButton = document.getElementById("admin-logout");
-      const body = document.getElementById("admin-reservations");
+      const weekRoot = document.getElementById("admin-week");
+      const createForm = document.getElementById("admin-create-form");
+      const createMessage = document.getElementById("admin-create-message");
+      const slotSettingsRoot = document.getElementById("admin-slot-settings");
+      const closeReason = document.getElementById("admin-close-reason");
+      const slots = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"];
       const statuses = [
         { value: "pending", label: "Anfrage" },
         { value: "confirmed", label: "Bestaetigt" },
@@ -100,117 +141,215 @@
         const offset = date.getTimezoneOffset();
         return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
       };
+      const addDays = (value, days) => {
+        const date = new Date(`${value}T00:00:00`);
+        date.setDate(date.getDate() + days);
+        return toLocalDate(date);
+      };
+      const escapeHtml = (value) =>
+        String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const setMessage = (el, text, type) => {
+        el.textContent = text || "";
+        el.dataset.type = type || "";
+      };
 
       dateInput.value = toLocalDate(new Date());
+      createForm.elements.date.value = dateInput.value;
+      createForm.elements.time.innerHTML = slots.map((slot) => `<option value="${slot}">${slot}</option>`).join("");
 
-      const escapeHtml = (value) =>
-        String(value || "").replace(/[&<>"']/g, (char) => {
-          const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
-          return map[char];
-        });
+      const api = async (url, options = {}) => {
+        const response = await fetch(url, options);
+        if (response.status === 401) {
+          showLogin();
+          throw new Error("Nicht eingeloggt.");
+        }
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error((data.errors || ["Fehler"]).join(" "));
+        return data;
+      };
 
       const showAdmin = async () => {
         loginPanel.classList.add("admin-panel-hidden");
         reservationsPanel.classList.remove("admin-panel-hidden");
         await loadReservations();
       };
-
       const showLogin = () => {
         reservationsPanel.classList.add("admin-panel-hidden");
         loginPanel.classList.remove("admin-panel-hidden");
       };
 
-      const renderEmpty = () => {
-        body.innerHTML = '<tr><td colspan="7" class="admin-muted">Keine Reservierungen fuer dieses Datum.</td></tr>';
-      };
+      const reservationsByDate = (reservations) =>
+        reservations.reduce((map, reservation) => {
+          (map[reservation.date] ||= []).push(reservation);
+          return map;
+        }, {});
 
-      const updateStatus = async (id, status) => {
-        const response = await fetch(`/api/reservations/${id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status }),
+      const renderSettings = (settings) => {
+        const selectedDate = dateInput.value;
+        const closedReason = settings.closedDays[selectedDate] || "";
+        closeReason.value = closedReason;
+        slotSettingsRoot.innerHTML = slots
+          .map((slot) => {
+            const key = `${selectedDate}|${slot}`;
+            const limit = settings.slotSettings[key] ?? settings.defaultSlotLimit;
+            return `
+              <label class="slot-limit-row">
+                <span>${slot}</span>
+                <input type="number" min="0" max="20" value="${limit}" data-slot="${slot}" />
+              </label>
+            `;
+          })
+          .join("");
+        slotSettingsRoot.querySelectorAll("input").forEach((input) => {
+          input.addEventListener("change", async () => {
+            await api("/api/admin/settings", {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "set_slot_limit", date: selectedDate, time: input.dataset.slot, limit: Number(input.value) }),
+            });
+            await loadReservations();
+          });
         });
-        if (response.status === 401) {
-          showLogin();
-          return;
-        }
-        await loadReservations();
       };
 
-      const renderReservations = (reservations) => {
-        body.innerHTML = "";
-        if (!reservations.length) {
-          renderEmpty();
-          return;
-        }
-
-        reservations.forEach((reservation) => {
-          const row = document.createElement("tr");
-          const phone = escapeHtml(reservation.phone);
-          const email = escapeHtml(reservation.email);
-          const statusOptions = statuses
-            .map(
-              (status) =>
-                `<option value="${status.value}" ${status.value === reservation.status ? "selected" : ""}>${status.label}</option>`
-            )
-            .join("");
-
-          row.innerHTML = `
-            <td>${escapeHtml(reservation.time)}</td>
-            <td>${escapeHtml(reservation.guests)}</td>
-            <td>${escapeHtml(reservation.name)}</td>
-            <td><a href="tel:${phone}">${phone}</a></td>
-            <td>${email ? `<a href="mailto:${email}">${email}</a>` : ""}</td>
-            <td>${escapeHtml(reservation.note)}</td>
-            <td>
+      const renderReservation = (reservation) => {
+        const statusOptions = statuses
+          .map((status) => `<option value="${status.value}" ${status.value === reservation.status ? "selected" : ""}>${status.label}</option>`)
+          .join("");
+        const emailActions = reservation.email
+          ? `<button class="btn btn-outline admin-email-repeat" type="button" data-id="${reservation.id}">E-Mail erneut</button>`
+          : `<span class="admin-muted">Keine E-Mail</span>`;
+        return `
+          <article class="reservation-row">
+            <div>
+              <strong>${escapeHtml(reservation.time)} · ${escapeHtml(reservation.guests)} Pers.</strong>
+              <span>${escapeHtml(reservation.name)}</span>
+              <small>${escapeHtml(reservation.phone)} ${reservation.email ? `· ${escapeHtml(reservation.email)}` : ""}</small>
+              ${reservation.note ? `<small>${escapeHtml(reservation.note)}</small>` : ""}
+            </div>
+            <div class="reservation-row-actions">
+              <label class="admin-checkbox">
+                <input type="checkbox" class="admin-notify" data-id="${reservation.id}" ${reservation.email ? "checked" : "disabled"} />
+                <span>E-Mail</span>
+              </label>
               <select class="admin-status" data-id="${reservation.id}">
                 ${statusOptions}
               </select>
-            </td>
-          `;
-          body.append(row);
-        });
+              ${emailActions}
+            </div>
+          </article>
+        `;
+      };
 
-        body.querySelectorAll(".admin-status").forEach((select) => {
-          select.addEventListener("change", () => updateStatus(select.dataset.id, select.value));
+      const renderReservations = (reservations, settings) => {
+        const grouped = reservationsByDate(reservations);
+        const days = Number(viewInput.value);
+        const html = Array.from({ length: days }, (_, offset) => {
+          const date = addDays(dateInput.value, offset);
+          const dayReservations = grouped[date] || [];
+          const closed = settings.closedDays[date];
+          return `
+            <section class="admin-day">
+              <div class="admin-day-head">
+                <h2>${date}</h2>
+                ${closed !== undefined ? `<span class="admin-closed">Geschlossen${closed ? `: ${escapeHtml(closed)}` : ""}</span>` : ""}
+              </div>
+              ${dayReservations.length ? dayReservations.map(renderReservation).join("") : `<p class="admin-muted">Keine Reservierungen.</p>`}
+            </section>
+          `;
+        }).join("");
+        weekRoot.innerHTML = html;
+
+        weekRoot.querySelectorAll(".admin-status").forEach((select) => {
+          select.addEventListener("change", async () => {
+            const notify = weekRoot.querySelector(`.admin-notify[data-id="${select.dataset.id}"]`)?.checked ?? false;
+            await api(`/api/reservations/${select.dataset.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ status: select.value, notifyGuest: notify }),
+            });
+            await loadReservations();
+          });
+        });
+        weekRoot.querySelectorAll(".admin-email-repeat").forEach((button) => {
+          button.addEventListener("click", async () => {
+            await api(`/api/reservations/${button.dataset.id}/email`, { method: "POST" });
+            await loadReservations();
+          });
         });
       };
 
       const loadReservations = async () => {
-        const selectedDate = dateInput.value;
-        body.innerHTML = '<tr><td colspan="7" class="admin-muted">Reservierungen werden geladen...</td></tr>';
-
-        const response = await fetch(`/api/reservations?date=${encodeURIComponent(selectedDate)}`);
-        if (response.status === 401) {
-          showLogin();
-          return;
-        }
-        const data = await response.json();
-        renderReservations(data.reservations || []);
+        const days = Number(viewInput.value);
+        createForm.elements.date.value = dateInput.value;
+        weekRoot.innerHTML = '<p class="admin-muted">Reservierungen werden geladen...</p>';
+        const [data, settings] = await Promise.all([
+          api(`/api/reservations?start=${encodeURIComponent(dateInput.value)}&days=${days}`),
+          api(`/api/admin/settings?start=${encodeURIComponent(dateInput.value)}&days=${days}`),
+        ]);
+        renderSettings(settings);
+        renderReservations(data.reservations || [], settings);
       };
 
       loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        loginMessage.textContent = "";
-        const response = await fetch("/api/admin/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: document.getElementById("admin-password").value }),
-        });
-        if (!response.ok) {
-          loginMessage.textContent = "Falsches Passwort.";
-          loginMessage.dataset.type = "error";
-          return;
+        setMessage(loginMessage, "", "");
+        try {
+          await api("/api/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: document.getElementById("admin-password").value }),
+          });
+          await showAdmin();
+        } catch {
+          setMessage(loginMessage, "Falsches Passwort.", "error");
         }
-        await showAdmin();
       });
 
+      createForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setMessage(createMessage, "Reservierung wird gespeichert...", "");
+        const payload = Object.fromEntries(new FormData(createForm).entries());
+        payload.guests = Number(payload.guests);
+        payload.notifyGuest = createForm.elements.notifyGuest.checked;
+        try {
+          await api("/api/admin/reservations", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          createForm.reset();
+          createForm.elements.date.value = dateInput.value;
+          createForm.elements.guests.value = "2";
+          setMessage(createMessage, "Reservierung gespeichert.", "success");
+          await loadReservations();
+        } catch (error) {
+          setMessage(createMessage, error.message, "error");
+        }
+      });
+
+      document.getElementById("admin-close-day").addEventListener("click", async () => {
+        await api("/api/admin/settings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "close_day", date: dateInput.value, reason: closeReason.value }),
+        });
+        await loadReservations();
+      });
+      document.getElementById("admin-open-day").addEventListener("click", async () => {
+        await api("/api/admin/settings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "open_day", date: dateInput.value }),
+        });
+        await loadReservations();
+      });
       logoutButton.addEventListener("click", async () => {
         await fetch("/api/admin/logout", { method: "POST" });
         showLogin();
       });
-
       dateInput.addEventListener("change", loadReservations);
+      viewInput.addEventListener("change", loadReservations);
       refreshButton.addEventListener("click", loadReservations);
 
       fetch("/api/admin/session")

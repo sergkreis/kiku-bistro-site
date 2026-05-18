@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiku Bistro | Reservierung</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="styles.css?v=20260518-1" />
+  </head>
+  <body class="legal-page guest-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="header-address" href="index.html">
+          <span>Kiku Bistro</span>
+          <span>Reservierung</span>
+        </a>
+        <a class="header-brand" href="index.html" aria-label="Kiku Bistro">
+          <img src="assets/header-flower.png?v=20260428-1" alt="" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Website</a>
+          <a href="index.html#reservierung">Reservieren</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="legal-main">
+      <section class="container guest-shell">
+        <p class="eyebrow">Reservierung</p>
+        <h1>Ihre Reservierung</h1>
+        <div id="guest-content">
+          <p class="admin-muted">Reservierung wird geladen...</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const content = document.getElementById("guest-content");
+      const token = new URLSearchParams(location.search).get("token") || "";
+      const slots = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"];
+      const toLocalDate = (date) => {
+        const offset = date.getTimezoneOffset();
+        return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+      };
+      const escapeHtml = (value) =>
+        String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const api = async (url, options = {}) => {
+        const response = await fetch(url, options);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error((data.errors || ["Fehler"]).join(" "));
+        return data;
+      };
+
+      const render = (reservation, message = "") => {
+        const disabled = ["cancelled", "no_show"].includes(reservation.status);
+        content.innerHTML = `
+          <div class="guest-card">
+            <dl class="guest-details">
+              <div><dt>Status</dt><dd>${escapeHtml(reservation.status)}</dd></div>
+              <div><dt>Datum</dt><dd>${escapeHtml(reservation.date)}</dd></div>
+              <div><dt>Uhrzeit</dt><dd>${escapeHtml(reservation.time)} Uhr</dd></div>
+              <div><dt>Personen</dt><dd>${escapeHtml(reservation.guests)}</dd></div>
+              <div><dt>Name</dt><dd>${escapeHtml(reservation.name)}</dd></div>
+            </dl>
+            <form id="guest-change-form" class="guest-form">
+              <div class="form-row form-row-two">
+                <label><span>Datum</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDate(new Date())}" ${disabled ? "disabled" : ""} required /></label>
+                <label><span>Uhrzeit</span><select name="time" ${disabled ? "disabled" : ""}>${slots.map((slot) => `<option value="${slot}" ${slot === reservation.time ? "selected" : ""}>${slot}</option>`).join("")}</select></label>
+              </div>
+              <label><span>Personen</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
+              <label><span>Notiz</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
+              <div class="guest-actions">
+                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Aenderung speichern</button>
+                <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>Reservierung stornieren</button>
+              </div>
+              <p class="reservation-message" id="guest-message" data-type="${message ? "success" : ""}">${escapeHtml(message)}</p>
+            </form>
+          </div>
+        `;
+        document.getElementById("guest-change-form").addEventListener("submit", updateReservation);
+        document.getElementById("guest-cancel").addEventListener("click", cancelReservation);
+      };
+
+      const load = async () => {
+        if (!token) {
+          content.innerHTML = '<p class="reservation-message" data-type="error">Reservierung nicht gefunden.</p>';
+          return;
+        }
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}`);
+          render(data.reservation);
+        } catch (error) {
+          content.innerHTML = `<p class="reservation-message" data-type="error">${escapeHtml(error.message)}</p>`;
+        }
+      };
+
+      const updateReservation = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.action = "change";
+        payload.guests = Number(payload.guests);
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          render(data.reservation, "Reservierung wurde aktualisiert.");
+        } catch (error) {
+          document.getElementById("guest-message").textContent = error.message;
+          document.getElementById("guest-message").dataset.type = "error";
+        }
+      };
+
+      const cancelReservation = async () => {
+        if (!confirm("Reservierung wirklich stornieren?")) return;
+        const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "cancel" }),
+        });
+        render(data.reservation, "Reservierung wurde storniert.");
+      };
+
+      load();
+    </script>
+  </body>
+</html>

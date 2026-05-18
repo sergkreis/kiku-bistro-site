@@ -7,10 +7,12 @@ import io
 import json
 import os
 import re
+import secrets
 import smtplib
 import sqlite3
 from datetime import date, datetime, time, timedelta
 from email.message import EmailMessage
+from html import escape
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -23,17 +25,15 @@ DATA_DIR = Path(os.environ.get("KIKU_DATA_DIR", ROOT / "data"))
 DB_PATH = Path(os.environ.get("KIKU_DB_PATH", DATA_DIR / "reservations.sqlite3"))
 
 OPEN_DAYS = {2, 3, 4, 5, 6}
-OPEN_TIME = time(9, 30)
-LAST_SEATING = time(18, 0)
-SLOT_MINUTES = 30
+FIXED_SLOTS = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"]
 RESERVATION_MINUTES = 120
-TABLES = [4, 2, 2, 2, 2]
-SEAT_CAPACITY = sum(TABLES)
+DEFAULT_SLOT_LIMIT = 3
 MAX_PARTY_SIZE = 12
 AUTO_CONFIRM_MAX_GUESTS = 4
-ACTIVE_STATUSES = {"confirmed", "seated"}
+ACTIVE_STATUSES = {"pending", "confirmed", "seated"}
 VALID_STATUSES = {"pending", "confirmed", "seated", "cancelled", "no_show"}
 RESTAURANT_EMAIL = "info@kiku-bistro.de"
+SITE_URL = os.environ.get("KIKU_SITE_URL", "https://kiku-bistro.de").rstrip("/")
 try:
     RESTAURANT_TZ = ZoneInfo("Europe/Berlin")
 except ZoneInfoNotFoundError:
@@ -73,8 +73,40 @@ def init_db() -> None:
             )
             """
         )
+        columns = {row["name"] for row in conn.execute("PRAGMA table_info(reservations)").fetchall()}
+        if "guest_token" not in columns:
+            conn.execute("ALTER TABLE reservations ADD COLUMN guest_token TEXT")
+        if "source" not in columns:
+            conn.execute("ALTER TABLE reservations ADD COLUMN source TEXT NOT NULL DEFAULT 'public'")
+        rows_without_token = conn.execute("SELECT id FROM reservations WHERE guest_token IS NULL OR guest_token = ''").fetchall()
+        for row in rows_without_token:
+            conn.execute("UPDATE reservations SET guest_token = ? WHERE id = ?", (new_guest_token(), row["id"]))
         conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_reservations_date ON reservations(booking_date, booking_time)"
+        )
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_reservations_guest_token ON reservations(guest_token)"
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS slot_settings (
+              booking_date TEXT NOT NULL,
+              booking_time TEXT NOT NULL,
+              slot_limit INTEGER NOT NULL,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (booking_date, booking_time)
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS closed_days (
+              booking_date TEXT PRIMARY KEY,
+              reason TEXT,
+              created_at TEXT NOT NULL,
+              updated_at TEXT NOT NULL
+            )
+            """
         )
 
 
@@ -144,6 +176,10 @@ def read_json(handler: SimpleHTTPRequestHandler) -> dict:
     return json.loads(raw.decode("utf-8"))
 
 
+def new_guest_token() -> str:
+    return secrets.token_urlsafe(32)
+
+
 def parse_date(value: str) -> date:
     return datetime.strptime(value, "%Y-%m-%d").date()
 
@@ -174,97 +210,70 @@ def is_open_day(day: date) -> bool:
 def slot_times(day: date) -> list[str]:
     if not is_open_day(day):
         return []
-    current = combine(day, OPEN_TIME)
-    end = combine(day, LAST_SEATING)
-    slots: list[str] = []
-    while current <= end:
-        slots.append(current.strftime("%H:%M"))
-        current += timedelta(minutes=SLOT_MINUTES)
-    return slots
+    return FIXED_SLOTS.copy()
 
 
 def bookable_slot_times(day: date) -> list[str]:
     return [slot for slot in slot_times(day) if is_future_slot(day, slot)]
 
 
-def overlaps(start_a: datetime, end_a: datetime, start_b: datetime, end_b: datetime) -> bool:
-    return start_a < end_b and start_b < end_a
+def now_iso() -> str:
+    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
 
-def table_size_for_party(guests: int) -> int | None:
-    if guests <= 2:
-        return 2
-    if guests <= 4:
-        return 4
-    return None
+def is_closed_day(day: date) -> sqlite3.Row | None:
+    with connect() as conn:
+        return conn.execute("SELECT * FROM closed_days WHERE booking_date = ?", (day.isoformat(),)).fetchone()
 
 
-def overlapping_reservations(day: date, slot: str, exclude_id: int | None = None) -> list[sqlite3.Row]:
-    requested_start = combine(day, slot)
-    requested_end = requested_start + timedelta(minutes=RESERVATION_MINUTES)
-    params: list[object] = [day.isoformat(), *ACTIVE_STATUSES]
+def slot_limit(day: date, slot: str) -> int:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT slot_limit FROM slot_settings WHERE booking_date = ? AND booking_time = ?",
+            (day.isoformat(), slot),
+        ).fetchone()
+    if row is None:
+        return DEFAULT_SLOT_LIMIT
+    return max(0, int(row["slot_limit"]))
+
+
+def active_reservation_count(day: date, slot: str, exclude_id: int | None = None) -> int:
+    params: list[object] = [day.isoformat(), slot, *ACTIVE_STATUSES]
     exclude_sql = ""
     if exclude_id is not None:
         exclude_sql = " AND id != ?"
         params.append(exclude_id)
-
     with connect() as conn:
-        rows = conn.execute(
-            f"""
-            SELECT id, booking_time, guests
-            FROM reservations
-            WHERE booking_date = ?
-              AND status IN ({",".join("?" for _ in ACTIVE_STATUSES)})
-              {exclude_sql}
-            """,
-            params,
-        ).fetchall()
-
-    overlapping = []
-    for row in rows:
-        existing_start = combine(day, row["booking_time"])
-        existing_end = existing_start + timedelta(minutes=RESERVATION_MINUTES)
-        if overlaps(requested_start, requested_end, existing_start, existing_end):
-            overlapping.append(row)
-    return overlapping
-
-
-def available_tables(day: date, slot: str, exclude_id: int | None = None) -> list[int]:
-    free_tables = sorted(TABLES)
-    occupied = overlapping_reservations(day, slot, exclude_id)
-    for row in sorted(occupied, key=lambda item: int(item["guests"]), reverse=True):
-        needed = table_size_for_party(int(row["guests"]))
-        if needed is None:
-            continue
-        for index, table_size in enumerate(free_tables):
-            if table_size >= needed:
-                free_tables.pop(index)
-                break
-    return sorted(free_tables, reverse=True)
+        return int(
+            conn.execute(
+                f"""
+                SELECT COUNT(*) AS count
+                FROM reservations
+                WHERE booking_date = ?
+                  AND booking_time = ?
+                  AND status IN ({",".join("?" for _ in ACTIVE_STATUSES)})
+                  {exclude_sql}
+                """,
+                params,
+            ).fetchone()["count"]
+        )
 
 
 def availability_for_party(day: date, slot: str, guests: int) -> dict:
-    free_tables = available_tables(day, slot)
-    needed = table_size_for_party(guests)
-    if needed is None:
-        return {
-            "available": True,
-            "remaining": sum(free_tables),
-            "freeTables": free_tables,
-            "matchingTables": [],
-            "requiresConfirmation": True,
-        }
-    matching_tables = [table_size for table_size in free_tables if table_size >= needed]
+    limit = slot_limit(day, slot)
+    booked = active_reservation_count(day, slot)
     return {
-        "available": bool(matching_tables),
-        "remaining": sum(free_tables),
-        "freeTables": free_tables,
-        "matchingTables": matching_tables,
-        "requiresConfirmation": False,
+        "available": booked < limit,
+        "limit": limit,
+        "booked": booked,
+        "remaining": max(0, limit - booked),
+        "requiresConfirmation": guests > AUTO_CONFIRM_MAX_GUESTS,
     }
 
 
-def validate_reservation(payload: dict) -> tuple[dict, list[str]]:
+def validate_reservation(
+    payload: dict, *, require_email: bool = True, allow_past: bool = False, exclude_id: int | None = None
+) -> tuple[dict, list[str]]:
     errors: list[str] = []
     cleaned: dict = {}
 
@@ -299,26 +308,32 @@ def validate_reservation(payload: dict) -> tuple[dict, list[str]]:
         errors.append("Bitte einen Namen angeben.")
     if len(phone) < 5:
         errors.append("Bitte eine Telefonnummer angeben.")
-    if not email or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
+    if require_email and not email:
+        errors.append("Bitte eine E-Mail-Adresse angeben.")
+    if email and not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
         errors.append("Bitte eine gültige E-Mail-Adresse angeben.")
 
     cleaned.update({"name": name, "phone": phone, "email": email, "note": note})
 
     if booking_day and booking_time:
         today = restaurant_now().date()
-        if booking_day < today:
+        if booking_day < today and not allow_past:
             errors.append("Reservierungen in der Vergangenheit sind nicht möglich.")
-        if booking_day == today and not is_future_slot(booking_day, booking_time):
+        if booking_day == today and not allow_past and not is_future_slot(booking_day, booking_time):
             errors.append("Diese Uhrzeit liegt bereits in der Vergangenheit.")
         if not is_open_day(booking_day):
             errors.append("Montag und Dienstag sind Ruhetage.")
-        if booking_time.strftime("%H:%M") not in bookable_slot_times(booking_day):
+        valid_slots = slot_times(booking_day) if allow_past else bookable_slot_times(booking_day)
+        if booking_time.strftime("%H:%M") not in valid_slots:
             errors.append("Bitte eine verfügbare Uhrzeit auswählen.")
+        if is_closed_day(booking_day):
+            errors.append("Dieser Tag ist fuer Reservierungen geschlossen.")
 
-    if booking_day and booking_time and "guests" in cleaned and cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS:
-        availability = availability_for_party(booking_day, cleaned["booking_time"], cleaned["guests"])
-        if not availability["available"]:
-            errors.append("Für diese Uhrzeit ist kein passender Tisch frei.")
+    if booking_day and booking_time and "guests" in cleaned:
+        limit = slot_limit(booking_day, cleaned["booking_time"])
+        booked = active_reservation_count(booking_day, cleaned["booking_time"], exclude_id)
+        if booked >= limit:
+            errors.append("Fuer diese Uhrzeit sind bereits alle Reservierungsplaetze belegt.")
 
     return cleaned, errors
 
@@ -334,14 +349,32 @@ def row_to_dict(row: sqlite3.Row) -> dict:
         "email": row["email"] or "",
         "note": row["note"] or "",
         "status": row["status"],
+        "source": row["source"] if "source" in row.keys() else "public",
+        "guestToken": row["guest_token"] if "guest_token" in row.keys() else "",
+        "manageUrl": guest_manage_url(row),
         "createdAt": row["created_at"],
         "updatedAt": row["updated_at"],
     }
 
 
+def guest_manage_url(row: sqlite3.Row) -> str:
+    token = row["guest_token"] if "guest_token" in row.keys() else ""
+    return f"{SITE_URL}/reservierung.html?token={token}"
+
+
 def notification_subject(row: sqlite3.Row) -> str:
     status = "Anfrage" if row["status"] == "pending" else "Reservierung"
     return f"Kiku Bistro {status} am {row['booking_date']} um {row['booking_time']}"
+
+
+def status_label(status: str) -> str:
+    return {
+        "pending": "Anfrage eingegangen",
+        "confirmed": "Bestaetigt",
+        "seated": "Gast da",
+        "cancelled": "Storniert",
+        "no_show": "Nicht gekommen",
+    }.get(status, status)
 
 
 def guest_message(row: sqlite3.Row) -> str:
@@ -361,8 +394,58 @@ def guest_message(row: sqlite3.Row) -> str:
         f"Uhrzeit: {row['booking_time']} Uhr\n"
         f"Personen: {row['guests']}\n"
         f"Name: {row['name']}\n\n"
+        f"Reservierung ansehen, aendern oder stornieren:\n{guest_manage_url(row)}\n\n"
         "Kiku Bistro\nSteinbrücke 2\n06484 Quedlinburg\n"
     )
+
+
+def guest_message_html(row: sqlite3.Row) -> str:
+    intro = {
+        "pending": "Vielen Dank fuer Ihre Anfrage. Wir bestaetigen Gruppen ab 5 Personen persoenlich.",
+        "cancelled": "Ihre Reservierung wurde storniert.",
+    }.get(row["status"], "Vielen Dank. Ihre Reservierung ist bestaetigt.")
+    manage_url = guest_manage_url(row)
+    safe_date = escape(str(row["booking_date"] or ""))
+    safe_time = escape(str(row["booking_time"] or ""))
+    safe_guests = escape(str(row["guests"] or ""))
+    safe_name = escape(str(row["name"] or ""))
+    return f"""<!doctype html>
+<html>
+  <body style="margin:0;background:#eef3e6;font-family:Arial,sans-serif;color:#22352b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eef3e6;padding:24px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#fffdf8;border:1px solid #d7dfd0;border-radius:10px;overflow:hidden;">
+            <tr>
+              <td style="padding:28px 28px 16px;">
+                <div style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#486356;">Kiku Bistro</div>
+                <h1 style="margin:8px 0 10px;font-family:Georgia,serif;font-size:32px;line-height:1;color:#244235;">Ihre Reservierung</h1>
+                <p style="margin:0;color:#5a6c61;font-size:16px;line-height:1.5;">{escape(intro)}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 18px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-top:1px solid #d7dfd0;border-bottom:1px solid #d7dfd0;">
+                  <tr><td style="padding:12px 0;color:#5a6c61;">Status</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{escape(status_label(row["status"]))}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">Datum</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_date}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">Uhrzeit</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_time} Uhr</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">Personen</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_guests}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">Name</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_name}</td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 28px;">
+                <a href="{escape(manage_url)}" style="display:inline-block;background:#244235;color:#fffdf8;text-decoration:none;border-radius:8px;padding:13px 18px;font-weight:bold;">Reservierung ansehen / aendern</a>
+                <p style="margin:18px 0 0;color:#5a6c61;font-size:14px;line-height:1.5;">Kiku Bistro<br>Steinbruecke 2<br>06484 Quedlinburg</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>"""
 
 
 def restaurant_message(row: sqlite3.Row) -> str:
@@ -387,7 +470,9 @@ def status_subject(row: sqlite3.Row) -> str:
     return notification_subject(row)
 
 
-def send_email(to_address: str, subject: str, body: str) -> bool:
+def send_email(to_address: str, subject: str, body: str, html_body: str | None = None) -> bool:
+    if not to_address:
+        return False
     host = os.environ.get("KIKU_SMTP_HOST")
     if not host:
         print(f"Email skipped, KIKU_SMTP_HOST is not set. To: {to_address}, subject: {subject}")
@@ -404,6 +489,8 @@ def send_email(to_address: str, subject: str, body: str) -> bool:
     message["To"] = to_address
     message["Subject"] = subject
     message.set_content(body)
+    if html_body:
+        message.add_alternative(html_body, subtype="html")
 
     smtp_class = smtplib.SMTP_SSL if security in {"ssl", "tls", "ssl/tls"} else smtplib.SMTP
     with smtp_class(host, port, timeout=12) as smtp:
@@ -418,7 +505,7 @@ def send_email(to_address: str, subject: str, body: str) -> bool:
 def send_reservation_notifications(row: sqlite3.Row) -> dict:
     results = {"guest": False, "restaurant": False}
     try:
-        results["guest"] = send_email(row["email"], notification_subject(row), guest_message(row))
+        results["guest"] = send_email(row["email"], notification_subject(row), guest_message(row), guest_message_html(row))
     except Exception as exc:
         print(f"Guest email failed: {exc}")
     try:
@@ -429,13 +516,23 @@ def send_reservation_notifications(row: sqlite3.Row) -> dict:
 
 
 def send_status_notification(row: sqlite3.Row) -> bool:
-    if row["status"] not in {"confirmed", "cancelled"}:
-        return False
     try:
-        return send_email(row["email"], status_subject(row), guest_message(row))
+        return send_email(row["email"], status_subject(row), guest_message(row), guest_message_html(row))
     except Exception as exc:
         print(f"Status email failed: {exc}")
         return False
+
+
+def reservation_by_id(reservation_id: int) -> sqlite3.Row | None:
+    with connect() as conn:
+        return conn.execute("SELECT * FROM reservations WHERE id = ?", (reservation_id,)).fetchone()
+
+
+def reservation_by_token(token: str) -> sqlite3.Row | None:
+    if not token:
+        return None
+    with connect() as conn:
+        return conn.execute("SELECT * FROM reservations WHERE guest_token = ?", (token,)).fetchone()
 
 
 class KikuHandler(SimpleHTTPRequestHandler):
@@ -452,6 +549,14 @@ class KikuHandler(SimpleHTTPRequestHandler):
             return
         if parsed.path == "/api/availability":
             self.handle_availability(parsed.query)
+            return
+        if parsed.path == "/api/guest/reservation":
+            self.handle_guest_reservation(parsed.query)
+            return
+        if parsed.path == "/api/admin/settings":
+            if not require_admin(self):
+                return
+            self.handle_admin_settings(parsed.query)
             return
         if parsed.path == "/api/reservations":
             if not require_admin(self):
@@ -476,6 +581,17 @@ class KikuHandler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/reservations":
             self.handle_create_reservation()
             return
+        if parsed.path == "/api/admin/reservations":
+            if not require_admin(self):
+                return
+            self.handle_admin_create_reservation()
+            return
+        match = re.match(r"^/api/reservations/(\d+)/email$", parsed.path)
+        if match:
+            if not require_admin(self):
+                return
+            self.handle_resend_email(int(match.group(1)))
+            return
         json_response(self, HTTPStatus.NOT_FOUND, {"error": "Not found"})
 
     def do_PATCH(self) -> None:
@@ -485,6 +601,14 @@ class KikuHandler(SimpleHTTPRequestHandler):
             if not require_admin(self):
                 return
             self.handle_update_reservation(int(match.group(1)))
+            return
+        if parsed.path == "/api/admin/settings":
+            if not require_admin(self):
+                return
+            self.handle_update_admin_settings()
+            return
+        if parsed.path == "/api/guest/reservation":
+            self.handle_guest_update_reservation(parsed.query)
             return
         json_response(self, HTTPStatus.NOT_FOUND, {"error": "Not found"})
 
@@ -500,6 +624,96 @@ class KikuHandler(SimpleHTTPRequestHandler):
             return
         json_response(self, HTTPStatus.UNAUTHORIZED, {"authenticated": False, "errors": ["Wrong password"]})
 
+    def date_range_from_query(self, query: str) -> tuple[date, int] | None:
+        params = parse_qs(query)
+        raw_start = (params.get("start") or params.get("date") or [restaurant_now().date().isoformat()])[0]
+        try:
+            start = parse_date(raw_start)
+        except ValueError:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid date"]})
+            return None
+        try:
+            days = int((params.get("days") or ["1"])[0])
+        except ValueError:
+            days = 1
+        return start, min(max(days, 1), 14)
+
+    def handle_admin_settings(self, query: str) -> None:
+        parsed_range = self.date_range_from_query(query)
+        if parsed_range is None:
+            return
+        start, days = parsed_range
+        dates = [(start + timedelta(days=offset)).isoformat() for offset in range(days)]
+        placeholders = ",".join("?" for _ in dates)
+        with connect() as conn:
+            closed = conn.execute(
+                f"SELECT * FROM closed_days WHERE booking_date IN ({placeholders}) ORDER BY booking_date",
+                dates,
+            ).fetchall()
+            settings = conn.execute(
+                f"SELECT * FROM slot_settings WHERE booking_date IN ({placeholders}) ORDER BY booking_date, booking_time",
+                dates,
+            ).fetchall()
+        json_response(
+            self,
+            HTTPStatus.OK,
+            {
+                "defaultSlotLimit": DEFAULT_SLOT_LIMIT,
+                "slots": FIXED_SLOTS,
+                "closedDays": {row["booking_date"]: row["reason"] or "" for row in closed},
+                "slotSettings": {
+                    f"{row['booking_date']}|{row['booking_time']}": row["slot_limit"] for row in settings
+                },
+            },
+        )
+
+    def handle_update_admin_settings(self) -> None:
+        try:
+            payload = read_json(self)
+        except json.JSONDecodeError:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
+            return
+        action = str(payload.get("action", "")).strip()
+        timestamp = now_iso()
+        try:
+            day = parse_date(str(payload.get("date", "")).strip())
+        except ValueError:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid date"]})
+            return
+
+        with connect() as conn:
+            if action == "close_day":
+                reason = str(payload.get("reason", "")).strip()
+                conn.execute(
+                    """
+                    INSERT INTO closed_days (booking_date, reason, created_at, updated_at)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(booking_date) DO UPDATE SET reason = excluded.reason, updated_at = excluded.updated_at
+                    """,
+                    (day.isoformat(), reason, timestamp, timestamp),
+                )
+            elif action == "open_day":
+                conn.execute("DELETE FROM closed_days WHERE booking_date = ?", (day.isoformat(),))
+            elif action == "set_slot_limit":
+                slot = parse_time(str(payload.get("time", "")).strip()).strftime("%H:%M")
+                if slot not in slot_times(day):
+                    json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid slot"]})
+                    return
+                limit = max(0, int(payload.get("limit", DEFAULT_SLOT_LIMIT)))
+                conn.execute(
+                    """
+                    INSERT INTO slot_settings (booking_date, booking_time, slot_limit, updated_at)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(booking_date, booking_time)
+                    DO UPDATE SET slot_limit = excluded.slot_limit, updated_at = excluded.updated_at
+                    """,
+                    (day.isoformat(), slot, limit, timestamp),
+                )
+            else:
+                json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid action"]})
+                return
+        json_response(self, HTTPStatus.OK, {"ok": True})
+
     def handle_availability(self, query: str) -> None:
         params = parse_qs(query)
         raw_date = (params.get("date") or [""])[0]
@@ -514,42 +728,45 @@ class KikuHandler(SimpleHTTPRequestHandler):
         except ValueError:
             guests = 2
 
+        closed = is_closed_day(day)
         slots = []
-        for slot in bookable_slot_times(day):
-            availability = availability_for_party(day, slot, guests)
-            slots.append({"time": slot, "capacity": SEAT_CAPACITY, **availability})
+        if closed is None:
+            for slot in bookable_slot_times(day):
+                availability = availability_for_party(day, slot, guests)
+                slots.append({"time": slot, "capacity": availability["limit"], **availability})
 
         json_response(
             self,
             HTTPStatus.OK,
             {
                 "date": day.isoformat(),
-                "open": is_open_day(day),
+                "open": is_open_day(day) and closed is None,
+                "closed": closed is not None,
+                "closedReason": closed["reason"] if closed is not None else "",
                 "durationMinutes": RESERVATION_MINUTES,
                 "maxPartySize": MAX_PARTY_SIZE,
                 "autoConfirmMaxGuests": AUTO_CONFIRM_MAX_GUESTS,
+                "defaultSlotLimit": DEFAULT_SLOT_LIMIT,
                 "slots": slots,
             },
         )
 
     def handle_reservations(self, query: str) -> None:
-        params = parse_qs(query)
-        selected_date = (params.get("date") or [restaurant_now().date().isoformat()])[0]
-        try:
-            parse_date(selected_date)
-        except ValueError:
-            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid date"]})
+        parsed_range = self.date_range_from_query(query)
+        if parsed_range is None:
             return
+        start, days = parsed_range
+        end = start + timedelta(days=days - 1)
 
         with connect() as conn:
             rows = conn.execute(
                 """
                 SELECT *
                 FROM reservations
-                WHERE booking_date = ?
-                ORDER BY booking_time ASC, created_at ASC
+                WHERE booking_date BETWEEN ? AND ?
+                ORDER BY booking_date ASC, booking_time ASC, created_at ASC
                 """,
-                (selected_date,),
+                (start.isoformat(), end.isoformat()),
             ).fetchall()
         json_response(self, HTTPStatus.OK, {"reservations": [row_to_dict(row) for row in rows]})
 
@@ -591,14 +808,14 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
             return
 
-        now = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+        now = now_iso()
         status = "confirmed" if cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS else "pending"
         with connect() as conn:
             cursor = conn.execute(
                 """
                 INSERT INTO reservations
-                  (booking_date, booking_time, guests, name, phone, email, note, status, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  (booking_date, booking_time, guests, name, phone, email, note, status, guest_token, source, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     cleaned["booking_date"],
@@ -609,6 +826,8 @@ class KikuHandler(SimpleHTTPRequestHandler):
                     cleaned["email"],
                     cleaned["note"],
                     status,
+                    new_guest_token(),
+                    "public",
                     now,
                     now,
                 ),
@@ -616,6 +835,57 @@ class KikuHandler(SimpleHTTPRequestHandler):
             row = conn.execute("SELECT * FROM reservations WHERE id = ?", (cursor.lastrowid,)).fetchone()
 
         email_results = send_reservation_notifications(row)
+        json_response(self, HTTPStatus.CREATED, {"reservation": row_to_dict(row), "email": email_results})
+
+    def handle_admin_create_reservation(self) -> None:
+        try:
+            payload = read_json(self)
+        except json.JSONDecodeError:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
+            return
+
+        cleaned, errors = validate_reservation(payload, require_email=False, allow_past=True)
+        if errors:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
+            return
+
+        status = str(payload.get("status") or ("confirmed" if cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS else "pending"))
+        if status not in VALID_STATUSES:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid status"]})
+            return
+        timestamp = now_iso()
+        with connect() as conn:
+            cursor = conn.execute(
+                """
+                INSERT INTO reservations
+                  (booking_date, booking_time, guests, name, phone, email, note, status, guest_token, source, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    cleaned["booking_date"],
+                    cleaned["booking_time"],
+                    cleaned["guests"],
+                    cleaned["name"],
+                    cleaned["phone"],
+                    cleaned["email"],
+                    cleaned["note"],
+                    status,
+                    new_guest_token(),
+                    "admin",
+                    timestamp,
+                    timestamp,
+                ),
+            )
+            row = conn.execute("SELECT * FROM reservations WHERE id = ?", (cursor.lastrowid,)).fetchone()
+
+        email_results = {"guest": False, "restaurant": False}
+        if payload.get("notifyGuest"):
+            email_results["guest"] = send_status_notification(row)
+        if payload.get("notifyRestaurant", True):
+            try:
+                email_results["restaurant"] = send_email(RESTAURANT_EMAIL, notification_subject(row), restaurant_message(row))
+            except Exception as exc:
+                print(f"Restaurant email failed: {exc}")
         json_response(self, HTTPStatus.CREATED, {"reservation": row_to_dict(row), "email": email_results})
 
     def handle_update_reservation(self, reservation_id: int) -> None:
@@ -630,12 +900,22 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid status"]})
             return
 
-        now = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+        notify_guest = bool(payload.get("notifyGuest", True))
+        timestamp = now_iso()
         with connect() as conn:
             old_row = conn.execute("SELECT * FROM reservations WHERE id = ?", (reservation_id,)).fetchone()
+            if old_row is None:
+                json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservation not found"]})
+                return
+            if status in ACTIVE_STATUSES and old_row["status"] not in ACTIVE_STATUSES:
+                booked = active_reservation_count(parse_date(old_row["booking_date"]), old_row["booking_time"], reservation_id)
+                limit = slot_limit(parse_date(old_row["booking_date"]), old_row["booking_time"])
+                if booked >= limit:
+                    json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Dieser Slot ist bereits voll."]})
+                    return
             conn.execute(
                 "UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?",
-                (status, now, reservation_id),
+                (status, timestamp, reservation_id),
             )
             row = conn.execute("SELECT * FROM reservations WHERE id = ?", (reservation_id,)).fetchone()
 
@@ -644,9 +924,85 @@ class KikuHandler(SimpleHTTPRequestHandler):
             return
 
         email_sent = False
-        if old_row is not None and old_row["status"] != row["status"]:
+        if notify_guest and old_row is not None and old_row["status"] != row["status"]:
             email_sent = send_status_notification(row)
         json_response(self, HTTPStatus.OK, {"reservation": row_to_dict(row), "email": {"guest": email_sent}})
+
+    def handle_resend_email(self, reservation_id: int) -> None:
+        row = reservation_by_id(reservation_id)
+        if row is None:
+            json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservation not found"]})
+            return
+        sent = send_status_notification(row)
+        json_response(self, HTTPStatus.OK, {"email": {"guest": sent}})
+
+    def handle_guest_reservation(self, query: str) -> None:
+        token = (parse_qs(query).get("token") or [""])[0]
+        row = reservation_by_token(token)
+        if row is None:
+            json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservierung nicht gefunden"]})
+            return
+        data = row_to_dict(row)
+        data.pop("guestToken", None)
+        json_response(self, HTTPStatus.OK, {"reservation": data})
+
+    def handle_guest_update_reservation(self, query: str) -> None:
+        token = (parse_qs(query).get("token") or [""])[0]
+        row = reservation_by_token(token)
+        if row is None:
+            json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservierung nicht gefunden"]})
+            return
+        try:
+            payload = read_json(self)
+        except json.JSONDecodeError:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
+            return
+        action = str(payload.get("action", "")).strip()
+        timestamp = now_iso()
+        if action == "cancel":
+            with connect() as conn:
+                conn.execute("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", ("cancelled", timestamp, row["id"]))
+                updated = conn.execute("SELECT * FROM reservations WHERE id = ?", (row["id"],)).fetchone()
+            send_status_notification(updated)
+            json_response(self, HTTPStatus.OK, {"reservation": row_to_dict(updated)})
+            return
+        if action == "change":
+            merged = {
+                "date": payload.get("date", row["booking_date"]),
+                "time": payload.get("time", row["booking_time"]),
+                "guests": payload.get("guests", row["guests"]),
+                "name": row["name"],
+                "phone": row["phone"],
+                "email": row["email"],
+                "note": str(payload.get("note", row["note"] or "")).strip(),
+            }
+            cleaned, errors = validate_reservation(merged, require_email=True, exclude_id=row["id"])
+            if errors:
+                json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
+                return
+            new_status = "confirmed" if cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS else "pending"
+            with connect() as conn:
+                conn.execute(
+                    """
+                    UPDATE reservations
+                    SET booking_date = ?, booking_time = ?, guests = ?, note = ?, status = ?, updated_at = ?
+                    WHERE id = ?
+                    """,
+                    (
+                        cleaned["booking_date"],
+                        cleaned["booking_time"],
+                        cleaned["guests"],
+                        cleaned["note"],
+                        new_status,
+                        timestamp,
+                        row["id"],
+                    ),
+                )
+                updated = conn.execute("SELECT * FROM reservations WHERE id = ?", (row["id"],)).fetchone()
+            send_reservation_notifications(updated)
+            json_response(self, HTTPStatus.OK, {"reservation": row_to_dict(updated)})
+            return
+        json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid action"]})
 
 
 def main() -> None:

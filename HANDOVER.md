@@ -292,20 +292,24 @@ KIKU_DEPLOY_SSH_KEY
 Current reservation rules:
 
 ```text
-Tables: 4 tables for 2 guests, 1 table for 4 guests
+Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
 Reservation duration: 2 hours
-Booking windows: every 30 minutes
-Last seating: 18:00
+Default slot limit: 3 active reservations per time
+Active statuses for limits: pending, confirmed, seated
+Admin can adjust slot limits per date/time
+Admin can close full dates for vacation or events
+Admin can create manual reservations; email is optional there
+Guest emails include a personal link to view, change, or cancel the reservation
 Past dates and past same-day slots are blocked on frontend and backend
-Auto-confirmation: up to 4 guests when a matching table is available
+Auto-confirmation: up to 4 guests when the selected slot has capacity
 5+ guests: pending request, restaurant confirms manually
 Guest email is required
 Restaurant notification email: info@kiku-bistro.de
 ```
 
-## Reservation preview 2026-05-17
+## Reservation production notes 2026-05-17
 
-Local full reservation prototype added, not deployed to production.
+Reservation system is deployed to production and can also run locally.
 
 Files:
 
@@ -334,11 +338,10 @@ Current behavior:
 ```text
 Opening days: Wednesday-Sunday
 Opening time: 9:30-20:00
-Last seating: 18:00
-Slot size: 30 minutes
+Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
 Reservation duration: 2 hours
-Tables: 4 tables for 2 guests, 1 table for 4 guests
-Auto-confirmation: up to 4 guests when a matching table is available
+Default slot limit: 3 active reservations per time
+Auto-confirmation: up to 4 guests when the selected slot has capacity
 5+ guests: status pending, restaurant confirms manually
 Guest email is required.
 Restaurant notification email: info@kiku-bistro.de

@@ -99,6 +99,18 @@ Database: /var/lib/kiku-reservations/reservations.sqlite3
 Env file with secrets: /etc/kiku-reservations.env
 ```
 
+Current reservation rules:
+
+```text
+Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
+Default slot limit: 3 active reservations per time
+Active statuses for limits: pending, confirmed, seated
+Admin can adjust slot limits per date/time
+Admin can close full dates for vacation or events
+Admin can create manual reservations; email is optional there
+Guest emails include a personal link to view, change, or cancel the reservation
+```
+
 Production deploy is automated through GitHub Actions.
 
 ```text
@@ -139,10 +151,10 @@ python -m http.server 8080
 http://localhost:8080/
 ```
 
-### Local reservation preview
+### Local reservation server
 
-The local reservation system uses Python stdlib + SQLite and is not deployed to
-production yet.
+The reservation system uses Python stdlib + SQLite. Locally it can be started
+with the same backend used in production.
 
 Start it from the project root:
 
@@ -161,13 +173,16 @@ Local reservation data is stored in `data/reservations.sqlite3`, which is ignore
 by git. The admin page uses `KIKU_ADMIN_PASSWORD`, or `kiku-local` locally when
 no password is configured.
 
-Local reservation rules:
+Reservation rules:
 
 ```text
-Tables: 4x2 seats, 1x4 seats
+Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
 Reservation duration: 2 hours
-Booking windows: every 30 minutes
-Last seating: 18:00
+Default slot limit: 3 active reservations per time
+Active statuses for limits: pending, confirmed, seated
+Admin can adjust slot limits per date/time
+Admin can close full dates for vacation or events
+Admin can create manual reservations; email is optional there
 Auto-confirmation: up to 4 guests
 5+ guests: pending request, restaurant confirms manually
 Guest email: required
