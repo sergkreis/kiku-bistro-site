@@ -1043,54 +1043,136 @@ button {
   color: var(--text-muted);
 }
 
-.guest-shell {
-  max-width: 760px;
-  padding: 34px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 253, 248, 0.76);
-  box-shadow: var(--shadow-sm);
+.guest-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #edf4e4 0%, #e3edd9 100%);
 }
 
-.guest-shell h1 {
-  font-size: clamp(2.3rem, 5vw, 4rem);
-  line-height: 1;
-  margin: 8px 0 18px;
+.guest-main {
+  padding: clamp(42px, 7vw, 92px) 0 96px;
+}
+
+.guest-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+  gap: 28px;
+  align-items: end;
+  margin-bottom: 22px;
+}
+
+.guest-hero h1 {
+  margin: 8px 0 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.7rem, 6vw, 5rem);
+  line-height: 0.9;
+  color: var(--green);
+}
+
+.guest-hero p {
+  color: var(--text-muted);
+  max-width: 34rem;
+}
+
+.guest-shell {
+  max-width: 860px;
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 248, 0.78);
+  box-shadow: var(--shadow-sm);
 }
 
 .guest-card {
   display: grid;
-  gap: 18px;
+  gap: 22px;
 }
 
-.guest-details {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  border-top: 1px solid var(--line);
+.guest-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
 }
 
-.guest-details div {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(36, 66, 53, 0.08);
+.guest-summary h2 {
+  margin: 10px 0 6px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1;
+  color: var(--green);
 }
 
-.guest-details div:last-child {
-  border-bottom: 0;
-}
-
-.guest-details dt {
+.guest-summary p {
   color: var(--text-muted);
 }
 
-.guest-details dd {
-  margin: 0;
+.guest-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  background: rgba(36, 66, 53, 0.1);
   color: var(--green);
+  font-size: 0.78rem;
   font-weight: 700;
+  text-transform: uppercase;
+}
+
+.guest-status.cancelled,
+.guest-status.no_show {
+  background: rgba(143, 47, 36, 0.1);
+  color: #8f2f24;
+}
+
+.guest-form {
+  display: grid;
+  gap: 16px;
+}
+
+.guest-form label,
+.guest-label {
+  display: grid;
+  gap: 7px;
+  color: var(--green);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.guest-form input,
+.guest-form textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  font: inherit;
+  text-transform: none;
+}
+
+.guest-form textarea {
+  resize: vertical;
+}
+
+.guest-time-block {
+  display: grid;
+  gap: 10px;
+}
+
+.guest-time-tile {
+  text-align: center;
+}
+
+.guest-time-tile:disabled,
+.guest-form input:disabled,
+.guest-form textarea:disabled,
+.guest-form button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
 }
 
 .guest-actions {
@@ -1368,7 +1450,8 @@ button {
   }
 
   .admin-grid,
-  .reservation-row {
+  .reservation-row,
+  .guest-hero {
     grid-template-columns: 1fr;
   }
 

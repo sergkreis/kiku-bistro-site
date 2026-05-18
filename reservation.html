@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kiku Bistro | Reservierung</title>
+    <title>Kiku Bistro | Reservierung verwalten</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="assets/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="styles.css?v=20260518-1" />
+    <link rel="stylesheet" href="styles.css?v=20260518-2" />
   </head>
-  <body class="legal-page guest-page">
+  <body class="guest-page">
     <header class="site-header">
       <div class="container header-inner">
         <a class="header-address" href="index.html">
@@ -25,10 +25,16 @@
       </div>
     </header>
 
-    <main class="legal-main">
+    <main class="guest-main">
+      <section class="container guest-hero">
+        <div>
+          <p class="eyebrow">Reservierung</p>
+          <h1>Reservierung verwalten</h1>
+        </div>
+        <p>Hier koennen Sie Ihre Reservierung ansehen, die Uhrzeit anpassen oder stornieren.</p>
+      </section>
+
       <section class="container guest-shell">
-        <p class="eyebrow">Reservierung</p>
-        <h1>Ihre Reservierung</h1>
         <div id="guest-content">
           <p class="admin-muted">Reservierung wird geladen...</p>
         </div>
@@ -39,6 +45,13 @@
       const content = document.getElementById("guest-content");
       const token = new URLSearchParams(location.search).get("token") || "";
       const slots = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"];
+      const statusLabels = {
+        pending: "Anfrage",
+        confirmed: "Bestaetigt",
+        seated: "Gast da",
+        cancelled: "Storniert",
+        no_show: "Nicht gekommen",
+      };
       const toLocalDate = (date) => {
         const offset = date.getTimezoneOffset();
         return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
@@ -52,23 +65,40 @@
         return data;
       };
 
+      const renderTimeTiles = (selectedTime, disabled) =>
+        slots
+          .map(
+            (slot) => `
+              <button class="time-tile guest-time-tile ${slot === selectedTime ? "selected" : ""}" type="button" data-time="${slot}" ${disabled ? "disabled" : ""} aria-pressed="${slot === selectedTime}">
+                <span class="time-tile-hour">${slot}</span>
+              </button>
+            `
+          )
+          .join("");
+
       const render = (reservation, message = "") => {
         const disabled = ["cancelled", "no_show"].includes(reservation.status);
+        const status = statusLabels[reservation.status] || reservation.status;
         content.innerHTML = `
           <div class="guest-card">
-            <dl class="guest-details">
-              <div><dt>Status</dt><dd>${escapeHtml(reservation.status)}</dd></div>
-              <div><dt>Datum</dt><dd>${escapeHtml(reservation.date)}</dd></div>
-              <div><dt>Uhrzeit</dt><dd>${escapeHtml(reservation.time)} Uhr</dd></div>
-              <div><dt>Personen</dt><dd>${escapeHtml(reservation.guests)}</dd></div>
-              <div><dt>Name</dt><dd>${escapeHtml(reservation.name)}</dd></div>
-            </dl>
+            <div class="guest-summary">
+              <div>
+                <span class="guest-status ${reservation.status}">${escapeHtml(status)}</span>
+                <h2>${escapeHtml(reservation.date)} um ${escapeHtml(reservation.time)} Uhr</h2>
+                <p>${escapeHtml(reservation.guests)} Personen · ${escapeHtml(reservation.name)}</p>
+              </div>
+            </div>
+
             <form id="guest-change-form" class="guest-form">
+              <input type="hidden" name="time" value="${escapeHtml(reservation.time)}" />
               <div class="form-row form-row-two">
                 <label><span>Datum</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDate(new Date())}" ${disabled ? "disabled" : ""} required /></label>
-                <label><span>Uhrzeit</span><select name="time" ${disabled ? "disabled" : ""}>${slots.map((slot) => `<option value="${slot}" ${slot === reservation.time ? "selected" : ""}>${slot}</option>`).join("")}</select></label>
+                <label><span>Personen</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
               </div>
-              <label><span>Personen</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
+              <div class="guest-time-block">
+                <span class="guest-label">Uhrzeit</span>
+                <div class="time-grid">${renderTimeTiles(reservation.time, disabled)}</div>
+              </div>
               <label><span>Notiz</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
               <div class="guest-actions">
                 <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Aenderung speichern</button>
@@ -78,6 +108,17 @@
             </form>
           </div>
         `;
+        document.querySelectorAll(".guest-time-tile").forEach((button) => {
+          button.addEventListener("click", () => {
+            document.querySelectorAll(".guest-time-tile").forEach((tile) => {
+              tile.classList.remove("selected");
+              tile.setAttribute("aria-pressed", "false");
+            });
+            button.classList.add("selected");
+            button.setAttribute("aria-pressed", "true");
+            document.querySelector('#guest-change-form [name="time"]').value = button.dataset.time;
+          });
+        });
         document.getElementById("guest-change-form").addEventListener("submit", updateReservation);
         document.getElementById("guest-cancel").addEventListener("click", cancelReservation);
       };
