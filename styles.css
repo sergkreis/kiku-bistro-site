@@ -880,7 +880,7 @@ button {
 }
 
 .admin-main {
-  padding: 52px 0 90px;
+  padding: 42px 0 90px;
 }
 
 .admin-main h1 {
@@ -898,15 +898,105 @@ button {
   flex-wrap: wrap;
   gap: 10px;
   align-items: end;
+  padding-bottom: 6px;
 }
 
 .admin-actions label {
-  width: min(260px, 100%);
+  width: min(220px, 100%);
 }
 
-.admin-grid {
+.admin-overview {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 248, 0.58);
+}
+
+.admin-overview-head,
+.admin-day-head,
+.reservation-row-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.admin-overview h2 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--green);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.admin-day-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.admin-day-state[data-state="closed"] {
+  color: #8f2f24;
+  border-color: rgba(143, 47, 36, 0.28);
+  background: rgba(143, 47, 36, 0.08);
+}
+
+.admin-slot-summary {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-slot-card {
+  display: grid;
+  gap: 4px;
+  min-height: 74px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--green);
+  text-align: left;
+  transition: transform var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.admin-slot-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--green);
+}
+
+.admin-slot-card strong {
+  font-size: 1.22rem;
+  line-height: 1;
+}
+
+.admin-slot-card small {
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-slot-card[data-state="full"],
+.admin-slot-card[data-state="closed"] {
+  border-color: rgba(143, 47, 36, 0.28);
+  background: rgba(143, 47, 36, 0.08);
+}
+
+.admin-slot-card[data-state="busy"] {
+  border-color: rgba(36, 66, 53, 0.28);
+  background: rgba(224, 232, 211, 0.44);
+}
+
+.admin-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
   gap: 16px;
   align-items: start;
 }
@@ -918,6 +1008,40 @@ button {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 253, 248, 0.54);
+}
+
+.admin-details {
+  scroll-margin-top: 96px;
+}
+
+.admin-details summary {
+  display: grid;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--green);
+  list-style: none;
+}
+
+.admin-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-details summary span {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.admin-details summary small {
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.admin-details[open] summary {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .admin-subpanel h2,
@@ -935,6 +1059,18 @@ button {
   gap: 12px;
 }
 
+.admin-close-row {
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.admin-close-row .btn {
+  min-height: 46px;
+  padding-inline: 16px;
+  white-space: nowrap;
+}
+
 .admin-checkbox {
   display: grid;
   grid-template-columns: 18px minmax(0, 1fr);
@@ -950,27 +1086,74 @@ button {
 
 .admin-slot-settings {
   display: grid;
-  gap: 8px;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 248, 0.48);
+}
+
+.slot-limit-header,
+.slot-limit-row {
+  display: grid;
+  grid-template-columns: 72px 96px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.slot-limit-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .slot-limit-row {
-  grid-template-columns: 70px minmax(0, 1fr);
-  align-items: center;
+  min-height: 48px;
+  padding: 7px 12px;
+  color: var(--green);
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.slot-limit-row + .slot-limit-row {
+  border-top: 1px solid var(--line);
+}
+
+.slot-limit-row input {
+  width: 86px;
+  min-height: 36px;
+  padding: 6px 10px;
+  justify-self: start;
+  font-weight: 700;
+}
+
+.slot-limit-row small {
+  color: var(--text-muted);
+  text-transform: none;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.admin-reservation-list {
+  display: grid;
+  gap: 16px;
 }
 
 .admin-day {
   display: grid;
-  gap: 12px;
-  padding: 18px 0 4px;
-  border-top: 1px solid var(--line);
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 248, 0.42);
 }
 
-.admin-day-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: baseline;
-  justify-content: space-between;
+.admin-day-head small {
+  color: var(--text-muted);
 }
 
 .admin-closed {
@@ -978,23 +1161,70 @@ button {
   font-weight: 700;
 }
 
+.admin-empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.admin-slot-group {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-slot-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0 4px;
+  border-top: 1px solid var(--line);
+  color: var(--green);
+}
+
+.admin-slot-head span {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .reservation-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, auto);
   gap: 14px;
-  padding: 12px;
+  padding: 14px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 253, 248, 0.68);
 }
 
-.reservation-row strong,
-.reservation-row span,
-.reservation-row small {
-  display: block;
+.reservation-row-main {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
 }
 
-.reservation-row small {
+.reservation-row-title strong {
+  color: var(--green);
+  font-size: 1.04rem;
+}
+
+.reservation-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.reservation-meta a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.reservation-meta a:hover {
+  color: var(--green);
+}
+
+.reservation-note {
   color: var(--text-muted);
 }
 
@@ -1006,9 +1236,114 @@ button {
   justify-content: flex-end;
 }
 
+.admin-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.admin-status-action {
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--green);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.admin-status-action:hover {
+  border-color: var(--green);
+  background: rgba(224, 232, 211, 0.44);
+}
+
+.admin-status-action.status-cancelled,
+.admin-status-action.status-no_show {
+  color: #8f2f24;
+  border-color: rgba(143, 47, 36, 0.28);
+}
+
+.admin-status-action.status-cancelled:hover,
+.admin-status-action.status-no_show:hover {
+  background: rgba(143, 47, 36, 0.08);
+}
+
 .reservation-row-actions .btn {
   min-height: 38px;
   padding: 0 12px;
+}
+
+.admin-status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--green);
+  background: rgba(224, 232, 211, 0.46);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-status-badge.status-pending {
+  color: #89651e;
+  background: rgba(205, 166, 79, 0.14);
+  border-color: rgba(137, 101, 30, 0.24);
+}
+
+.admin-status-badge.status-cancelled,
+.admin-status-badge.status-no_show {
+  color: #8f2f24;
+  background: rgba(143, 47, 36, 0.08);
+  border-color: rgba(143, 47, 36, 0.24);
+}
+
+.admin-confirm-dialog {
+  width: min(430px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+}
+
+.admin-confirm-dialog::backdrop {
+  background: rgba(20, 35, 28, 0.36);
+}
+
+.admin-confirm-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.admin-confirm-card h2 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--green);
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.admin-confirm-card p {
+  margin: 0;
+}
+
+.admin-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .admin-table-wrap {
@@ -1381,6 +1716,19 @@ button {
   .menu-photo-main-tall {
     min-height: 520px;
   }
+
+  .admin-slot-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .admin-workbench,
+  .reservation-row {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-row-actions {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1449,14 +1797,83 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .admin-grid,
+  .admin-workbench,
   .reservation-row,
   .guest-hero {
     grid-template-columns: 1fr;
   }
 
+  .admin-main {
+    padding-top: 28px;
+  }
+
+  .admin-top {
+    gap: 10px;
+  }
+
+  .admin-panel {
+    padding: 16px;
+  }
+
+  .admin-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-actions label {
+    width: 100%;
+  }
+
+  .admin-slot-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-slot-card {
+    min-height: 76px;
+  }
+
+  .admin-overview,
+  .admin-day,
+  .admin-subpanel {
+    padding: 14px;
+  }
+
+  .slot-limit-row {
+    grid-template-columns: 62px 90px minmax(0, 1fr);
+  }
+
+  .slot-limit-header {
+    grid-template-columns: 62px 90px minmax(0, 1fr);
+  }
+
+  .admin-close-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-close-row label {
+    grid-column: 1 / -1;
+  }
+
+  .admin-close-row .btn {
+    width: 100%;
+  }
+
   .reservation-row-actions {
     justify-content: flex-start;
+  }
+
+  .admin-status-actions,
+  .reservation-row-actions .btn,
+  .admin-status-action {
+    width: 100%;
+  }
+
+  .admin-status-actions {
+    justify-content: stretch;
+  }
+
+  .admin-confirm-actions .btn {
+    flex: 1 1 140px;
   }
 
   .item-dots {
