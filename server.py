@@ -25,7 +25,10 @@ DATA_DIR = Path(os.environ.get("KIKU_DATA_DIR", ROOT / "data"))
 DB_PATH = Path(os.environ.get("KIKU_DB_PATH", DATA_DIR / "reservations.sqlite3"))
 
 OPEN_DAYS = {2, 3, 4, 5, 6}
-FIXED_SLOTS = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"]
+PUBLIC_SLOTS = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"]
+ADMIN_SLOT_START = "09:30"
+ADMIN_SLOT_END = "18:00"
+ADMIN_SLOT_INTERVAL_MINUTES = 15
 RESERVATION_MINUTES = 120
 DEFAULT_SLOT_LIMIT = 3
 MAX_PARTY_SIZE = 12
@@ -207,14 +210,37 @@ def is_open_day(day: date) -> bool:
     return day.weekday() in OPEN_DAYS
 
 
-def slot_times(day: date) -> list[str]:
+def time_range_slots(start: str, end: str, step_minutes: int) -> list[str]:
+    current = datetime.combine(date.today(), parse_time(start))
+    last = datetime.combine(date.today(), parse_time(end))
+    slots = []
+    while current <= last:
+        slots.append(current.strftime("%H:%M"))
+        current += timedelta(minutes=step_minutes)
+    return slots
+
+
+def public_slot_times(day: date) -> list[str]:
     if not is_open_day(day):
         return []
-    return FIXED_SLOTS.copy()
+    return PUBLIC_SLOTS.copy()
 
 
-def bookable_slot_times(day: date) -> list[str]:
-    return [slot for slot in slot_times(day) if is_future_slot(day, slot)]
+def admin_slot_times(day: date) -> list[str]:
+    if not is_open_day(day):
+        return []
+    return time_range_slots(ADMIN_SLOT_START, ADMIN_SLOT_END, ADMIN_SLOT_INTERVAL_MINUTES)
+
+
+def bookable_public_slot_times(day: date) -> list[str]:
+    return [slot for slot in public_slot_times(day) if is_future_slot(day, slot)]
+
+
+def bookable_admin_slot_times(day: date, allow_past: bool = False) -> list[str]:
+    slots = admin_slot_times(day)
+    if allow_past:
+        return slots
+    return [slot for slot in slots if is_future_slot(day, slot)]
 
 
 def now_iso() -> str:
@@ -272,7 +298,12 @@ def availability_for_party(day: date, slot: str, guests: int) -> dict:
 
 
 def validate_reservation(
-    payload: dict, *, require_email: bool = True, allow_past: bool = False, exclude_id: int | None = None
+    payload: dict,
+    *,
+    require_email: bool = True,
+    allow_past: bool = False,
+    exclude_id: int | None = None,
+    admin_booking: bool = False,
 ) -> tuple[dict, list[str]]:
     errors: list[str] = []
     cleaned: dict = {}
@@ -323,17 +354,20 @@ def validate_reservation(
             errors.append("Diese Uhrzeit liegt bereits in der Vergangenheit.")
         if not is_open_day(booking_day):
             errors.append("Montag und Dienstag sind Ruhetage.")
-        valid_slots = slot_times(booking_day) if allow_past else bookable_slot_times(booking_day)
+        if admin_booking:
+            valid_slots = bookable_admin_slot_times(booking_day, allow_past)
+        else:
+            valid_slots = public_slot_times(booking_day) if allow_past else bookable_public_slot_times(booking_day)
         if booking_time.strftime("%H:%M") not in valid_slots:
             errors.append("Bitte eine verfügbare Uhrzeit auswählen.")
         if is_closed_day(booking_day):
-            errors.append("Dieser Tag ist fuer Reservierungen geschlossen.")
+            errors.append("Dieser Tag ist für Reservierungen geschlossen.")
 
     if booking_day and booking_time and "guests" in cleaned:
         limit = slot_limit(booking_day, cleaned["booking_time"])
         booked = active_reservation_count(booking_day, cleaned["booking_time"], exclude_id)
         if booked >= limit:
-            errors.append("Fuer diese Uhrzeit sind bereits alle Reservierungsplaetze belegt.")
+            errors.append("Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.")
 
     return cleaned, errors
 
@@ -370,7 +404,7 @@ def notification_subject(row: sqlite3.Row) -> str:
 def status_label(status: str) -> str:
     return {
         "pending": "Anfrage eingegangen",
-        "confirmed": "Bestaetigt",
+        "confirmed": "Bestätigt",
         "seated": "Gast da",
         "cancelled": "Storniert",
         "no_show": "Nicht gekommen",
@@ -394,16 +428,16 @@ def guest_message(row: sqlite3.Row) -> str:
         f"Uhrzeit: {row['booking_time']} Uhr\n"
         f"Personen: {row['guests']}\n"
         f"Name: {row['name']}\n\n"
-        f"Reservierung ansehen, aendern oder stornieren:\n{guest_manage_url(row)}\n\n"
+        f"Reservierung ansehen, ändern oder stornieren:\n{guest_manage_url(row)}\n\n"
         "Kiku Bistro\nSteinbrücke 2\n06484 Quedlinburg\n"
     )
 
 
 def guest_message_html(row: sqlite3.Row) -> str:
     intro = {
-        "pending": "Vielen Dank fuer Ihre Anfrage. Wir bestaetigen Gruppen ab 5 Personen persoenlich.",
+        "pending": "Vielen Dank für Ihre Anfrage. Wir bestätigen Gruppen ab 5 Personen persönlich.",
         "cancelled": "Ihre Reservierung wurde storniert.",
-    }.get(row["status"], "Vielen Dank. Ihre Reservierung ist bestaetigt.")
+    }.get(row["status"], "Vielen Dank. Ihre Reservierung ist bestätigt.")
     manage_url = guest_manage_url(row)
     safe_date = escape(str(row["booking_date"] or ""))
     safe_time = escape(str(row["booking_time"] or ""))
@@ -436,8 +470,8 @@ def guest_message_html(row: sqlite3.Row) -> str:
             </tr>
             <tr>
               <td style="padding:0 28px 28px;">
-                <a href="{escape(manage_url)}" style="display:inline-block;background:#244235;color:#fffdf8;text-decoration:none;border-radius:8px;padding:13px 18px;font-weight:bold;">Reservierung ansehen / aendern</a>
-                <p style="margin:18px 0 0;color:#5a6c61;font-size:14px;line-height:1.5;">Kiku Bistro<br>Steinbruecke 2<br>06484 Quedlinburg</p>
+                <a href="{escape(manage_url)}" style="display:inline-block;background:#244235;color:#fffdf8;text-decoration:none;border-radius:8px;padding:13px 18px;font-weight:bold;">Reservierung ansehen / ändern</a>
+                <p style="margin:18px 0 0;color:#5a6c61;font-size:14px;line-height:1.5;">Kiku Bistro<br>Steinbrücke 2<br>06484 Quedlinburg</p>
               </td>
             </tr>
           </table>
@@ -659,7 +693,8 @@ class KikuHandler(SimpleHTTPRequestHandler):
             HTTPStatus.OK,
             {
                 "defaultSlotLimit": DEFAULT_SLOT_LIMIT,
-                "slots": FIXED_SLOTS,
+                "slots": admin_slot_times(start),
+                "publicSlots": PUBLIC_SLOTS,
                 "closedDays": {row["booking_date"]: row["reason"] or "" for row in closed},
                 "slotSettings": {
                     f"{row['booking_date']}|{row['booking_time']}": row["slot_limit"] for row in settings
@@ -696,7 +731,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
                 conn.execute("DELETE FROM closed_days WHERE booking_date = ?", (day.isoformat(),))
             elif action == "set_slot_limit":
                 slot = parse_time(str(payload.get("time", "")).strip()).strftime("%H:%M")
-                if slot not in slot_times(day):
+                if slot not in admin_slot_times(day):
                     json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid slot"]})
                     return
                 limit = max(0, int(payload.get("limit", DEFAULT_SLOT_LIMIT)))
@@ -731,7 +766,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
         closed = is_closed_day(day)
         slots = []
         if closed is None:
-            for slot in bookable_slot_times(day):
+            for slot in bookable_public_slot_times(day):
                 availability = availability_for_party(day, slot, guests)
                 slots.append({"time": slot, "capacity": availability["limit"], **availability})
 
@@ -844,7 +879,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
             return
 
-        cleaned, errors = validate_reservation(payload, require_email=False, allow_past=True)
+        cleaned, errors = validate_reservation(payload, require_email=False, allow_past=True, admin_booking=True)
         if errors:
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
             return

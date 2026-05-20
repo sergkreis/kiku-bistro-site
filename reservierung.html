@@ -31,7 +31,7 @@
           <p class="eyebrow">Reservierung</p>
           <h1>Reservierung verwalten</h1>
         </div>
-        <p>Hier koennen Sie Ihre Reservierung ansehen, die Uhrzeit anpassen oder stornieren.</p>
+        <p>Hier können Sie Ihre Reservierung ansehen, die Uhrzeit anpassen oder stornieren.</p>
       </section>
 
       <section class="container guest-shell">
@@ -44,10 +44,10 @@
     <script>
       const content = document.getElementById("guest-content");
       const token = new URLSearchParams(location.search).get("token") || "";
-      const slots = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"];
+      const slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
       const statusLabels = {
         pending: "Anfrage",
-        confirmed: "Bestaetigt",
+        confirmed: "Bestätigt",
         seated: "Gast da",
         cancelled: "Storniert",
         no_show: "Nicht gekommen",
@@ -101,7 +101,7 @@
               </div>
               <label><span>Notiz</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
               <div class="guest-actions">
-                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Aenderung speichern</button>
+                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Änderung speichern</button>
                 <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>Reservierung stornieren</button>
               </div>
               <p class="reservation-message" id="guest-message" data-type="${message ? "success" : ""}">${escapeHtml(message)}</p>

@@ -6,7 +6,7 @@
     <title>Kiku Bistro | Reservierungen</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="assets/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="styles.css?v=20260518-2" />
+    <link rel="stylesheet" href="styles.css?v=20260520-1" />
   </head>
   <body class="admin-page">
     <header class="site-header">
@@ -59,6 +59,13 @@
               <option value="7">Woche</option>
             </select>
           </label>
+          <div class="admin-filter-field">
+            <span>Filter</span>
+            <label class="admin-checkbox admin-filter-checkbox">
+              <input type="checkbox" id="admin-hide-cancelled" />
+              <span>Stornierte ausblenden</span>
+            </label>
+          </div>
           <button class="btn btn-dark" type="button" id="admin-new-reservation">Neue Reservierung</button>
           <button class="btn btn-outline" type="button" id="admin-logout">Logout</button>
         </div>
@@ -77,11 +84,29 @@
         <div class="admin-reservation-list" id="admin-week"></div>
 
         <div class="admin-workbench">
-          <details class="admin-subpanel admin-details" id="admin-create-details">
+          <details class="admin-subpanel admin-details" id="admin-control-details">
             <summary>
-              <span>Reservierung anlegen</span>
-              <small>Für Telefon, Walk-in oder Gäste ohne Online-Formular</small>
+              <span>Tag verwalten</span>
+              <small>Tag schließen oder Reservierungs-Limits je Uhrzeit ändern</small>
             </summary>
+            <div class="admin-close-row">
+              <label><span>Grund</span><input type="text" id="admin-close-reason" placeholder="Urlaub, Veranstaltung ..." /></label>
+              <button class="btn btn-dark" type="button" id="admin-close-day">Tag schließen</button>
+              <button class="btn btn-outline" type="button" id="admin-open-day">Tag öffnen</button>
+            </div>
+            <div class="admin-slot-settings" id="admin-slot-settings"></div>
+          </details>
+        </div>
+
+        <dialog class="admin-confirm-dialog admin-create-dialog" id="admin-create-dialog">
+          <div class="admin-confirm-card">
+            <div class="admin-dialog-head">
+              <div>
+                <p class="eyebrow">Neue Reservierung</p>
+                <h2>Reservierung anlegen</h2>
+              </div>
+              <button class="admin-dialog-close" type="button" id="admin-create-cancel" aria-label="Schließen">×</button>
+            </div>
             <form class="admin-create" id="admin-create-form">
               <div class="form-row form-row-two">
                 <label><span>Datum</span><input type="date" name="date" required /></label>
@@ -113,27 +138,18 @@
               <button class="btn btn-dark" type="submit">Reservierung speichern</button>
               <p class="reservation-message" id="admin-create-message" role="status"></p>
             </form>
-          </details>
-
-          <details class="admin-subpanel admin-details" id="admin-control-details">
-            <summary>
-              <span>Tag verwalten</span>
-              <small>Tag schließen oder Reservierungs-Limits je Uhrzeit ändern</small>
-            </summary>
-            <div class="admin-close-row">
-              <label><span>Grund</span><input type="text" id="admin-close-reason" placeholder="Urlaub, Veranstaltung ..." /></label>
-              <button class="btn btn-dark" type="button" id="admin-close-day">Tag schließen</button>
-              <button class="btn btn-outline" type="button" id="admin-open-day">Tag öffnen</button>
-            </div>
-            <div class="admin-slot-settings" id="admin-slot-settings"></div>
-          </details>
-        </div>
+          </div>
+        </dialog>
 
         <dialog class="admin-confirm-dialog" id="admin-status-dialog">
           <form method="dialog" class="admin-confirm-card">
             <p class="eyebrow">Status ändern</p>
             <h2 id="admin-status-dialog-title">Reservierung ändern?</h2>
             <p id="admin-status-dialog-copy" class="admin-muted"></p>
+            <label class="admin-checkbox admin-status-notify" id="admin-status-notify-label">
+              <input type="checkbox" id="admin-status-notify" />
+              <span>Gast per E-Mail informieren</span>
+            </label>
             <div class="admin-confirm-actions">
               <button class="btn btn-outline" type="button" id="admin-status-cancel">Abbrechen</button>
               <button class="btn btn-dark" type="button" id="admin-status-confirm">Bestätigen</button>
@@ -150,10 +166,12 @@
       const loginMessage = document.getElementById("admin-login-message");
       const dateInput = document.getElementById("admin-date");
       const viewInput = document.getElementById("admin-view");
+      const hideCancelledInput = document.getElementById("admin-hide-cancelled");
       const logoutButton = document.getElementById("admin-logout");
       const newReservationButton = document.getElementById("admin-new-reservation");
       const weekRoot = document.getElementById("admin-week");
-      const createDetails = document.getElementById("admin-create-details");
+      const createDialog = document.getElementById("admin-create-dialog");
+      const createCancelButton = document.getElementById("admin-create-cancel");
       const createForm = document.getElementById("admin-create-form");
       const createMessage = document.getElementById("admin-create-message");
       const slotSummaryRoot = document.getElementById("admin-slot-summary");
@@ -164,9 +182,12 @@
       const statusDialog = document.getElementById("admin-status-dialog");
       const statusDialogTitle = document.getElementById("admin-status-dialog-title");
       const statusDialogCopy = document.getElementById("admin-status-dialog-copy");
+      const statusNotifyLabel = document.getElementById("admin-status-notify-label");
+      const statusNotifyInput = document.getElementById("admin-status-notify");
       const statusCancelButton = document.getElementById("admin-status-cancel");
       const statusConfirmButton = document.getElementById("admin-status-confirm");
-      const slots = ["09:30", "10:00", "11:30", "12:00", "13:00", "15:00", "17:00", "18:00"];
+      let slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
+      let adminSlots = [];
       const activeStatuses = ["pending", "confirmed", "seated"];
       const statuses = [
         { value: "pending", label: "Anfrage" },
@@ -206,10 +227,16 @@
         reservations.filter((reservation) => reservation.date === date && reservation.time === slot && activeStatuses.includes(reservation.status)).length;
       const statusLabel = (value) => statuses.find((status) => status.value === value)?.label || value;
       const statusClass = (value) => `status-${String(value || "").replace(/[^a-z_]/g, "")}`;
+      const updateCreateTimeOptions = () => {
+        const options = adminSlots.length ? adminSlots : slots;
+        const current = createForm.elements.time.value;
+        createForm.elements.time.innerHTML = options.map((slot) => `<option value="${slot}">${slot}</option>`).join("");
+        if (options.includes(current)) createForm.elements.time.value = current;
+      };
 
       dateInput.value = toLocalDate(new Date());
       createForm.elements.date.value = dateInput.value;
-      createForm.elements.time.innerHTML = slots.map((slot) => `<option value="${slot}">${slot}</option>`).join("");
+      updateCreateTimeOptions();
 
       const api = async (url, options = {}) => {
         const response = await fetch(url, options);
@@ -287,10 +314,9 @@
 
         slotSummaryRoot.querySelectorAll(".admin-slot-card").forEach((button) => {
           button.addEventListener("click", () => {
-            createDetails.open = true;
+            createDialog.showModal();
             createForm.elements.date.value = button.dataset.date;
             createForm.elements.time.value = button.dataset.slot;
-            createDetails.scrollIntoView({ behavior: "smooth", block: "start" });
           });
         });
       };
@@ -333,15 +359,15 @@
 
       const renderReservation = (reservation) => {
         const emailActions = reservation.email
-          ? `<button class="btn btn-outline admin-email-repeat" type="button" data-id="${reservation.id}">E-Mail erneut</button>`
-          : `<span class="admin-muted">Keine E-Mail</span>`;
+          ? `<button class="admin-menu-item admin-email-repeat" type="button" data-id="${reservation.id}">E-Mail erneut senden</button>`
+          : `<span class="admin-menu-note">Keine E-Mail</span>`;
         const source = sourceLabels[reservation.source] || "Online";
         const statusActions = statuses
           .filter((status) => status.value !== reservation.status)
           .map(
             (status) => `
               <button
-                class="admin-status-action ${statusClass(status.value)}"
+                class="admin-menu-item admin-status-action ${statusClass(status.value)}"
                 type="button"
                 data-id="${reservation.id}"
                 data-status="${status.value}"
@@ -355,7 +381,7 @@
           )
           .join("");
         return `
-          <article class="reservation-row">
+          <article class="reservation-row ${statusClass(reservation.status)}">
             <div class="reservation-row-main">
               <div class="reservation-row-title">
                 <strong>${escapeHtml(reservation.guests)} Pers. · ${escapeHtml(reservation.name)}</strong>
@@ -369,10 +395,15 @@
               ${reservation.note ? `<small class="reservation-note">${escapeHtml(reservation.note)}</small>` : ""}
             </div>
             <div class="reservation-row-actions">
-              <div class="admin-status-actions" aria-label="Status ändern">
-                ${statusActions}
-              </div>
-              ${emailActions}
+              <details class="admin-row-menu">
+                <summary>Aktionen</summary>
+                <div class="admin-row-menu-panel">
+                  <span>Status ändern</span>
+                  ${statusActions}
+                  <span>E-Mail</span>
+                  ${emailActions}
+                </div>
+              </details>
             </div>
           </article>
         `;
@@ -381,19 +412,23 @@
       const renderReservations = (reservations, settings) => {
         const grouped = reservationsByDate(reservations);
         const days = Number(viewInput.value);
+        const hideCancelled = hideCancelledInput.checked;
         const html = Array.from({ length: days }, (_, offset) => {
           const date = addDays(dateInput.value, offset);
-          const dayReservations = (grouped[date] || []).sort((a, b) => `${a.time}-${a.name}`.localeCompare(`${b.time}-${b.name}`));
+          const dayReservations = (grouped[date] || [])
+            .filter((reservation) => !(hideCancelled && reservation.status === "cancelled"))
+            .sort((a, b) => `${a.time}-${a.name}`.localeCompare(`${b.time}-${b.name}`));
           const closed = settings.closedDays[date];
           const activeTotal = dayReservations.filter((reservation) => activeStatuses.includes(reservation.status)).length;
           const byTime = reservationsByTime(dayReservations);
-          const groups = slots
+          const groupSlots = Array.from(new Set([...slots, ...dayReservations.map((reservation) => reservation.time)])).sort();
+          const groups = groupSlots
             .filter((slot) => byTime[slot]?.length)
             .map((slot) => {
               const count = activeCount(dayReservations, date, slot);
               const limit = slotLimit(settings, date, slot);
               return `
-                <section class="admin-slot-group">
+                <section class="admin-slot-group ${count >= limit ? "slot-full" : count > 0 ? "slot-busy" : ""}">
                   <div class="admin-slot-head">
                     <strong>${slot}</strong>
                     <span>${count}/${limit} aktiv</span>
@@ -404,7 +439,7 @@
             })
             .join("");
           return `
-            <section class="admin-day">
+            <section class="admin-day ${groups ? "admin-day-filled" : "admin-day-empty"}">
               <div class="admin-day-head">
                 <div>
                   <h2>${formatDate(date)}</h2>
@@ -418,8 +453,18 @@
         }).join("");
         weekRoot.innerHTML = html;
 
+        weekRoot.querySelectorAll(".admin-row-menu summary").forEach((summary) => {
+          summary.addEventListener("click", () => {
+            const currentMenu = summary.closest(".admin-row-menu");
+            weekRoot.querySelectorAll(".admin-row-menu[open]").forEach((menu) => {
+              if (menu !== currentMenu) menu.open = false;
+            });
+          });
+        });
         weekRoot.querySelectorAll(".admin-status-action").forEach((button) => {
           button.addEventListener("click", () => {
+            const menu = button.closest(".admin-row-menu");
+            if (menu) menu.open = false;
             pendingStatusChange = {
               id: button.dataset.id,
               status: button.dataset.status,
@@ -428,15 +473,22 @@
               hasEmail: button.dataset.email === "1",
             };
             statusDialogTitle.textContent = `${pendingStatusChange.label} setzen?`;
+            const isCancellation = pendingStatusChange.status === "cancelled";
             statusDialogCopy.textContent = pendingStatusChange.hasEmail
-              ? `${pendingStatusChange.name}: Der Status wird geändert und der Gast bekommt automatisch eine E-Mail.`
+              ? isCancellation
+                ? `${pendingStatusChange.name}: Die Reservierung wird storniert. E-Mail nur senden, wenn die Checkbox aktiv ist.`
+                : `${pendingStatusChange.name}: Der Status wird geändert und der Gast bekommt automatisch eine E-Mail.`
               : `${pendingStatusChange.name}: Der Status wird geändert. Es ist keine E-Mail hinterlegt.`;
+            statusNotifyLabel.hidden = !isCancellation || !pendingStatusChange.hasEmail;
+            statusNotifyInput.checked = false;
             statusConfirmButton.textContent = pendingStatusChange.label;
             statusDialog.showModal();
           });
         });
         weekRoot.querySelectorAll(".admin-email-repeat").forEach((button) => {
           button.addEventListener("click", async () => {
+            const menu = button.closest(".admin-row-menu");
+            if (menu) menu.open = false;
             const originalText = button.textContent;
             button.disabled = true;
             button.textContent = "Senden...";
@@ -460,7 +512,7 @@
         if (isLoading && !options.force) return;
         isLoading = true;
         const days = Number(viewInput.value);
-        const createFocused = createDetails.open && createForm.contains(document.activeElement);
+        const createFocused = createDialog.open && createForm.contains(document.activeElement);
         if (!createFocused) createForm.elements.date.value = dateInput.value;
         if (!options.silent) {
           weekRoot.innerHTML = '<p class="admin-muted">Reservierungen werden geladen...</p>';
@@ -472,6 +524,9 @@
             api(`/api/admin/settings?start=${encodeURIComponent(dateInput.value)}&days=${days}`),
           ]);
           const reservations = data.reservations || [];
+          slots = settings.publicSlots || slots;
+          adminSlots = settings.slots || adminSlots;
+          updateCreateTimeOptions();
           renderOverview(reservations, settings);
           renderReservations(reservations, settings);
           renderSettings(settings, reservations);
@@ -510,8 +565,10 @@
           createForm.reset();
           createForm.elements.date.value = dateInput.value;
           createForm.elements.guests.value = "2";
+          updateCreateTimeOptions();
           setMessage(createMessage, "Reservierung gespeichert.", "success");
           await loadReservations();
+          window.setTimeout(() => createDialog.close(), 600);
         } catch (error) {
           setMessage(createMessage, error.message, "error");
         }
@@ -534,8 +591,11 @@
         await loadReservations();
       });
       newReservationButton.addEventListener("click", () => {
-        createDetails.open = true;
-        createDetails.scrollIntoView({ behavior: "smooth", block: "start" });
+        setMessage(createMessage, "", "");
+        createDialog.showModal();
+      });
+      createCancelButton.addEventListener("click", () => {
+        createDialog.close();
       });
       logoutButton.addEventListener("click", async () => {
         await fetch("/api/admin/logout", { method: "POST" });
@@ -543,6 +603,7 @@
       });
       dateInput.addEventListener("change", loadReservations);
       viewInput.addEventListener("change", loadReservations);
+      hideCancelledInput.addEventListener("change", loadReservations);
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden && !statusDialog.open && !reservationsPanel.classList.contains("admin-panel-hidden")) {
           loadReservations({ silent: true });
@@ -558,10 +619,11 @@
         if (!pendingStatusChange) return;
         statusConfirmButton.disabled = true;
         try {
+          const notifyGuest = pendingStatusChange.status === "cancelled" ? statusNotifyInput.checked : true;
           await api(`/api/reservations/${pendingStatusChange.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: pendingStatusChange.status, notifyGuest: true }),
+            body: JSON.stringify({ status: pendingStatusChange.status, notifyGuest }),
           });
           pendingStatusChange = null;
           statusDialog.close();

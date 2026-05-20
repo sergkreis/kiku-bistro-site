@@ -37,7 +37,7 @@
     if (slot.requiresConfirmation) {
       return "Anfrage";
     }
-    return `${slot.remaining} frei`;
+    return "Verfügbar";
   };
 
   const loadAvailability = async () => {
@@ -49,8 +49,8 @@
 
     if (!selectedDate) return;
     if (isPastDate(selectedDate)) {
-      timeGrid.innerHTML = '<p class="time-grid-empty">Nicht verfuegbar</p>';
-      setMessage("Reservierungen in der Vergangenheit sind nicht moeglich.", "error");
+      timeGrid.innerHTML = '<p class="time-grid-empty">Nicht verfügbar</p>';
+      setMessage("Reservierungen in der Vergangenheit sind nicht möglich.", "error");
       return;
     }
 
@@ -61,7 +61,7 @@
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error((data.errors || ["Verfuegbarkeit konnte nicht geladen werden."]).join(" "));
+        throw new Error((data.errors || ["Verfügbarkeit konnte nicht geladen werden."]).join(" "));
       }
 
       if (!data.open) {
@@ -73,7 +73,7 @@
       const availableSlots = data.slots.filter((slot) => slot.available && isFutureSlot(selectedDate, slot.time));
       if (!availableSlots.length) {
         timeGrid.innerHTML = '<p class="time-grid-empty">Keine passende Zeit frei</p>';
-        setMessage("Fuer diese Personenzahl ist an diesem Tag kein freier Slot verfuegbar.", "error");
+        setMessage("Für diese Personenzahl ist an diesem Tag kein freier Slot verfügbar.", "error");
         return;
       }
 
@@ -98,7 +98,7 @@
         timeGrid.append(button);
       });
     } catch (error) {
-      timeGrid.innerHTML = '<p class="time-grid-empty">Nicht verfuegbar</p>';
+      timeGrid.innerHTML = '<p class="time-grid-empty">Nicht verfügbar</p>';
       setMessage(error.message, "error");
     }
   };
@@ -110,7 +110,7 @@
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (isPastDate(dateInput.value)) {
-      setMessage("Reservierungen in der Vergangenheit sind nicht moeglich.", "error");
+      setMessage("Reservierungen in der Vergangenheit sind nicht möglich.", "error");
       return;
     }
     if (timeInput.value && !isFutureSlot(dateInput.value, timeInput.value)) {
@@ -120,7 +120,7 @@
       return;
     }
     if (!timeInput.value) {
-      setMessage("Bitte eine Uhrzeit waehlen.", "error");
+      setMessage("Bitte eine Uhrzeit wählen.", "error");
       timeGrid.focus();
       return;
     }
@@ -128,7 +128,7 @@
 
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true;
-    setMessage("Reservierung wird geprueft...", "");
+    setMessage("Reservierung wird geprüft...", "");
 
     const payload = {
       date: form.elements.date.value,
@@ -159,8 +159,8 @@
       const isPending = data.reservation.status === "pending";
       setMessage(
         isPending
-          ? `Anfrage eingegangen: ${data.reservation.date} um ${data.reservation.time} Uhr fuer ${data.reservation.guests} Personen. Wir bestaetigen persoenlich per E-Mail.`
-          : `Reservierung bestaetigt: ${data.reservation.date} um ${data.reservation.time} Uhr fuer ${data.reservation.guests} Personen. Eine E-Mail-Bestaetigung wird versendet.`,
+          ? `Anfrage eingegangen: ${data.reservation.date} um ${data.reservation.time} Uhr für ${data.reservation.guests} Personen. Wir bestätigen persönlich per E-Mail.`
+          : `Reservierung bestätigt: ${data.reservation.date} um ${data.reservation.time} Uhr für ${data.reservation.guests} Personen. Eine E-Mail-Bestätigung wird versendet.`,
         "success"
       );
 
