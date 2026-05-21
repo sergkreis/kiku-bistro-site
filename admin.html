@@ -127,7 +127,7 @@
               </div>
               <div class="form-row form-row-two">
                 <label><span>Name</span><input type="text" name="name" required /></label>
-                <label><span>Telefon</span><input type="tel" name="phone" required /></label>
+                <label><span>Telefon optional</span><input type="tel" name="phone" /></label>
               </div>
               <label><span>E-Mail optional</span><input type="email" name="email" /></label>
               <label><span>Notiz</span><textarea name="note" rows="3"></textarea></label>
@@ -153,6 +153,23 @@
             <div class="admin-confirm-actions">
               <button class="btn btn-outline" type="button" id="admin-status-cancel">Abbrechen</button>
               <button class="btn btn-dark" type="button" id="admin-status-confirm">Bestätigen</button>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog class="admin-confirm-dialog admin-note-dialog" id="admin-note-dialog">
+          <form method="dialog" class="admin-confirm-card">
+            <p class="eyebrow">Notiz</p>
+            <h2>Notiz bearbeiten</h2>
+            <p id="admin-note-dialog-copy" class="admin-muted"></p>
+            <label class="admin-note-field">
+              <span>Notiz</span>
+              <textarea id="admin-note-text" rows="5"></textarea>
+            </label>
+            <p class="reservation-message" id="admin-note-message" role="status"></p>
+            <div class="admin-confirm-actions">
+              <button class="btn btn-outline" type="button" id="admin-note-cancel">Abbrechen</button>
+              <button class="btn btn-dark" type="button" id="admin-note-confirm">Speichern</button>
             </div>
           </form>
         </dialog>
@@ -186,6 +203,12 @@
       const statusNotifyInput = document.getElementById("admin-status-notify");
       const statusCancelButton = document.getElementById("admin-status-cancel");
       const statusConfirmButton = document.getElementById("admin-status-confirm");
+      const noteDialog = document.getElementById("admin-note-dialog");
+      const noteDialogCopy = document.getElementById("admin-note-dialog-copy");
+      const noteText = document.getElementById("admin-note-text");
+      const noteMessage = document.getElementById("admin-note-message");
+      const noteCancelButton = document.getElementById("admin-note-cancel");
+      const noteConfirmButton = document.getElementById("admin-note-confirm");
       let slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
       let adminSlots = [];
       const activeStatuses = ["pending", "confirmed", "seated"];
@@ -204,6 +227,7 @@
       let refreshTimer = null;
       let isLoading = false;
       let pendingStatusChange = null;
+      let pendingNoteEdit = null;
 
       const toLocalDate = (date) => {
         const offset = date.getTimezoneOffset();
@@ -361,6 +385,17 @@
         const emailActions = reservation.email
           ? `<button class="admin-menu-item admin-email-repeat" type="button" data-id="${reservation.id}">E-Mail erneut senden</button>`
           : `<span class="admin-menu-note">Keine E-Mail</span>`;
+        const noteAction = `
+          <button
+            class="admin-menu-item admin-note-edit"
+            type="button"
+            data-id="${reservation.id}"
+            data-name="${escapeHtml(reservation.name)}"
+            data-note="${escapeHtml(reservation.note || "")}"
+          >
+            Notiz bearbeiten
+          </button>
+        `;
         const source = sourceLabels[reservation.source] || "Online";
         const statusActions = statuses
           .filter((status) => status.value !== reservation.status)
@@ -389,7 +424,11 @@
               </div>
               <div class="reservation-meta">
                 <span>${escapeHtml(source)}</span>
-                <a href="tel:${escapeHtml(reservation.phone)}">${escapeHtml(reservation.phone)}</a>
+                ${
+                  reservation.phone
+                    ? `<a href="tel:${escapeHtml(reservation.phone)}">${escapeHtml(reservation.phone)}</a>`
+                    : `<span>Kein Telefon</span>`
+                }
                 ${reservation.email ? `<a href="mailto:${escapeHtml(reservation.email)}">${escapeHtml(reservation.email)}</a>` : `<span>Keine E-Mail</span>`}
               </div>
               ${reservation.note ? `<small class="reservation-note">${escapeHtml(reservation.note)}</small>` : ""}
@@ -400,6 +439,8 @@
                 <div class="admin-row-menu-panel">
                   <span>Status ändern</span>
                   ${statusActions}
+                  <span>Notiz</span>
+                  ${noteAction}
                   <span>E-Mail</span>
                   ${emailActions}
                 </div>
@@ -504,6 +545,21 @@
                 button.textContent = originalText;
               }, 1800);
             }
+          });
+        });
+        weekRoot.querySelectorAll(".admin-note-edit").forEach((button) => {
+          button.addEventListener("click", () => {
+            const menu = button.closest(".admin-row-menu");
+            if (menu) menu.open = false;
+            pendingNoteEdit = {
+              id: button.dataset.id,
+              name: button.dataset.name,
+            };
+            noteDialogCopy.textContent = `${pendingNoteEdit.name}: interne Notiz bearbeiten.`;
+            noteText.value = button.dataset.note || "";
+            setMessage(noteMessage, "", "");
+            noteDialog.showModal();
+            window.setTimeout(() => noteText.focus(), 0);
           });
         });
       };
@@ -632,6 +688,32 @@
           alert(error.message);
         } finally {
           statusConfirmButton.disabled = false;
+        }
+      });
+
+      noteCancelButton.addEventListener("click", () => {
+        pendingNoteEdit = null;
+        noteDialog.close();
+      });
+
+      noteConfirmButton.addEventListener("click", async () => {
+        if (!pendingNoteEdit) return;
+        noteConfirmButton.disabled = true;
+        setMessage(noteMessage, "Notiz wird gespeichert...", "");
+        try {
+          await api(`/api/reservations/${pendingNoteEdit.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ note: noteText.value }),
+          });
+          pendingNoteEdit = null;
+          setMessage(noteMessage, "Notiz gespeichert.", "success");
+          await loadReservations({ force: true });
+          window.setTimeout(() => noteDialog.close(), 400);
+        } catch (error) {
+          setMessage(noteMessage, error.message, "error");
+        } finally {
+          noteConfirmButton.disabled = false;
         }
       });
 

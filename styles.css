@@ -1549,6 +1549,35 @@ button {
   border-top: 1px solid var(--line);
 }
 
+.admin-note-dialog {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.admin-note-field {
+  display: grid;
+  gap: 7px;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-note-field textarea {
+  width: 100%;
+  min-height: 132px;
+  resize: vertical;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.45;
+  padding: 11px 12px;
+  text-transform: none;
+}
+
 .admin-table-wrap {
   overflow-x: auto;
 }

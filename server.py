@@ -301,6 +301,7 @@ def validate_reservation(
     payload: dict,
     *,
     require_email: bool = True,
+    require_phone: bool = True,
     allow_past: bool = False,
     exclude_id: int | None = None,
     admin_booking: bool = False,
@@ -337,7 +338,7 @@ def validate_reservation(
 
     if len(name) < 2:
         errors.append("Bitte einen Namen angeben.")
-    if len(phone) < 5:
+    if require_phone and len(phone) < 5:
         errors.append("Bitte eine Telefonnummer angeben.")
     if require_email and not email:
         errors.append("Bitte eine E-Mail-Adresse angeben.")
@@ -879,7 +880,13 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
             return
 
-        cleaned, errors = validate_reservation(payload, require_email=False, allow_past=True, admin_booking=True)
+        cleaned, errors = validate_reservation(
+            payload,
+            require_email=False,
+            require_phone=False,
+            allow_past=True,
+            admin_booking=True,
+        )
         if errors:
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
             return
@@ -930,11 +937,18 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
             return
 
+        has_status = "status" in payload
+        has_note = "note" in payload
+        if not has_status and not has_note:
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["No changes provided"]})
+            return
+
         status = str(payload.get("status", "")).strip()
-        if status not in VALID_STATUSES:
+        if has_status and status not in VALID_STATUSES:
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid status"]})
             return
 
+        note = str(payload.get("note", "")).strip()
         notify_guest = bool(payload.get("notifyGuest", True))
         timestamp = now_iso()
         with connect() as conn:
@@ -942,15 +956,17 @@ class KikuHandler(SimpleHTTPRequestHandler):
             if old_row is None:
                 json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservation not found"]})
                 return
-            if status in ACTIVE_STATUSES and old_row["status"] not in ACTIVE_STATUSES:
+            next_status = status if has_status else old_row["status"]
+            next_note = note if has_note else (old_row["note"] or "")
+            if has_status and next_status in ACTIVE_STATUSES and old_row["status"] not in ACTIVE_STATUSES:
                 booked = active_reservation_count(parse_date(old_row["booking_date"]), old_row["booking_time"], reservation_id)
                 limit = slot_limit(parse_date(old_row["booking_date"]), old_row["booking_time"])
                 if booked >= limit:
                     json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Dieser Slot ist bereits voll."]})
                     return
             conn.execute(
-                "UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?",
-                (status, timestamp, reservation_id),
+                "UPDATE reservations SET status = ?, note = ?, updated_at = ? WHERE id = ?",
+                (next_status, next_note, timestamp, reservation_id),
             )
             row = conn.execute("SELECT * FROM reservations WHERE id = ?", (reservation_id,)).fetchone()
 
@@ -959,7 +975,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
             return
 
         email_sent = False
-        if notify_guest and old_row is not None and old_row["status"] != row["status"]:
+        if has_status and notify_guest and old_row is not None and old_row["status"] != row["status"]:
             email_sent = send_status_notification(row)
         json_response(self, HTTPStatus.OK, {"reservation": row_to_dict(row), "email": {"guest": email_sent}})
 
