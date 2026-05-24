@@ -72,7 +72,7 @@ assets/visit-window-guest.jpg
 Последнее обновление сайта: 2026-05-16.
 
 ```text
-Часы работы: Mittwoch - Sonntag, 9:30 - 20:00; Montag - Dienstag, Ruhetag.
+Часы работы: Mittwoch - Samstag, 9:30 - 20:00; Sonntag, 9:30 - 17:00; Montag - Dienstag, Ruhetag.
 Bistro.pdf обновлен по новому PDF-меню `Bistro new.pdf`.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF.
 Последнее изменение меню: добавлен Croissant mit Jamon, удалена Quiche, обновлены описания Lachs/Granola/Konsommé.
@@ -102,7 +102,7 @@ Env file with secrets: /etc/kiku-reservations.env
 Current reservation rules:
 
 ```text
-Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
+Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated
 Admin can adjust slot limits per date/time
@@ -176,7 +176,7 @@ no password is configured.
 Reservation rules:
 
 ```text
-Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
+Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated

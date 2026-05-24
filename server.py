@@ -27,7 +27,8 @@ DB_PATH = Path(os.environ.get("KIKU_DB_PATH", DATA_DIR / "reservations.sqlite3")
 OPEN_DAYS = {2, 3, 4, 5, 6}
 PUBLIC_SLOTS = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"]
 ADMIN_SLOT_START = "09:30"
-ADMIN_SLOT_END = "18:00"
+DEFAULT_CLOSING_TIME = "20:00"
+SUNDAY_CLOSING_TIME = "17:00"
 ADMIN_SLOT_INTERVAL_MINUTES = 15
 RESERVATION_MINUTES = 120
 DEFAULT_SLOT_LIMIT = 3
@@ -210,6 +211,21 @@ def is_open_day(day: date) -> bool:
     return day.weekday() in OPEN_DAYS
 
 
+def closing_time(day: date) -> str:
+    return SUNDAY_CLOSING_TIME if day.weekday() == 6 else DEFAULT_CLOSING_TIME
+
+
+def latest_reservation_start(day: date) -> str:
+    latest = datetime.combine(day, parse_time(closing_time(day))) - timedelta(minutes=RESERVATION_MINUTES)
+    return latest.strftime("%H:%M")
+
+
+def slot_fits_opening_hours(day: date, slot: str) -> bool:
+    start = datetime.combine(day, parse_time(slot))
+    close = datetime.combine(day, parse_time(closing_time(day)))
+    return start + timedelta(minutes=RESERVATION_MINUTES) <= close
+
+
 def time_range_slots(start: str, end: str, step_minutes: int) -> list[str]:
     current = datetime.combine(date.today(), parse_time(start))
     last = datetime.combine(date.today(), parse_time(end))
@@ -223,13 +239,13 @@ def time_range_slots(start: str, end: str, step_minutes: int) -> list[str]:
 def public_slot_times(day: date) -> list[str]:
     if not is_open_day(day):
         return []
-    return PUBLIC_SLOTS.copy()
+    return [slot for slot in PUBLIC_SLOTS if slot_fits_opening_hours(day, slot)]
 
 
 def admin_slot_times(day: date) -> list[str]:
     if not is_open_day(day):
         return []
-    return time_range_slots(ADMIN_SLOT_START, ADMIN_SLOT_END, ADMIN_SLOT_INTERVAL_MINUTES)
+    return time_range_slots(ADMIN_SLOT_START, latest_reservation_start(day), ADMIN_SLOT_INTERVAL_MINUTES)
 
 
 def bookable_public_slot_times(day: date) -> list[str]:
@@ -305,6 +321,7 @@ def validate_reservation(
     allow_past: bool = False,
     exclude_id: int | None = None,
     admin_booking: bool = False,
+    check_capacity: bool = True,
 ) -> tuple[dict, list[str]]:
     errors: list[str] = []
     cleaned: dict = {}
@@ -364,7 +381,7 @@ def validate_reservation(
         if is_closed_day(booking_day):
             errors.append("Dieser Tag ist für Reservierungen geschlossen.")
 
-    if booking_day and booking_time and "guests" in cleaned:
+    if check_capacity and booking_day and booking_time and "guests" in cleaned:
         limit = slot_limit(booking_day, cleaned["booking_time"])
         booked = active_reservation_count(booking_day, cleaned["booking_time"], exclude_id)
         if booked >= limit:
@@ -695,7 +712,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
             {
                 "defaultSlotLimit": DEFAULT_SLOT_LIMIT,
                 "slots": admin_slot_times(start),
-                "publicSlots": PUBLIC_SLOTS,
+                "publicSlots": public_slot_times(start),
                 "closedDays": {row["booking_date"]: row["reason"] or "" for row in closed},
                 "slotSettings": {
                     f"{row['booking_date']}|{row['booking_time']}": row["slot_limit"] for row in settings
@@ -937,9 +954,11 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
             return
 
+        reservation_fields = {"date", "time", "guests", "name", "phone", "email"}
+        has_details = any(field in payload for field in reservation_fields)
         has_status = "status" in payload
         has_note = "note" in payload
-        if not has_status and not has_note:
+        if not has_details and not has_status and not has_note:
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["No changes provided"]})
             return
 
@@ -948,7 +967,6 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid status"]})
             return
 
-        note = str(payload.get("note", "")).strip()
         notify_guest = bool(payload.get("notifyGuest", True))
         timestamp = now_iso()
         with connect() as conn:
@@ -956,17 +974,67 @@ class KikuHandler(SimpleHTTPRequestHandler):
             if old_row is None:
                 json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservation not found"]})
                 return
+
+            if has_details:
+                merged = {
+                    "date": payload.get("date", old_row["booking_date"]),
+                    "time": payload.get("time", old_row["booking_time"]),
+                    "guests": payload.get("guests", old_row["guests"]),
+                    "name": payload.get("name", old_row["name"]),
+                    "phone": payload.get("phone", old_row["phone"]),
+                    "email": payload.get("email", old_row["email"]),
+                    "note": payload.get("note", old_row["note"] or ""),
+                }
+                cleaned, errors = validate_reservation(
+                    merged,
+                    require_email=False,
+                    require_phone=False,
+                    allow_past=True,
+                    exclude_id=reservation_id,
+                    admin_booking=True,
+                    check_capacity=False,
+                )
+                if errors:
+                    json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
+                    return
+            else:
+                cleaned = {
+                    "booking_date": old_row["booking_date"],
+                    "booking_time": old_row["booking_time"],
+                    "guests": old_row["guests"],
+                    "name": old_row["name"],
+                    "phone": old_row["phone"],
+                    "email": old_row["email"],
+                    "note": str(payload.get("note", old_row["note"] or "")).strip(),
+                }
+
             next_status = status if has_status else old_row["status"]
-            next_note = note if has_note else (old_row["note"] or "")
-            if has_status and next_status in ACTIVE_STATUSES and old_row["status"] not in ACTIVE_STATUSES:
-                booked = active_reservation_count(parse_date(old_row["booking_date"]), old_row["booking_time"], reservation_id)
-                limit = slot_limit(parse_date(old_row["booking_date"]), old_row["booking_time"])
+            next_note = cleaned["note"] if (has_details or has_note) else (old_row["note"] or "")
+            if next_status in ACTIVE_STATUSES:
+                booked = active_reservation_count(parse_date(cleaned["booking_date"]), cleaned["booking_time"], reservation_id)
+                limit = slot_limit(parse_date(cleaned["booking_date"]), cleaned["booking_time"])
                 if booked >= limit:
                     json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Dieser Slot ist bereits voll."]})
                     return
             conn.execute(
-                "UPDATE reservations SET status = ?, note = ?, updated_at = ? WHERE id = ?",
-                (next_status, next_note, timestamp, reservation_id),
+                """
+                UPDATE reservations
+                SET booking_date = ?, booking_time = ?, guests = ?, name = ?, phone = ?,
+                    email = ?, note = ?, status = ?, updated_at = ?
+                WHERE id = ?
+                """,
+                (
+                    cleaned["booking_date"],
+                    cleaned["booking_time"],
+                    cleaned["guests"],
+                    cleaned["name"],
+                    cleaned["phone"],
+                    cleaned["email"],
+                    next_note,
+                    next_status,
+                    timestamp,
+                    reservation_id,
+                ),
             )
             row = conn.execute("SELECT * FROM reservations WHERE id = ?", (reservation_id,)).fetchone()
 
@@ -975,7 +1043,9 @@ class KikuHandler(SimpleHTTPRequestHandler):
             return
 
         email_sent = False
-        if has_status and notify_guest and old_row is not None and old_row["status"] != row["status"]:
+        if notify_guest and row["email"] and (
+            has_details or (has_status and old_row is not None and old_row["status"] != row["status"])
+        ):
             email_sent = send_status_notification(row)
         json_response(self, HTTPStatus.OK, {"reservation": row_to_dict(row), "email": {"guest": email_sent}})
 

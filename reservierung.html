@@ -45,6 +45,7 @@
       const content = document.getElementById("guest-content");
       const token = new URLSearchParams(location.search).get("token") || "";
       const slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
+      const reservationMinutes = 120;
       const statusLabels = {
         pending: "Anfrage",
         confirmed: "Bestätigt",
@@ -58,6 +59,11 @@
       };
       const escapeHtml = (value) =>
         String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const closingTimeForDate = (value) => (new Date(`${value}T12:00:00`).getDay() === 0 ? "17:00" : "20:00");
+      const slotFitsOpeningHours = (dateValue, timeValue) =>
+        new Date(`${dateValue}T${timeValue}:00`).getTime() + reservationMinutes * 60000 <=
+        new Date(`${dateValue}T${closingTimeForDate(dateValue)}:00`).getTime();
+      const slotsForDate = (dateValue) => slots.filter((slot) => slotFitsOpeningHours(dateValue, slot));
       const api = async (url, options = {}) => {
         const response = await fetch(url, options);
         const data = await response.json().catch(() => ({}));
@@ -65,8 +71,8 @@
         return data;
       };
 
-      const renderTimeTiles = (selectedTime, disabled) =>
-        slots
+      const renderTimeTiles = (dateValue, selectedTime, disabled) =>
+        slotsForDate(dateValue)
           .map(
             (slot) => `
               <button class="time-tile guest-time-tile ${slot === selectedTime ? "selected" : ""}" type="button" data-time="${slot}" ${disabled ? "disabled" : ""} aria-pressed="${slot === selectedTime}">
@@ -75,6 +81,31 @@
             `
           )
           .join("");
+
+      const bindTimeTiles = (form) => {
+        form.querySelectorAll(".guest-time-tile").forEach((button) => {
+          button.addEventListener("click", () => {
+            form.querySelectorAll(".guest-time-tile").forEach((tile) => {
+              tile.classList.remove("selected");
+              tile.setAttribute("aria-pressed", "false");
+            });
+            button.classList.add("selected");
+            button.setAttribute("aria-pressed", "true");
+            form.elements.time.value = button.dataset.time;
+          });
+        });
+      };
+
+      const bindDateChange = (form, disabled) => {
+        form.elements.date.addEventListener("change", () => {
+          const availableSlots = slotsForDate(form.elements.date.value);
+          if (!availableSlots.includes(form.elements.time.value)) {
+            form.elements.time.value = "";
+          }
+          form.querySelector(".time-grid").innerHTML = renderTimeTiles(form.elements.date.value, form.elements.time.value, disabled);
+          bindTimeTiles(form);
+        });
+      };
 
       const render = (reservation, message = "") => {
         const disabled = ["cancelled", "no_show"].includes(reservation.status);
@@ -97,7 +128,7 @@
               </div>
               <div class="guest-time-block">
                 <span class="guest-label">Uhrzeit</span>
-                <div class="time-grid">${renderTimeTiles(reservation.time, disabled)}</div>
+                <div class="time-grid">${renderTimeTiles(reservation.date, reservation.time, disabled)}</div>
               </div>
               <label><span>Notiz</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
               <div class="guest-actions">
@@ -108,18 +139,10 @@
             </form>
           </div>
         `;
-        document.querySelectorAll(".guest-time-tile").forEach((button) => {
-          button.addEventListener("click", () => {
-            document.querySelectorAll(".guest-time-tile").forEach((tile) => {
-              tile.classList.remove("selected");
-              tile.setAttribute("aria-pressed", "false");
-            });
-            button.classList.add("selected");
-            button.setAttribute("aria-pressed", "true");
-            document.querySelector('#guest-change-form [name="time"]').value = button.dataset.time;
-          });
-        });
-        document.getElementById("guest-change-form").addEventListener("submit", updateReservation);
+        const changeForm = document.getElementById("guest-change-form");
+        bindTimeTiles(changeForm);
+        bindDateChange(changeForm, disabled);
+        changeForm.addEventListener("submit", updateReservation);
         document.getElementById("guest-cancel").addEventListener("click", cancelReservation);
       };
 

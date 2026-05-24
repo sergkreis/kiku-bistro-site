@@ -292,7 +292,7 @@ KIKU_DEPLOY_SSH_KEY
 Current reservation rules:
 
 ```text
-Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
+Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated
@@ -338,7 +338,7 @@ Current behavior:
 ```text
 Opening days: Wednesday-Sunday
 Opening time: 9:30-20:00
-Public slots: 09:30, 10:00, 11:30, 12:00, 13:00, 15:00, 17:00, 18:00
+Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Auto-confirmation: up to 4 guests when the selected slot has capacity
@@ -620,7 +620,8 @@ Croissant mit Lachs, Hausgemachtes Granola и Konsommé-Nudelsuppe обновл�
 
 ```text
 Montag - Dienstag: Ruhetag
-Mittwoch - Sonntag: 9:30 - 20:00
+Mittwoch - Samstag: 9:30 - 20:00
+Sonntag: 9:30 - 17:00
 ```
 
 Нижнее фото в секции `#visit` заменено на:
