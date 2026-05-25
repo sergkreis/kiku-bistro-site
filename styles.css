@@ -1184,13 +1184,13 @@ button {
 
 .admin-reservation-list {
   display: grid;
-  gap: 10px;
+  gap: 7px;
 }
 
 .admin-day {
   display: grid;
-  gap: 10px;
-  padding: 14px;
+  gap: 7px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-left: 5px solid rgba(36, 66, 53, 0.22);
   border-radius: var(--radius);
@@ -1250,8 +1250,8 @@ button {
 
 .admin-slot-group {
   display: grid;
-  gap: 6px;
-  padding: 6px 8px 8px;
+  gap: 4px;
+  padding: 5px 7px;
   border-radius: var(--radius);
   background: rgba(246, 248, 240, 0.5);
 }
@@ -1268,7 +1268,7 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 2px 0 3px;
+  padding: 0;
   color: var(--green);
 }
 
@@ -1281,8 +1281,8 @@ button {
 .reservation-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, auto);
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 8px;
+  padding: 7px 10px;
   border: 1px solid var(--line);
   border-left: 4px solid rgba(36, 66, 53, 0.24);
   border-radius: var(--radius);
@@ -1312,7 +1312,7 @@ button {
 
 .reservation-row-main {
   display: grid;
-  gap: 5px;
+  gap: 3px;
   min-width: 0;
 }
 
@@ -1324,7 +1324,7 @@ button {
 .reservation-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
+  gap: 2px 9px;
   color: var(--text-muted);
   font-size: 0.86rem;
 }
@@ -1358,7 +1358,7 @@ button {
 .admin-row-menu summary {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 30px;
   padding: 0 10px;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
@@ -1949,17 +1949,122 @@ button {
     min-height: 520px;
   }
 
-  .admin-slot-summary {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .admin-main {
+    padding: 22px 0 52px;
   }
 
-  .admin-workbench,
+  .admin-top {
+    gap: 7px;
+    margin-bottom: 12px;
+  }
+
+  .admin-main h1 {
+    font-size: 3rem;
+    line-height: 0.95;
+  }
+
+  .admin-top > p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+
+  .admin-panel {
+    padding: 12px;
+  }
+
+  .admin-actions {
+    grid-template-columns: minmax(190px, 1fr) minmax(190px, 1fr) minmax(220px, 1fr) auto auto;
+    gap: 8px;
+    align-items: end;
+  }
+
+  .admin-actions label,
+  .admin-filter-field {
+    min-width: 0;
+  }
+
+  .admin-actions .btn,
+  .admin-filter-checkbox {
+    height: 38px;
+    min-height: 38px;
+  }
+
+  .admin-filter-field {
+    gap: 5px;
+  }
+
+  .admin-filter-checkbox {
+    padding: 0 10px;
+  }
+
+  .admin-overview {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .admin-overview h2 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .admin-slot-summary {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .admin-slot-card {
+    min-height: 58px;
+    padding: 7px 8px;
+  }
+
+  .admin-day {
+    gap: 6px;
+    padding: 9px 10px;
+  }
+
+  .admin-day-head h2 {
+    font-size: 1.38rem;
+    line-height: 1;
+  }
+
+  .admin-slot-group {
+    gap: 4px;
+    padding: 4px 6px;
+  }
+
   .reservation-row {
+    padding: 6px 8px;
+  }
+
+  .reservation-row-title strong {
+    font-size: 0.94rem;
+  }
+
+  .reservation-meta {
+    font-size: 0.82rem;
+  }
+
+  .admin-row-menu summary {
+    min-height: 30px;
+  }
+
+  .admin-workbench {
     grid-template-columns: 1fr;
   }
 
   .reservation-row-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 960px) {
+  .admin-actions {
+    grid-template-columns: minmax(170px, 1fr) minmax(170px, 1fr) minmax(220px, 1fr);
+  }
+
+  .admin-actions .btn {
+    width: 100%;
   }
 }
 
