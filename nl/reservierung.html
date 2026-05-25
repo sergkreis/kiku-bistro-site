@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiku Bistro | Reserverenring beheren</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="../assets/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="../styles.css?v=20260525-lang-menu-1" />
+  </head>
+  <body class="guest-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="header-address" href="index.html">
+          <span>Kiku Bistro</span>
+          <span>Reserverenring</span>
+        </a>
+        <a class="header-brand" href="index.html" aria-label="Kiku Bistro">
+          <img src="../assets/header-flower.png?v=20260428-1" alt="" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Website</a>
+          <a href="index.html#reservation">Reserveren</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="guest-main">
+      <section class="container guest-hero">
+        <div>
+          <p class="eyebrow">Reserverenring</p>
+          <h1>Reserverenring beheren</h1>
+        </div>
+        <p>Hier kunt u uw reservering bekijken, wijzigen of annuleren.</p>
+      </section>
+
+      <section class="container guest-shell">
+        <div id="guest-content">
+          <p class="admin-muted">Reserverenring wordt geladen...</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const content = document.getElementById("guest-content");
+      const token = new URLSearchParams(location.search).get("token") || "";
+      const slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
+      const reservationMinutes = 120;
+      const statusLabels = {
+        pending: "Aanvraag",
+        confirmed: "Bevestigd",
+        seated: "Gast aanwezig",
+        cancelled: "Geannuleerd",
+        no_show: "Niet gekomen",
+      };
+      const toLocalDatum = (date) => {
+        const offset = date.getTimezoneOffset();
+        return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+      };
+      const escapeHtml = (value) =>
+        String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const closingTijdForDatum = (value) => (new Date(`${value}T12:00:00`).getDay() === 0 ? "17:00" : "20:00");
+      const slotFitsOpeningHours = (dateValue, timeValue) =>
+        new Date(`${dateValue}T${timeValue}:00`).getTime() + reservationMinutes * 60000 <=
+        new Date(`${dateValue}T${closingTijdForDatum(dateValue)}:00`).getTime();
+      const slotsForDatum = (dateValue) => slots.filter((slot) => slotFitsOpeningHours(dateValue, slot));
+      const api = async (url, options = {}) => {
+        const response = await fetch(url, options);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error((data.errors || ["Fout"]).join(" "));
+        return data;
+      };
+
+      const renderTijdTiles = (dateValue, selectedTijd, disabled) =>
+        slotsForDatum(dateValue)
+          .map(
+            (slot) => `
+              <button class="time-tile guest-time-tile ${slot === selectedTijd ? "selected" : ""}" type="button" data-time="${slot}" ${disabled ? "disabled" : ""} aria-pressed="${slot === selectedTijd}">
+                <span class="time-tile-hour">${slot}</span>
+              </button>
+            `
+          )
+          .join("");
+
+      const bindTijdTiles = (form) => {
+        form.querySelectorAll(".guest-time-tile").forEach((button) => {
+          button.addEventListener("click", () => {
+            form.querySelectorAll(".guest-time-tile").forEach((tile) => {
+              tile.classList.remove("selected");
+              tile.setAttribute("aria-pressed", "false");
+            });
+            button.classList.add("selected");
+            button.setAttribute("aria-pressed", "true");
+            form.elements.time.value = button.dataset.time;
+          });
+        });
+      };
+
+      const bindDatumChange = (form, disabled) => {
+        form.elements.date.addEventListener("change", () => {
+          const availableSlots = slotsForDatum(form.elements.date.value);
+          if (!availableSlots.includes(form.elements.time.value)) {
+            form.elements.time.value = "";
+          }
+          form.querySelector(".time-grid").innerHTML = renderTijdTiles(form.elements.date.value, form.elements.time.value, disabled);
+          bindTijdTiles(form);
+        });
+      };
+
+      const render = (reservation, message = "") => {
+        const disabled = ["cancelled", "no_show"].includes(reservation.status);
+        const status = statusLabels[reservation.status] || reservation.status;
+        content.innerHTML = `
+          <div class="guest-card">
+            <div class="guest-summary">
+              <div>
+                <span class="guest-status ${reservation.status}">${escapeHtml(status)}</span>
+                <h2>${escapeHtml(reservation.date)} om ${escapeHtml(reservation.time)}</h2>
+                <p>${escapeHtml(reservation.guests)} personen В· ${escapeHtml(reservation.name)}</p>
+              </div>
+            </div>
+
+            <form id="guest-change-form" class="guest-form">
+              <input type="hidden" name="time" value="${escapeHtml(reservation.time)}" />
+              <div class="form-row form-row-two">
+                <label><span>Datum</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDatum(new Date())}" ${disabled ? "disabled" : ""} required /></label>
+                <label><span>Personen</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
+              </div>
+              <div class="guest-time-block">
+                <span class="guest-label">Tijd</span>
+                <div class="time-grid">${renderTijdTiles(reservation.date, reservation.time, disabled)}</div>
+              </div>
+              <label><span>Notitie</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
+              <div class="guest-actions">
+                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Wijzigingen opslaan</button>
+                <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>Reserverenring annuleren</button>
+              </div>
+              <p class="reservation-message" id="guest-message" data-type="${message ? "success" : ""}">${escapeHtml(message)}</p>
+            </form>
+          </div>
+        `;
+        const changeForm = document.getElementById("guest-change-form");
+        bindTijdTiles(changeForm);
+        bindDatumChange(changeForm, disabled);
+        changeForm.addEventListener("submit", updateReserverenring);
+        document.getElementById("guest-cancel").addEventListener("click", cancelReserverenring);
+      };
+
+      const load = async () => {
+        if (!token) {
+          content.innerHTML = '<p class="reservation-message" data-type="error">Reserverenring niet gevonden.</p>';
+          return;
+        }
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=nl`);
+          render(data.reservation);
+        } catch (error) {
+          content.innerHTML = `<p class="reservation-message" data-type="error">${escapeHtml(error.message)}</p>`;
+        }
+      };
+
+      const updateReserverenring = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.action = "change";
+        payload.guests = Number(payload.guests);
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=nl`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          render(data.reservation, "Reserverenring is bijgewerkt.");
+        } catch (error) {
+          document.getElementById("guest-message").textContent = error.message;
+          document.getElementById("guest-message").dataset.type = "error";
+        }
+      };
+
+      const cancelReserverenring = async () => {
+        if (!confirm("Wilt u deze reservering echt annuleren?")) return;
+        const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=nl`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "cancel" }),
+        });
+        render(data.reservation, "Reserverenring is geannuleerd.");
+      };
+
+      load();
+    </script>
+  </body>
+</html>

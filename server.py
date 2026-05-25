@@ -36,6 +36,7 @@ MAX_PARTY_SIZE = 12
 AUTO_CONFIRM_MAX_GUESTS = 4
 ACTIVE_STATUSES = {"pending", "confirmed", "seated"}
 VALID_STATUSES = {"pending", "confirmed", "seated", "cancelled", "no_show"}
+VALID_LOCALES = {"de", "en", "fr", "nl", "pl", "cs"}
 RESTAURANT_EMAIL = "info@kiku-bistro.de"
 SITE_URL = os.environ.get("KIKU_SITE_URL", "https://kiku-bistro.de").rstrip("/")
 try:
@@ -71,6 +72,7 @@ def init_db() -> None:
               phone TEXT NOT NULL,
               email TEXT NOT NULL,
               note TEXT,
+              locale TEXT NOT NULL DEFAULT 'de',
               status TEXT NOT NULL DEFAULT 'confirmed',
               created_at TEXT NOT NULL,
               updated_at TEXT NOT NULL
@@ -82,6 +84,8 @@ def init_db() -> None:
             conn.execute("ALTER TABLE reservations ADD COLUMN guest_token TEXT")
         if "source" not in columns:
             conn.execute("ALTER TABLE reservations ADD COLUMN source TEXT NOT NULL DEFAULT 'public'")
+        if "locale" not in columns:
+            conn.execute("ALTER TABLE reservations ADD COLUMN locale TEXT NOT NULL DEFAULT 'de'")
         rows_without_token = conn.execute("SELECT id FROM reservations WHERE guest_token IS NULL OR guest_token = ''").fetchall()
         for row in rows_without_token:
             conn.execute("UPDATE reservations SET guest_token = ? WHERE id = ?", (new_guest_token(), row["id"]))
@@ -401,6 +405,7 @@ def row_to_dict(row: sqlite3.Row) -> dict:
         "email": row["email"] or "",
         "note": row["note"] or "",
         "status": row["status"],
+        "locale": row["locale"] if "locale" in row.keys() else "de",
         "source": row["source"] if "source" in row.keys() else "public",
         "guestToken": row["guest_token"] if "guest_token" in row.keys() else "",
         "manageUrl": guest_manage_url(row),
@@ -411,54 +416,367 @@ def row_to_dict(row: sqlite3.Row) -> dict:
 
 def guest_manage_url(row: sqlite3.Row) -> str:
     token = row["guest_token"] if "guest_token" in row.keys() else ""
-    return f"{SITE_URL}/reservierung.html?token={token}"
+    locale = row["locale"] if "locale" in row.keys() else "de"
+    path = f"/{locale}/reservation.html" if locale != "de" else "/reservierung.html"
+    return f"{SITE_URL}{path}?token={token}"
+
+
+def row_locale(row: sqlite3.Row) -> str:
+    locale = row["locale"] if "locale" in row.keys() else "de"
+    return locale if locale in VALID_LOCALES else "de"
+
+
+def payload_locale(payload: dict) -> str:
+    locale = str(payload.get("locale", "de")).strip().lower()
+    return locale if locale in VALID_LOCALES else "de"
+
+
+EMAIL_COPY = {
+    "de": {
+        "subject_request": "Anfrage",
+        "subject_reservation": "Reservierung",
+        "subject_on": "am",
+        "subject_at": "um",
+        "confirmed_subject": "Kiku Bistro Reservierung bestätigt am {date} um {time}",
+        "cancelled_subject": "Kiku Bistro Reservierung storniert am {date} um {time}",
+        "pending_intro": "Vielen Dank für Ihre Anfrage. Für Gruppen ab 5 Personen bestätigen wir persönlich.",
+        "cancelled_intro": "Ihre Reservierung wurde storniert.",
+        "confirmed_intro": "Vielen Dank. Ihre Reservierung ist bestätigt.",
+        "pending_status": "Status: Anfrage eingegangen",
+        "cancelled_status": "Status: storniert",
+        "confirmed_status": "Status: bestätigt",
+        "heading": "Ihre Reservierung",
+        "manage": "Reservierung ansehen, ändern oder stornieren:",
+        "button": "Reservierung ansehen / ändern",
+        "date": "Datum",
+        "time": "Uhrzeit",
+        "time_suffix": " Uhr",
+        "guests": "Personen",
+        "name": "Name",
+        "not_found": "Reservierung nicht gefunden",
+        "status_labels": {
+            "pending": "Anfrage eingegangen",
+            "confirmed": "Bestätigt",
+            "seated": "Gast da",
+            "cancelled": "Storniert",
+            "no_show": "Nicht gekommen",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Bitte ein gültiges Datum auswählen.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Bitte eine gültige Uhrzeit auswählen.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.",
+            "Bitte einen Namen angeben.": "Bitte einen Namen angeben.",
+            "Bitte eine Telefonnummer angeben.": "Bitte eine Telefonnummer angeben.",
+            "Bitte eine E-Mail-Adresse angeben.": "Bitte eine E-Mail-Adresse angeben.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Bitte eine gültige E-Mail-Adresse angeben.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Reservierungen in der Vergangenheit sind nicht möglich.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "Diese Uhrzeit liegt bereits in der Vergangenheit.",
+            "Montag und Dienstag sind Ruhetage.": "Montag und Dienstag sind Ruhetage.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Bitte eine verfügbare Uhrzeit auswählen.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "Dieser Tag ist für Reservierungen geschlossen.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.",
+        },
+    },
+    "en": {
+        "subject_request": "request",
+        "subject_reservation": "reservation",
+        "subject_on": "on",
+        "subject_at": "at",
+        "confirmed_subject": "Kiku Bistro reservation confirmed on {date} at {time}",
+        "cancelled_subject": "Kiku Bistro reservation cancelled on {date} at {time}",
+        "pending_intro": "Thank you for your request. For groups of 5 or more, we confirm personally.",
+        "cancelled_intro": "Your reservation has been cancelled.",
+        "confirmed_intro": "Thank you. Your reservation is confirmed.",
+        "pending_status": "Status: request received",
+        "cancelled_status": "Status: cancelled",
+        "confirmed_status": "Status: confirmed",
+        "heading": "Your reservation",
+        "manage": "View, change or cancel your reservation:",
+        "button": "View / change reservation",
+        "date": "Date",
+        "time": "Time",
+        "time_suffix": "",
+        "guests": "Guests",
+        "name": "Name",
+        "not_found": "Reservation not found",
+        "status_labels": {
+            "pending": "Request received",
+            "confirmed": "Confirmed",
+            "seated": "Guest seated",
+            "cancelled": "Cancelled",
+            "no_show": "No-show",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Please choose a valid date.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Please choose a valid time.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Please enter 1 to {MAX_PARTY_SIZE} guests.",
+            "Bitte einen Namen angeben.": "Please enter a name.",
+            "Bitte eine Telefonnummer angeben.": "Please enter a phone number.",
+            "Bitte eine E-Mail-Adresse angeben.": "Please enter an e-mail address.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Please enter a valid e-mail address.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Reservations in the past are not possible.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "This time is already in the past.",
+            "Montag und Dienstag sind Ruhetage.": "Monday and Tuesday are rest days.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Please choose an available time.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "This day is closed for reservations.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "All reservation places for this time are already booked.",
+        },
+    },
+    "fr": {
+        "subject_request": "demande",
+        "subject_reservation": "réservation",
+        "subject_on": "le",
+        "subject_at": "à",
+        "confirmed_subject": "Réservation Kiku Bistro confirmée le {date} à {time}",
+        "cancelled_subject": "Réservation Kiku Bistro annulée le {date} à {time}",
+        "pending_intro": "Merci pour votre demande. Pour les groupes de 5 personnes ou plus, nous confirmons personnellement.",
+        "cancelled_intro": "Votre réservation a été annulée.",
+        "confirmed_intro": "Merci. Votre réservation est confirmée.",
+        "pending_status": "Statut : demande reçue",
+        "cancelled_status": "Statut : annulée",
+        "confirmed_status": "Statut : confirmée",
+        "heading": "Votre réservation",
+        "manage": "Voir, modifier ou annuler votre réservation :",
+        "button": "Voir / modifier la réservation",
+        "date": "Date",
+        "time": "Heure",
+        "time_suffix": "",
+        "guests": "Personnes",
+        "name": "Nom",
+        "not_found": "Réservation introuvable",
+        "status_labels": {
+            "pending": "Demande reçue",
+            "confirmed": "Confirmée",
+            "seated": "Client arrivé",
+            "cancelled": "Annulée",
+            "no_show": "Non venu",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Veuillez choisir une date valide.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Veuillez choisir une heure valide.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Veuillez indiquer entre 1 et {MAX_PARTY_SIZE} personnes.",
+            "Bitte einen Namen angeben.": "Veuillez indiquer un nom.",
+            "Bitte eine Telefonnummer angeben.": "Veuillez indiquer un numéro de téléphone.",
+            "Bitte eine E-Mail-Adresse angeben.": "Veuillez indiquer une adresse e-mail.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Veuillez indiquer une adresse e-mail valide.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Les réservations dans le passé ne sont pas possibles.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "Cette heure est déjà passée.",
+            "Montag und Dienstag sind Ruhetage.": "Le lundi et le mardi sont des jours de repos.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Veuillez choisir une heure disponible.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "Ce jour est fermé aux réservations.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "Tous les créneaux de réservation pour cette heure sont déjà occupés.",
+        },
+    },
+    "nl": {
+        "subject_request": "aanvraag",
+        "subject_reservation": "reservering",
+        "subject_on": "op",
+        "subject_at": "om",
+        "confirmed_subject": "Kiku Bistro reservering bevestigd op {date} om {time}",
+        "cancelled_subject": "Kiku Bistro reservering geannuleerd op {date} om {time}",
+        "pending_intro": "Dank u voor uw aanvraag. Voor groepen van 5 personen of meer bevestigen wij persoonlijk.",
+        "cancelled_intro": "Uw reservering is geannuleerd.",
+        "confirmed_intro": "Dank u. Uw reservering is bevestigd.",
+        "pending_status": "Status: aanvraag ontvangen",
+        "cancelled_status": "Status: geannuleerd",
+        "confirmed_status": "Status: bevestigd",
+        "heading": "Uw reservering",
+        "manage": "Bekijk, wijzig of annuleer uw reservering:",
+        "button": "Reservering bekijken / wijzigen",
+        "date": "Datum",
+        "time": "Tijd",
+        "time_suffix": "",
+        "guests": "Personen",
+        "name": "Naam",
+        "not_found": "Reservering niet gevonden",
+        "status_labels": {
+            "pending": "Aanvraag ontvangen",
+            "confirmed": "Bevestigd",
+            "seated": "Gast aanwezig",
+            "cancelled": "Geannuleerd",
+            "no_show": "Niet gekomen",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Kies een geldige datum.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Kies een geldige tijd.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Voer 1 tot {MAX_PARTY_SIZE} personen in.",
+            "Bitte einen Namen angeben.": "Voer een naam in.",
+            "Bitte eine Telefonnummer angeben.": "Voer een telefoonnummer in.",
+            "Bitte eine E-Mail-Adresse angeben.": "Voer een e-mailadres in.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Voer een geldig e-mailadres in.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Reserveringen in het verleden zijn niet mogelijk.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "Deze tijd is al voorbij.",
+            "Montag und Dienstag sind Ruhetage.": "Maandag en dinsdag zijn rustdagen.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Kies een beschikbare tijd.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "Deze dag is gesloten voor reserveringen.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "Alle reserveringsplaatsen voor deze tijd zijn al bezet.",
+        },
+    },
+    "pl": {
+        "subject_request": "zapytanie",
+        "subject_reservation": "rezerwacja",
+        "subject_on": "dnia",
+        "subject_at": "o",
+        "confirmed_subject": "Rezerwacja Kiku Bistro potwierdzona dnia {date} o {time}",
+        "cancelled_subject": "Rezerwacja Kiku Bistro anulowana dnia {date} o {time}",
+        "pending_intro": "Dziękujemy za zapytanie. Dla grup od 5 osób potwierdzamy rezerwację osobiście.",
+        "cancelled_intro": "Twoja rezerwacja została anulowana.",
+        "confirmed_intro": "Dziękujemy. Twoja rezerwacja jest potwierdzona.",
+        "pending_status": "Status: zapytanie przyjęte",
+        "cancelled_status": "Status: anulowana",
+        "confirmed_status": "Status: potwierdzona",
+        "heading": "Twoja rezerwacja",
+        "manage": "Zobacz, zmień lub anuluj rezerwację:",
+        "button": "Zobacz / zmień rezerwację",
+        "date": "Data",
+        "time": "Godzina",
+        "time_suffix": "",
+        "guests": "Osoby",
+        "name": "Imię i nazwisko",
+        "not_found": "Nie znaleziono rezerwacji",
+        "status_labels": {
+            "pending": "Zapytanie przyjęte",
+            "confirmed": "Potwierdzona",
+            "seated": "Gość na miejscu",
+            "cancelled": "Anulowana",
+            "no_show": "Nie przyszedł",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Wybierz prawidłową datę.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Wybierz prawidłową godzinę.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Podaj od 1 do {MAX_PARTY_SIZE} osób.",
+            "Bitte einen Namen angeben.": "Podaj imię i nazwisko.",
+            "Bitte eine Telefonnummer angeben.": "Podaj numer telefonu.",
+            "Bitte eine E-Mail-Adresse angeben.": "Podaj adres e-mail.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Podaj prawidłowy adres e-mail.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Rezerwacje w przeszłości nie są możliwe.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "Ta godzina już minęła.",
+            "Montag und Dienstag sind Ruhetage.": "Poniedziałek i wtorek są dniami wolnymi.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Wybierz dostępną godzinę.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "Tego dnia rezerwacje są zamknięte.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "Wszystkie miejsca rezerwacyjne na tę godzinę są już zajęte.",
+        },
+    },
+    "cs": {
+        "subject_request": "poptávka",
+        "subject_reservation": "rezervace",
+        "subject_on": "dne",
+        "subject_at": "v",
+        "confirmed_subject": "Rezervace Kiku Bistro potvrzena dne {date} v {time}",
+        "cancelled_subject": "Rezervace Kiku Bistro zrušena dne {date} v {time}",
+        "pending_intro": "Děkujeme za vaši poptávku. Skupiny od 5 osob potvrzujeme osobně.",
+        "cancelled_intro": "Vaše rezervace byla zrušena.",
+        "confirmed_intro": "Děkujeme. Vaše rezervace je potvrzena.",
+        "pending_status": "Stav: poptávka přijata",
+        "cancelled_status": "Stav: zrušeno",
+        "confirmed_status": "Stav: potvrzeno",
+        "heading": "Vaše rezervace",
+        "manage": "Zobrazit, změnit nebo zrušit rezervaci:",
+        "button": "Zobrazit / změnit rezervaci",
+        "date": "Datum",
+        "time": "Čas",
+        "time_suffix": "",
+        "guests": "Osoby",
+        "name": "Jméno",
+        "not_found": "Rezervace nebyla nalezena",
+        "status_labels": {
+            "pending": "Poptávka přijata",
+            "confirmed": "Potvrzeno",
+            "seated": "Host dorazil",
+            "cancelled": "Zrušeno",
+            "no_show": "Nedorazil",
+        },
+        "errors": {
+            "Bitte ein gültiges Datum auswählen.": "Vyberte prosím platné datum.",
+            "Bitte eine gültige Uhrzeit auswählen.": "Vyberte prosím platný čas.",
+            f"Bitte 1 bis {MAX_PARTY_SIZE} Personen angeben.": f"Zadejte prosím 1 až {MAX_PARTY_SIZE} osob.",
+            "Bitte einen Namen angeben.": "Zadejte prosím jméno.",
+            "Bitte eine Telefonnummer angeben.": "Zadejte prosím telefonní číslo.",
+            "Bitte eine E-Mail-Adresse angeben.": "Zadejte prosím e-mailovou adresu.",
+            "Bitte eine gültige E-Mail-Adresse angeben.": "Zadejte prosím platnou e-mailovou adresu.",
+            "Reservierungen in der Vergangenheit sind nicht möglich.": "Rezervace v minulosti nejsou možné.",
+            "Diese Uhrzeit liegt bereits in der Vergangenheit.": "Tento čas již uplynul.",
+            "Montag und Dienstag sind Ruhetage.": "Pondělí a úterý jsou zavírací dny.",
+            "Bitte eine verfügbare Uhrzeit auswählen.": "Vyberte prosím dostupný čas.",
+            "Dieser Tag ist für Reservierungen geschlossen.": "Tento den je pro rezervace uzavřen.",
+            "Für diese Uhrzeit sind bereits alle Reservierungsplätze belegt.": "Všechna rezervační místa pro tento čas jsou již obsazena.",
+        },
+    },
+}
+
+
+def locale_copy(locale: str) -> dict:
+    return EMAIL_COPY.get(locale, EMAIL_COPY["de"])
+
+
+def localize_errors(errors: list[str], locale: str) -> list[str]:
+    translations = locale_copy(locale)["errors"]
+    return [translations.get(error, error) for error in errors]
 
 
 def notification_subject(row: sqlite3.Row) -> str:
-    status = "Anfrage" if row["status"] == "pending" else "Reservierung"
-    return f"Kiku Bistro {status} am {row['booking_date']} um {row['booking_time']}"
+    copy = locale_copy(row_locale(row))
+    kind = copy["subject_request"] if row["status"] == "pending" else copy["subject_reservation"]
+    return f"Kiku Bistro {kind} {copy['subject_on']} {row['booking_date']} {copy['subject_at']} {row['booking_time']}"
 
 
 def status_label(status: str) -> str:
-    return {
-        "pending": "Anfrage eingegangen",
-        "confirmed": "Bestätigt",
-        "seated": "Gast da",
-        "cancelled": "Storniert",
-        "no_show": "Nicht gekommen",
-    }.get(status, status)
+    return locale_copy("de")["status_labels"].get(status, status)
+
+
+def status_label_en(status: str) -> str:
+    return locale_copy("en")["status_labels"].get(status, status)
+
+
+def status_label_locale(status: str, locale: str) -> str:
+    return locale_copy(locale)["status_labels"].get(status, status)
 
 
 def guest_message(row: sqlite3.Row) -> str:
+    copy = locale_copy(row_locale(row))
     if row["status"] == "pending":
-        intro = "Vielen Dank für Ihre Anfrage. Für Gruppen ab 5 Personen bestätigen wir persönlich."
-        status = "Status: Anfrage eingegangen"
+        intro = copy["pending_intro"]
+        status = copy["pending_status"]
     elif row["status"] == "cancelled":
-        intro = "Ihre Reservierung wurde storniert."
-        status = "Status: storniert"
+        intro = copy["cancelled_intro"]
+        status = copy["cancelled_status"]
     else:
-        intro = "Vielen Dank. Ihre Reservierung ist bestätigt."
-        status = "Status: bestätigt"
+        intro = copy["confirmed_intro"]
+        status = copy["confirmed_status"]
     return (
         f"{intro}\n\n"
         f"{status}\n"
-        f"Datum: {row['booking_date']}\n"
-        f"Uhrzeit: {row['booking_time']} Uhr\n"
-        f"Personen: {row['guests']}\n"
-        f"Name: {row['name']}\n\n"
-        f"Reservierung ansehen, ändern oder stornieren:\n{guest_manage_url(row)}\n\n"
+        f"{copy['date']}: {row['booking_date']}\n"
+        f"{copy['time']}: {row['booking_time']}{copy['time_suffix']}\n"
+        f"{copy['guests']}: {row['guests']}\n"
+        f"{copy['name']}: {row['name']}\n\n"
+        f"{copy['manage']}\n{guest_manage_url(row)}\n\n"
         "Kiku Bistro\nSteinbrücke 2\n06484 Quedlinburg\n"
     )
 
 
 def guest_message_html(row: sqlite3.Row) -> str:
-    intro = {
-        "pending": "Vielen Dank für Ihre Anfrage. Wir bestätigen Gruppen ab 5 Personen persönlich.",
-        "cancelled": "Ihre Reservierung wurde storniert.",
-    }.get(row["status"], "Vielen Dank. Ihre Reservierung ist bestätigt.")
+    locale = row_locale(row)
+    copy = locale_copy(locale)
+    if row["status"] == "pending":
+        intro = copy["pending_intro"]
+    elif row["status"] == "cancelled":
+        intro = copy["cancelled_intro"]
+    else:
+        intro = copy["confirmed_intro"]
+    heading = copy["heading"]
+    status_value = status_label_locale(row["status"], locale)
+    labels = {
+        "status": "Status",
+        "date": copy["date"],
+        "time": copy["time"],
+        "guests": copy["guests"],
+        "name": copy["name"],
+        "button": copy["button"],
+    }
     manage_url = guest_manage_url(row)
     safe_date = escape(str(row["booking_date"] or ""))
-    safe_time = escape(str(row["booking_time"] or ""))
+    safe_time = escape(f"{row['booking_time'] or ''}{copy['time_suffix']}")
     safe_guests = escape(str(row["guests"] or ""))
     safe_name = escape(str(row["name"] or ""))
     return f"""<!doctype html>
@@ -471,24 +789,24 @@ def guest_message_html(row: sqlite3.Row) -> str:
             <tr>
               <td style="padding:28px 28px 16px;">
                 <div style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#486356;">Kiku Bistro</div>
-                <h1 style="margin:8px 0 10px;font-family:Georgia,serif;font-size:32px;line-height:1;color:#244235;">Ihre Reservierung</h1>
+                <h1 style="margin:8px 0 10px;font-family:Georgia,serif;font-size:32px;line-height:1;color:#244235;">{escape(heading)}</h1>
                 <p style="margin:0;color:#5a6c61;font-size:16px;line-height:1.5;">{escape(intro)}</p>
               </td>
             </tr>
             <tr>
               <td style="padding:0 28px 18px;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-top:1px solid #d7dfd0;border-bottom:1px solid #d7dfd0;">
-                  <tr><td style="padding:12px 0;color:#5a6c61;">Status</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{escape(status_label(row["status"]))}</td></tr>
-                  <tr><td style="padding:12px 0;color:#5a6c61;">Datum</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_date}</td></tr>
-                  <tr><td style="padding:12px 0;color:#5a6c61;">Uhrzeit</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_time} Uhr</td></tr>
-                  <tr><td style="padding:12px 0;color:#5a6c61;">Personen</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_guests}</td></tr>
-                  <tr><td style="padding:12px 0;color:#5a6c61;">Name</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_name}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">{escape(labels["status"])}</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{escape(status_value)}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">{escape(labels["date"])}</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_date}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">{escape(labels["time"])}</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_time}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">{escape(labels["guests"])}</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_guests}</td></tr>
+                  <tr><td style="padding:12px 0;color:#5a6c61;">{escape(labels["name"])}</td><td align="right" style="padding:12px 0;font-weight:bold;color:#244235;">{safe_name}</td></tr>
                 </table>
               </td>
             </tr>
             <tr>
               <td style="padding:0 28px 28px;">
-                <a href="{escape(manage_url)}" style="display:inline-block;background:#244235;color:#fffdf8;text-decoration:none;border-radius:8px;padding:13px 18px;font-weight:bold;">Reservierung ansehen / ändern</a>
+                <a href="{escape(manage_url)}" style="display:inline-block;background:#244235;color:#fffdf8;text-decoration:none;border-radius:8px;padding:13px 18px;font-weight:bold;">{escape(labels["button"])}</a>
                 <p style="margin:18px 0 0;color:#5a6c61;font-size:14px;line-height:1.5;">Kiku Bistro<br>Steinbrücke 2<br>06484 Quedlinburg</p>
               </td>
             </tr>
@@ -498,7 +816,6 @@ def guest_message_html(row: sqlite3.Row) -> str:
     </table>
   </body>
 </html>"""
-
 
 def restaurant_message(row: sqlite3.Row) -> str:
     return (
@@ -511,14 +828,16 @@ def restaurant_message(row: sqlite3.Row) -> str:
         f"Telefon: {row['phone']}\n"
         f"E-Mail: {row['email']}\n"
         f"Notiz: {row['note'] or '-'}\n"
+        f"Sprache: {row_locale(row)}\n"
     )
 
 
 def status_subject(row: sqlite3.Row) -> str:
+    copy = locale_copy(row_locale(row))
     if row["status"] == "confirmed":
-        return f"Kiku Bistro Reservierung bestätigt am {row['booking_date']} um {row['booking_time']}"
+        return copy["confirmed_subject"].format(date=row["booking_date"], time=row["booking_time"])
     if row["status"] == "cancelled":
-        return f"Kiku Bistro Reservierung storniert am {row['booking_date']} um {row['booking_time']}"
+        return copy["cancelled_subject"].format(date=row["booking_date"], time=row["booking_time"])
     return notification_subject(row)
 
 
@@ -856,9 +1175,10 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid JSON"]})
             return
 
+        locale = payload_locale(payload)
         cleaned, errors = validate_reservation(payload)
         if errors:
-            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
+            json_response(self, HTTPStatus.BAD_REQUEST, {"errors": localize_errors(errors, locale)})
             return
 
         now = now_iso()
@@ -867,8 +1187,8 @@ class KikuHandler(SimpleHTTPRequestHandler):
             cursor = conn.execute(
                 """
                 INSERT INTO reservations
-                  (booking_date, booking_time, guests, name, phone, email, note, status, guest_token, source, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  (booking_date, booking_time, guests, name, phone, email, note, locale, status, guest_token, source, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     cleaned["booking_date"],
@@ -878,6 +1198,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
                     cleaned["phone"],
                     cleaned["email"],
                     cleaned["note"],
+                    locale,
                     status,
                     new_guest_token(),
                     "public",
@@ -913,12 +1234,13 @@ class KikuHandler(SimpleHTTPRequestHandler):
             json_response(self, HTTPStatus.BAD_REQUEST, {"errors": ["Invalid status"]})
             return
         timestamp = now_iso()
+        locale = payload_locale(payload)
         with connect() as conn:
             cursor = conn.execute(
                 """
                 INSERT INTO reservations
-                  (booking_date, booking_time, guests, name, phone, email, note, status, guest_token, source, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  (booking_date, booking_time, guests, name, phone, email, note, locale, status, guest_token, source, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     cleaned["booking_date"],
@@ -928,6 +1250,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
                     cleaned["phone"],
                     cleaned["email"],
                     cleaned["note"],
+                    locale,
                     status,
                     new_guest_token(),
                     "admin",
@@ -1058,20 +1381,26 @@ class KikuHandler(SimpleHTTPRequestHandler):
         json_response(self, HTTPStatus.OK, {"email": {"guest": sent}})
 
     def handle_guest_reservation(self, query: str) -> None:
-        token = (parse_qs(query).get("token") or [""])[0]
+        params = parse_qs(query)
+        token = (params.get("token") or [""])[0]
+        requested_locale = (params.get("locale") or ["de"])[0]
         row = reservation_by_token(token)
         if row is None:
-            json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservierung nicht gefunden"]})
+            message = locale_copy(requested_locale if requested_locale in VALID_LOCALES else "de")["not_found"]
+            json_response(self, HTTPStatus.NOT_FOUND, {"errors": [message]})
             return
         data = row_to_dict(row)
         data.pop("guestToken", None)
         json_response(self, HTTPStatus.OK, {"reservation": data})
 
     def handle_guest_update_reservation(self, query: str) -> None:
-        token = (parse_qs(query).get("token") or [""])[0]
+        params = parse_qs(query)
+        token = (params.get("token") or [""])[0]
+        requested_locale = (params.get("locale") or ["de"])[0]
         row = reservation_by_token(token)
         if row is None:
-            json_response(self, HTTPStatus.NOT_FOUND, {"errors": ["Reservierung nicht gefunden"]})
+            message = locale_copy(requested_locale if requested_locale in VALID_LOCALES else "de")["not_found"]
+            json_response(self, HTTPStatus.NOT_FOUND, {"errors": [message]})
             return
         try:
             payload = read_json(self)
@@ -1099,7 +1428,7 @@ class KikuHandler(SimpleHTTPRequestHandler):
             }
             cleaned, errors = validate_reservation(merged, require_email=True, exclude_id=row["id"])
             if errors:
-                json_response(self, HTTPStatus.BAD_REQUEST, {"errors": errors})
+                json_response(self, HTTPStatus.BAD_REQUEST, {"errors": localize_errors(errors, row_locale(row))})
                 return
             new_status = "confirmed" if cleaned["guests"] <= AUTO_CONFIRM_MAX_GUESTS else "pending"
             with connect() as conn:
@@ -1140,3 +1469,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

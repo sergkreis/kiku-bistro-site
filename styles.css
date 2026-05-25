@@ -161,6 +161,106 @@ button {
   width: 100%;
 }
 
+.language-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.language-menu summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 248, 0.62);
+  list-style: none;
+  cursor: pointer;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.language-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.language-menu summary::after {
+  content: "";
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin-left: 0.45em;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-0.18em) rotate(45deg);
+}
+
+.language-menu[open] summary::after {
+  transform: translateY(0.05em) rotate(225deg);
+}
+
+.language-menu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.language-menu a::after {
+  display: none;
+}
+
+.language-menu[open] {
+  z-index: 20;
+}
+
+.language-options {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 68px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(251, 248, 241, 0.98);
+  box-shadow: var(--shadow-sm);
+}
+
+.language-menu[open] .language-options {
+  display: block;
+}
+
+.language-options a:hover {
+  background: rgba(36, 66, 53, 0.08);
+}
+
+.language-options a + a {
+  border-top: 1px solid var(--line);
+}
+
+.mobile-language-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.mobile-language-list a {
+  padding: 8px 0;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.mobile-menu .mobile-language-list + a {
+  border-top: 1px solid var(--line);
+}
+
 .menu-toggle,
 .mobile-menu {
   display: none;

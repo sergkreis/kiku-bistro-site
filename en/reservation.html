@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiku Bistro | Manage reservation</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="../assets/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="../styles.css?v=20260525-lang-menu-1" />
+  </head>
+  <body class="guest-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="header-address" href="index.html">
+          <span>Kiku Bistro</span>
+          <span>Reservation</span>
+        </a>
+        <a class="header-brand" href="index.html" aria-label="Kiku Bistro">
+          <img src="../assets/header-flower.png?v=20260428-1" alt="" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Website</a>
+          <a href="index.html#reservation">Reserve</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="guest-main">
+      <section class="container guest-hero">
+        <div>
+          <p class="eyebrow">Reservation</p>
+          <h1>Manage reservation</h1>
+        </div>
+        <p>Here you can view, change or cancel your reservation.</p>
+      </section>
+
+      <section class="container guest-shell">
+        <div id="guest-content">
+          <p class="admin-muted">Reservation is loading...</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const content = document.getElementById("guest-content");
+      const token = new URLSearchParams(location.search).get("token") || "";
+      const slots = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"];
+      const reservationMinutes = 120;
+      const statusLabels = {
+        pending: "Request",
+        confirmed: "Confirmed",
+        seated: "Guest seated",
+        cancelled: "Cancelled",
+        no_show: "No-show",
+      };
+      const toLocalDate = (date) => {
+        const offset = date.getTimezoneOffset();
+        return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+      };
+      const escapeHtml = (value) =>
+        String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const closingTimeForDate = (value) => (new Date(`${value}T12:00:00`).getDay() === 0 ? "17:00" : "20:00");
+      const slotFitsOpeningHours = (dateValue, timeValue) =>
+        new Date(`${dateValue}T${timeValue}:00`).getTime() + reservationMinutes * 60000 <=
+        new Date(`${dateValue}T${closingTimeForDate(dateValue)}:00`).getTime();
+      const slotsForDate = (dateValue) => slots.filter((slot) => slotFitsOpeningHours(dateValue, slot));
+      const api = async (url, options = {}) => {
+        const response = await fetch(url, options);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error((data.errors || ["Error"]).join(" "));
+        return data;
+      };
+
+      const renderTimeTiles = (dateValue, selectedTime, disabled) =>
+        slotsForDate(dateValue)
+          .map(
+            (slot) => `
+              <button class="time-tile guest-time-tile ${slot === selectedTime ? "selected" : ""}" type="button" data-time="${slot}" ${disabled ? "disabled" : ""} aria-pressed="${slot === selectedTime}">
+                <span class="time-tile-hour">${slot}</span>
+              </button>
+            `
+          )
+          .join("");
+
+      const bindTimeTiles = (form) => {
+        form.querySelectorAll(".guest-time-tile").forEach((button) => {
+          button.addEventListener("click", () => {
+            form.querySelectorAll(".guest-time-tile").forEach((tile) => {
+              tile.classList.remove("selected");
+              tile.setAttribute("aria-pressed", "false");
+            });
+            button.classList.add("selected");
+            button.setAttribute("aria-pressed", "true");
+            form.elements.time.value = button.dataset.time;
+          });
+        });
+      };
+
+      const bindDateChange = (form, disabled) => {
+        form.elements.date.addEventListener("change", () => {
+          const availableSlots = slotsForDate(form.elements.date.value);
+          if (!availableSlots.includes(form.elements.time.value)) {
+            form.elements.time.value = "";
+          }
+          form.querySelector(".time-grid").innerHTML = renderTimeTiles(form.elements.date.value, form.elements.time.value, disabled);
+          bindTimeTiles(form);
+        });
+      };
+
+      const render = (reservation, message = "") => {
+        const disabled = ["cancelled", "no_show"].includes(reservation.status);
+        const status = statusLabels[reservation.status] || reservation.status;
+        content.innerHTML = `
+          <div class="guest-card">
+            <div class="guest-summary">
+              <div>
+                <span class="guest-status ${reservation.status}">${escapeHtml(status)}</span>
+                <h2>${escapeHtml(reservation.date)} at ${escapeHtml(reservation.time)}</h2>
+                <p>${escapeHtml(reservation.guests)} guests В· ${escapeHtml(reservation.name)}</p>
+              </div>
+            </div>
+
+            <form id="guest-change-form" class="guest-form">
+              <input type="hidden" name="time" value="${escapeHtml(reservation.time)}" />
+              <div class="form-row form-row-two">
+                <label><span>Date</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDate(new Date())}" ${disabled ? "disabled" : ""} required /></label>
+                <label><span>Guests</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
+              </div>
+              <div class="guest-time-block">
+                <span class="guest-label">Time</span>
+                <div class="time-grid">${renderTimeTiles(reservation.date, reservation.time, disabled)}</div>
+              </div>
+              <label><span>Note</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
+              <div class="guest-actions">
+                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>Save changes</button>
+                <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>Cancel reservation</button>
+              </div>
+              <p class="reservation-message" id="guest-message" data-type="${message ? "success" : ""}">${escapeHtml(message)}</p>
+            </form>
+          </div>
+        `;
+        const changeForm = document.getElementById("guest-change-form");
+        bindTimeTiles(changeForm);
+        bindDateChange(changeForm, disabled);
+        changeForm.addEventListener("submit", updateReservation);
+        document.getElementById("guest-cancel").addEventListener("click", cancelReservation);
+      };
+
+      const load = async () => {
+        if (!token) {
+          content.innerHTML = '<p class="reservation-message" data-type="error">Reservation not found.</p>';
+          return;
+        }
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=en`);
+          render(data.reservation);
+        } catch (error) {
+          content.innerHTML = `<p class="reservation-message" data-type="error">${escapeHtml(error.message)}</p>`;
+        }
+      };
+
+      const updateReservation = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.action = "change";
+        payload.guests = Number(payload.guests);
+        try {
+          const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=en`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          render(data.reservation, "Reservation was updated.");
+        } catch (error) {
+          document.getElementById("guest-message").textContent = error.message;
+          document.getElementById("guest-message").dataset.type = "error";
+        }
+      };
+
+      const cancelReservation = async () => {
+        if (!confirm("Do you really want to cancel this reservation?")) return;
+        const data = await api(`/api/guest/reservation?token=${encodeURIComponent(token)}&locale=en`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "cancel" }),
+        });
+        render(data.reservation, "Reservation was cancelled.");
+      };
+
+      load();
+    </script>
+  </body>
+</html>
