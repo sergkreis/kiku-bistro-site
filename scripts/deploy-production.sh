@@ -30,7 +30,7 @@ install -o www-data -g www-data -m 644 "$CHECKOUT/admin.html" "$WEBROOT/admin.ht
 install -o www-data -g www-data -m 644 "$CHECKOUT/reservation.html" "$WEBROOT/reservation.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/reservierung.html" "$WEBROOT/reservierung.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/booking.js" "$WEBROOT/booking.js"
-for locale_dir in en fr nl pl cs; do
+for locale_dir in en fr nl pl cs it es pt ja; do
   rsync -a --delete --chown=www-data:www-data "$CHECKOUT/$locale_dir/" "$WEBROOT/$locale_dir/"
 done
 rsync -a --delete --chown=www-data:www-data "$CHECKOUT/assets/" "$WEBROOT/assets/"

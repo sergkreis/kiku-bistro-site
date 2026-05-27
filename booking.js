@@ -3,7 +3,7 @@
   if (!form) return;
 
   const pageLocale = (document.documentElement.lang || "de").slice(0, 2).toLowerCase();
-  const locale = ["de", "en", "fr", "nl", "pl", "cs"].includes(pageLocale) ? pageLocale : "de";
+  const locale = ["de", "en", "fr", "nl", "pl", "cs", "it", "es", "pt", "ja"].includes(pageLocale) ? pageLocale : "de";
   const i18n = {
     de: {
       loading: "Zeiten werden geladen...",
@@ -130,6 +130,90 @@
       confirmedSuccess: (reservation) =>
         `Rezervace potvrzena: ${reservation.date} v ${reservation.time} pro ${reservation.guests} osob. Potvrzení bude odesláno e-mailem.`,
       eventCategory: "Rezervace",
+    },
+    it: {
+      loading: "Caricamento degli orari disponibili...",
+      unavailable: "Non disponibile",
+      pastDate: "Non è possibile prenotare nel passato.",
+      pastTime: "Questo orario è già passato.",
+      loadError: "Non è stato possibile caricare la disponibilità.",
+      closed: "Chiuso in questo giorno.",
+      restDay: "Lunedì e martedì sono giorni di riposo.",
+      noSlots: "Nessun orario adatto disponibile",
+      noSlotsMessage: "Per questo numero di persone non c'è un orario disponibile in questo giorno.",
+      chooseTime: "Scegli un orario.",
+      checking: "Controllo della prenotazione...",
+      saveError: "Non è stato possibile salvare la prenotazione.",
+      request: "Richiesta",
+      available: "Disponibile",
+      pendingSuccess: (reservation) =>
+        `Richiesta ricevuta: ${reservation.date} alle ${reservation.time} per ${reservation.guests} persone. Confermeremo personalmente via e-mail.`,
+      confirmedSuccess: (reservation) =>
+        `Prenotazione confermata: ${reservation.date} alle ${reservation.time} per ${reservation.guests} persone. Verrà inviata una conferma via e-mail.`,
+      eventCategory: "Prenotazione",
+    },
+    es: {
+      loading: "Cargando horarios disponibles...",
+      unavailable: "No disponible",
+      pastDate: "No es posible reservar en el pasado.",
+      pastTime: "Esta hora ya ha pasado.",
+      loadError: "No se pudo cargar la disponibilidad.",
+      closed: "Cerrado este día.",
+      restDay: "Lunes y martes son días de descanso.",
+      noSlots: "No hay una hora adecuada disponible",
+      noSlotsMessage: "No hay una hora disponible para este número de personas en este día.",
+      chooseTime: "Elija una hora.",
+      checking: "Comprobando la reserva...",
+      saveError: "No se pudo guardar la reserva.",
+      request: "Solicitud",
+      available: "Disponible",
+      pendingSuccess: (reservation) =>
+        `Solicitud recibida: ${reservation.date} a las ${reservation.time} para ${reservation.guests} personas. Confirmaremos personalmente por e-mail.`,
+      confirmedSuccess: (reservation) =>
+        `Reserva confirmada: ${reservation.date} a las ${reservation.time} para ${reservation.guests} personas. Se enviará una confirmación por e-mail.`,
+      eventCategory: "Reserva",
+    },
+    pt: {
+      loading: "A carregar horários disponíveis...",
+      unavailable: "Indisponível",
+      pastDate: "Não é possível fazer reservas no passado.",
+      pastTime: "Esta hora já passou.",
+      loadError: "Não foi possível carregar a disponibilidade.",
+      closed: "Fechado neste dia.",
+      restDay: "Segunda e terça são dias de descanso.",
+      noSlots: "Nenhum horário adequado disponível",
+      noSlotsMessage: "Não há horário disponível para este número de pessoas neste dia.",
+      chooseTime: "Escolha uma hora.",
+      checking: "A verificar a reserva...",
+      saveError: "Não foi possível guardar a reserva.",
+      request: "Pedido",
+      available: "Disponível",
+      pendingSuccess: (reservation) =>
+        `Pedido recebido: ${reservation.date} às ${reservation.time} para ${reservation.guests} pessoas. Confirmaremos pessoalmente por e-mail.`,
+      confirmedSuccess: (reservation) =>
+        `Reserva confirmada: ${reservation.date} às ${reservation.time} para ${reservation.guests} pessoas. Será enviado um e-mail de confirmação.`,
+      eventCategory: "Reserva",
+    },
+    ja: {
+      loading: "空き時間を読み込んでいます...",
+      unavailable: "利用できません",
+      pastDate: "過去の日付では予約できません。",
+      pastTime: "この時間はすでに過ぎています。",
+      loadError: "空き状況を読み込めませんでした。",
+      closed: "この日は休業です。",
+      restDay: "月曜日と火曜日は定休日です。",
+      noSlots: "利用できる時間がありません",
+      noSlotsMessage: "この人数で利用できる時間がこの日にはありません。",
+      chooseTime: "時間を選択してください。",
+      checking: "予約を確認しています...",
+      saveError: "予約を保存できませんでした。",
+      request: "リクエスト",
+      available: "予約可",
+      pendingSuccess: (reservation) =>
+        `リクエストを受け付けました: ${reservation.date} ${reservation.time}、${reservation.guests}名様。メールで個別に確認いたします。`,
+      confirmedSuccess: (reservation) =>
+        `予約が確定しました: ${reservation.date} ${reservation.time}、${reservation.guests}名様。確認メールを送信します。`,
+      eventCategory: "予約",
     },
   }[locale];
 

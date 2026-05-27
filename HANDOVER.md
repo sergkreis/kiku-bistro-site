@@ -1,5 +1,10 @@
 # Kiku Bistro - Handover
 
+Update 2026-05-28:
+- Public multilingual pages now cover DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
+- Locale-specific reservation pages are generated for IT/ES/PT/JA as `/{locale}/reservation.html` and `/{locale}/reservierung.html`.
+- Reservation frontend/backend email copy accepts the same locale set.
+
 Последнее обновление: 2026-05-16
 
 ## Быстрый контекст

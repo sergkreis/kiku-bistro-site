@@ -244,7 +244,7 @@ button {
 
 .mobile-language-list {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
   gap: 6px;
   padding: 10px 0;
   border-top: 1px solid var(--line);
