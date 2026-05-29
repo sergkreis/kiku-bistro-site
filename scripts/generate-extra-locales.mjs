@@ -63,7 +63,7 @@ const locales = {
     terms: "Termini",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Molto francese. Molto rilassato. Molto vivo."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Siamo aperti il mercoled&igrave; dalle 9:30 alle 17:00 e dal gioved&igrave; alla domenica\n                dalle 9:30 alle 21:00, con piatti moderni e freschi per colazione e pranzo."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Siamo aperti il mercoled&igrave; e la domenica dalle 9:30 alle 17:00 e dal gioved&igrave; al sabato\n                dalle 9:30 alle 21:00, con piatti moderni e freschi per colazione e pranzo. Dal gioved&igrave;\n                al sabato sera serviamo anche la cena con vini selezionati in un'atmosfera piacevole."],
       ["View menu", "Vedi il menu"],
       ["Reserve a table", "Prenota un tavolo"],
       ["Get directions", "Indicazioni"],
@@ -173,7 +173,7 @@ const locales = {
     terms: "Condiciones",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Muy francés. Muy relajado. Muy vivo."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Abrimos los mi&eacute;rcoles de 9:30 a 17:00 y de jueves a domingo\n                de 9:30 a 21:00, con platos modernos y frescos para desayuno y almuerzo."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Abrimos los mi&eacute;rcoles y domingos de 9:30 a 17:00 y de jueves a s&aacute;bado\n                de 9:30 a 21:00, con platos modernos y frescos para desayuno y almuerzo. De jueves\n                a s&aacute;bado por la noche tambi&eacute;n servimos cenas con vinos seleccionados en un ambiente agradable."],
       ["View menu", "Ver carta"],
       ["Reserve a table", "Reservar mesa"],
       ["Get directions", "Cómo llegar"],
@@ -261,7 +261,7 @@ const locales = {
     terms: "Termos",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Muito francês. Muito descontraído. Muito vivo."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Estamos abertos &agrave; quarta das 9:30 &agrave;s 17:00 e de quinta a domingo\n                das 9:30 &agrave;s 21:00, com pratos modernos e frescos para pequeno-almo&ccedil;o e almo&ccedil;o."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Estamos abertos &agrave; quarta e ao domingo das 9:30 &agrave;s 17:00 e de quinta a s&aacute;bado\n                das 9:30 &agrave;s 21:00, com pratos modernos e frescos para pequeno-almo&ccedil;o e almo&ccedil;o. De quinta\n                a s&aacute;bado &agrave; noite tamb&eacute;m servimos jantar com vinhos selecionados num ambiente agrad&aacute;vel."],
       ["View menu", "Ver menu"],
       ["Reserve a table", "Reservar mesa"],
       ["Get directions", "Como chegar"],
@@ -348,7 +348,7 @@ const locales = {
     terms: "利用規約",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "とてもフレンチに。とても気軽に。とても生き生きと。"],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "&#27700;&#26332;&#26085;&#12399;9:30&#12363;&#12425;17:00&#12414;&#12391;&#12289;&#26408;&#26332;&#26085;&#12363;&#12425;&#26085;&#26332;&#26085;&#12399;9:30&#12363;&#12425;21:00&#12414;&#12391;&#21942;&#26989;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;\n                &#12514;&#12480;&#12531;&#12391;&#12501;&#12524;&#12483;&#12471;&#12517;&#12394;&#26397;&#39135;&#12392;&#12521;&#12531;&#12481;&#12434;&#12372;&#29992;&#24847;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;"],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "&#27700;&#26332;&#26085;&#12392;&#26085;&#26332;&#26085;&#12399;9:30&#12363;&#12425;17:00&#12414;&#12391;&#12289;&#26408;&#26332;&#26085;&#12363;&#12425;&#22303;&#26332;&#26085;&#12399;9:30&#12363;&#12425;21:00&#12414;&#12391;&#21942;&#26989;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;\n                &#12514;&#12480;&#12531;&#12391;&#12501;&#12524;&#12483;&#12471;&#12517;&#12394;&#26397;&#39135;&#12392;&#12521;&#12531;&#12481;&#12434;&#12372;&#29992;&#24847;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;&#26408;&#26332;&#26085;&#12363;&#12425;&#22303;&#26332;&#26085;&#12398;&#22812;&#12399;&#12289;&#36984;&#12426;&#12377;&#12368;&#12426;&#12398;&#12527;&#12452;&#12531;&#12392;&#24515;&#22320;&#12424;&#12356;&#38640;&#22258;&#27671;&#12398;&#20013;&#12391;&#12487;&#12451;&#12490;&#12540;&#12418;&#12362;&#27005;&#12375;&#12415;&#12356;&#12383;&#12384;&#12369;&#12414;&#12377;&#12290;"],
       ["View menu", "メニューを見る"],
       ["Reserve a table", "席を予約する"],
       ["Get directions", "道順"],

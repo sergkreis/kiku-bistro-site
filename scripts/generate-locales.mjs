@@ -54,7 +54,7 @@ const locales = {
     description: "Bistro moderne à Quedlinburg avec petit-déjeuner, déjeuner et une petite carte qui change régulièrement.",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Très français. Très détendu. Très vivant."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Nous sommes ouverts le mercredi de 9h30 &agrave; 17h00 et du jeudi au dimanche\n                de 9h30 &agrave; 21h00, avec des plats modernes et frais pour le petit-d&eacute;jeuner et le d&eacute;jeuner."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Nous sommes ouverts le mercredi et le dimanche de 9h30 &agrave; 17h00 et du jeudi au samedi\n                de 9h30 &agrave; 21h00, avec des plats modernes et frais pour le petit-d&eacute;jeuner et le d&eacute;jeuner.\n                Du jeudi au samedi soir, nous servons aussi le d&icirc;ner avec des vins choisis dans une atmosph&egrave;re agr&eacute;able."],
       ["View menu", "Voir la carte"],
       ["Reserve a table", "Réserver une table"],
       ["Reserve", "Réserver"],
@@ -170,7 +170,7 @@ const locales = {
     description: "Modern bistro in Quedlinburg met ontbijt, lunch en een kleine wisselende kaart.",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Heel Frans. Heel ontspannen. Heel levendig."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Wij zijn geopend op woensdag van 9:30 tot 17:00 en van donderdag tot en met zondag\n                van 9:30 tot 21:00, met moderne, verse ontbijt- en lunchgerechten."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Wij zijn geopend op woensdag en zondag van 9:30 tot 17:00 en van donderdag tot en met zaterdag\n                van 9:30 tot 21:00, met moderne, verse ontbijt- en lunchgerechten. Van donderdag\n                tot en met zaterdagavond serveren wij ook diner met geselecteerde wijnen in een aangename sfeer."],
       ["View menu", "Bekijk menu"],
       ["Reserve a table", "Tafel reserveren"],
       ["Reserve", "Reserveren"],
@@ -286,7 +286,7 @@ const locales = {
     description: "Nowoczesne bistro w Quedlinburgu ze śniadaniami, lunchem i małą zmienną kartą.",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Bardzo francusko. Bardzo swobodnie. Bardzo żywo."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Jeste&#347;my otwarci w &#347;rod&#281; od 9:30 do 17:00 oraz od czwartku do niedzieli\n                od 9:30 do 21:00. Serwujemy nowoczesne, &#347;wie&#380;e dania &#347;niadaniowe i lunchowe."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "Jeste&#347;my otwarci w &#347;rod&#281; i niedziel&#281; od 9:30 do 17:00 oraz od czwartku do soboty\n                od 9:30 do 21:00. Serwujemy nowoczesne, &#347;wie&#380;e dania &#347;niadaniowe i lunchowe.\n                Od czwartku do soboty wieczorem zapraszamy tak&#380;e na kolacje z wybranymi winami w przyjemnej atmosferze."],
       ["View menu", "Zobacz menu"],
       ["Reserve a table", "Zarezerwuj stolik"],
       ["Reserve", "Rezerwuj"],
@@ -402,7 +402,7 @@ const locales = {
     description: "Moderní bistro v Quedlinburgu se snídaní, obědem a malou obměňovanou nabídkou.",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Velmi francouzské. Velmi uvolněné. Velmi živé."],
-      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "M&aacute;me otev&#345;eno ve st&#345;edu od 9:30 do 17:00 a od &#269;tvrtka do ned&#283;le\n                od 9:30 do 21:00. Pod&aacute;v&aacute;me modern&iacute;, &#269;erstv&aacute; sn&iacute;da&#328;ov&aacute; a poledn&iacute; j&iacute;dla."],
+      ["We are open Wednesday and Sunday from 9:30 to 17:00 and Thursday to Saturday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes. From Thursday\n                to Saturday evening, we also serve dinner with selected wines in a warm atmosphere.", "M&aacute;me otev&#345;eno ve st&#345;edu a v ned&#283;li od 9:30 do 17:00 a od &#269;tvrtka do soboty\n                od 9:30 do 21:00. Pod&aacute;v&aacute;me modern&iacute;, &#269;erstv&aacute; sn&iacute;da&#328;ov&aacute; a poledn&iacute; j&iacute;dla.\n                Od &#269;tvrtka do soboty ve&#269;er nab&iacute;z&iacute;me tak&eacute; ve&#269;e&#345;e s vybran&yacute;mi v&iacute;ny v p&#345;&iacute;jemn&eacute; atmosf&eacute;&#345;e."],
       ["View menu", "Zobrazit menu"],
       ["Reserve a table", "Rezervovat stůl"],
       ["Reserve", "Rezervovat"],
