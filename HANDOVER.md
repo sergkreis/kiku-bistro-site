@@ -5,6 +5,12 @@ Update 2026-05-28:
 - Locale-specific reservation pages are generated for IT/ES/PT/JA as `/{locale}/reservation.html` and `/{locale}/reservierung.html`.
 - Reservation frontend/backend email copy accepts the same locale set.
 
+Update 2026-05-29:
+- Public booking widget replaced with the Resmio widget; reservation admin/backend remain available.
+- Opening hours changed to Wednesday/Sunday 9:30-17:00 and Thursday-Saturday 9:30-21:00.
+- Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
+- Visible food menu/prices updated from the new PDF.
+
 Последнее обновление: 2026-05-16
 
 ## Быстрый контекст
@@ -72,7 +78,7 @@ index.html                 - главная страница
 styles.css                 - стили сайта
 impressum.html             - Impressum и Datenschutz
 agb.html                   - AGB
-Bistro.pdf                 - актуальное PDF-меню
+Kiku-Bistro-Menu.pdf                 - актуальное PDF-меню
 assets/                    - изображения, логотипы, favicon
 infra/matomo/              - документация и пример compose для Matomo
 infra/private/             - приватная локальная инфраструктурная документация, не коммитить
@@ -262,7 +268,7 @@ PDF Menue geoeffnet -> event_action contains "PDF"
 Reservations are deployed to production.
 
 ```text
-Booking form: https://kiku-bistro.de/#reservierung
+Public booking widget: Resmio widget on the website; internal admin booking remains at https://admin.kiku-bistro.de/
 Reservation admin: https://admin.kiku-bistro.de/
 Analytics admin: https://analytics.kiku-bistro.de/
 ```
@@ -297,7 +303,7 @@ KIKU_DEPLOY_SSH_KEY
 Current reservation rules:
 
 ```text
-Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
+Public website uses Resmio for guest reservations. Internal backend/admin remain available with Wednesday/Sunday ending by 17:00 and Thursday-Saturday ending by 21:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated
@@ -320,7 +326,7 @@ Files:
 
 ```text
 server.py      - local Python stdlib server, API, SQLite storage
-booking.js     - public reservation form behavior
+booking.js     - legacy public reservation form behavior; public guest reservations now use Resmio
 admin.html     - local reservation admin
 data/          - local SQLite data, ignored by git
 ```
@@ -342,8 +348,8 @@ Current behavior:
 
 ```text
 Opening days: Wednesday-Sunday
-Opening time: 9:30-20:00
-Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
+Opening time: Wednesday/Sunday 9:30-17:00; Thursday-Saturday 9:30-21:00
+Public website uses Resmio for guest reservations. Internal backend/admin remain available with Wednesday/Sunday ending by 17:00 and Thursday-Saturday ending by 21:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Auto-confirmation: up to 4 guests when the selected slot has capacity
@@ -411,7 +417,7 @@ edit local files -> visual/test check -> git status -> commit -> push -> deploy 
 ```text
 Commit: eb98637 Update hours and visit photo
 Предыдущий menu commit: 8313df3 Update Bistro menu
-Проверка после деплоя: https://kiku-bistro.de/ 200, Bistro.pdf 200, новая картинка 200
+Проверка после деплоя: https://kiku-bistro.de/ 200, Kiku-Bistro-Menu.pdf 200, новая картинка 200
 ```
 
 Не деплоить на production без явного разрешения.
@@ -423,7 +429,7 @@ index.html
 styles.css
 impressum.html
 agb.html
-Bistro.pdf
+Kiku-Bistro-Menu.pdf
 assets/
 ```
 
@@ -598,7 +604,7 @@ hero во весь viewport
 Текущее меню обновлялось из актуального PDF и изображений меню.
 По умолчанию новые обновления меню приходят от пользователя в PDF. Пока пользователь
 не попросит другой источник, сверять позиции, цены и порядок вывода меню на сайте
-по присланному PDF, а затем заменять `Bistro.pdf` актуальным файлом.
+по присланному PDF, а затем заменять `Kiku-Bistro-Menu.pdf` актуальным файлом.
 
 Основные вкладки:
 
@@ -610,10 +616,10 @@ Ab 12:00 Uhr
 Вкладка напитков удалена.
 Порядок позиций на сайте должен повторять порядок в актуальном PDF-меню.
 
-Последнее обновление меню и PDF выполнено 2026-05-16 из файла `Bistro new.pdf`:
+Последнее обновление меню и PDF выполнено 2026-05-16 из файла `Bistro new (1).pdf`:
 
 ```text
-Bistro.pdf заменен актуальным PDF.
+Kiku-Bistro-Menu.pdf заменен актуальным PDF.
 Frühstück и Ab 12:00 Uhr обновлены по позициям, описаниям, ценам и порядку.
 Croissant mit Jamon добавлен в Frühstück.
 Quiche удалена из сайта, потому что отсутствует в актуальном PDF.
@@ -625,8 +631,8 @@ Croissant mit Lachs, Hausgemachtes Granola и Konsommé-Nudelsuppe обновл�
 
 ```text
 Montag - Dienstag: Ruhetag
-Mittwoch - Samstag: 9:30 - 20:00
-Sonntag: 9:30 - 17:00
+Mittwoch & Sonntag: 9:30 - 17:00
+Donnerstag - Samstag: 9:30 - 21:00
 ```
 
 Нижнее фото в секции `#visit` заменено на:

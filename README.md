@@ -46,7 +46,7 @@ analytics.kiku-bistro.de
 |-- styles.css                  # основные стили
 |-- impressum.html              # Impressum и Datenschutz
 |-- agb.html                    # AGB
-|-- Bistro.pdf                  # актуальное PDF-меню
+|-- Kiku-Bistro-Menu.pdf                  # актуальное PDF-меню
 |-- HANDOVER.md                 # технический handover проекта
 |-- infra/
 |   `-- matomo/                 # документация и пример Matomo setup
@@ -72,8 +72,8 @@ assets/visit-window-guest.jpg
 Последнее обновление сайта: 2026-05-16.
 
 ```text
-Часы работы: Mittwoch - Samstag, 9:30 - 20:00; Sonntag, 9:30 - 17:00; Montag - Dienstag, Ruhetag.
-Bistro.pdf обновлен по новому PDF-меню `Bistro new.pdf`.
+Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
+Kiku-Bistro-Menu.pdf обновлен по новому PDF-меню `Bistro new (1).pdf`.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF.
 Последнее изменение меню: добавлен Croissant mit Jamon, удалена Quiche, обновлены описания Lachs/Granola/Konsommé.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
@@ -84,7 +84,7 @@ Bistro.pdf обновлен по новому PDF-меню `Bistro new.pdf`.
 Reservations are live in production.
 
 ```text
-Booking form: https://kiku-bistro.de/#reservierung
+Public booking widget: Resmio widget on the website; internal admin booking remains at https://admin.kiku-bistro.de/
 Reservation admin: https://admin.kiku-bistro.de/
 Reservation API: https://kiku-bistro.de/api/
 Analytics admin: https://analytics.kiku-bistro.de/
@@ -102,7 +102,7 @@ Env file with secrets: /etc/kiku-reservations.env
 Current reservation rules:
 
 ```text
-Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
+Public website uses Resmio for guest reservations. Internal backend/admin remain available with Wednesday/Sunday ending by 17:00 and Thursday-Saturday ending by 21:00
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated
 Admin can adjust slot limits per date/time
@@ -176,7 +176,7 @@ no password is configured.
 Reservation rules:
 
 ```text
-Public slots: Mittwoch-Samstag 09:30, 10:00, 11:00, 13:00, 17:00, 18:00; Sonntag filters out reservations ending after 17:00
+Public website uses Resmio for guest reservations. Internal backend/admin remain available with Wednesday/Sunday ending by 17:00 and Thursday-Saturday ending by 21:00
 Reservation duration: 2 hours
 Default slot limit: 3 active reservations per time
 Active statuses for limits: pending, confirmed, seated
@@ -240,7 +240,7 @@ index.html
 styles.css
 impressum.html
 agb.html
-Bistro.pdf
+Kiku-Bistro-Menu.pdf
 assets/
 ```
 

@@ -63,7 +63,7 @@ const locales = {
     terms: "Termini",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Molto francese. Molto rilassato. Molto vivo."],
-      ["We are open Wednesday to Saturday from 9:30 to 20:00 and on Sunday\n                until 17:00, serving modern, fresh breakfast and lunch dishes.", "Siamo aperti dal mercoledì al sabato dalle 9:30 alle 20:00 e la domenica\n                fino alle 17:00, con piatti moderni e freschi per colazione e pranzo."],
+      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Siamo aperti il mercoled&igrave; dalle 9:30 alle 17:00 e dal gioved&igrave; alla domenica\n                dalle 9:30 alle 21:00, con piatti moderni e freschi per colazione e pranzo."],
       ["View menu", "Vedi il menu"],
       ["Reserve a table", "Prenota un tavolo"],
       ["Get directions", "Indicazioni"],
@@ -121,7 +121,7 @@ const locales = {
       ["Reserve a table at Kiku Bistro.", "Prenota un tavolo al Kiku Bistro."],
       ["Choose your date, time and party size. Available times are calculated\n              automatically based on current reservations.", "Scegli data, ora e numero di persone. Gli orari disponibili vengono calcolati\n              automaticamente in base alle prenotazioni esistenti."],
       ["Opening hours", "Orari di apertura"],
-      ["Wednesday to Saturday, 9:30 - 20:00; Sunday, 9:30 - 17:00", "Da mercoledì a sabato, 9:30 - 20:00; domenica, 9:30 - 17:00"],
+      ["Wednesday, 9:30 - 17:00; Thursday to Sunday, 9:30 - 21:00", "Mercoled&igrave;, 9:30 - 17:00; gioved&igrave; - domenica, 9:30 - 21:00"],
       ["Duration", "Durata"],
       ["Reservations are planned for 2 hours.", "Le prenotazioni sono previste per 2 ore."],
       ["Groups", "Gruppi"],
@@ -136,8 +136,8 @@ const locales = {
       ["I agree that my details may be stored to process the reservation.", "Accetto che i miei dati siano memorizzati per gestire la prenotazione."],
       ["Confirm reservation", "Conferma prenotazione"],
       ["Address", "Indirizzo"],
-      ["Wednesday - Saturday", "Mercoledì - sabato"],
-      ["Sunday", "Domenica"],
+      ["Thursday - Sunday", "Gioved&igrave; - domenica"],
+      ["Wednesday", "Mercoled&igrave;"],
       ["Monday - Tuesday", "Lunedì - martedì"],
       ["Closed", "Chiuso"],
       ["Contact", "Contatto"],
@@ -173,7 +173,7 @@ const locales = {
     terms: "Condiciones",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Muy francés. Muy relajado. Muy vivo."],
-      ["We are open Wednesday to Saturday from 9:30 to 20:00 and on Sunday\n                until 17:00, serving modern, fresh breakfast and lunch dishes.", "Abrimos de miércoles a sábado de 9:30 a 20:00 y los domingos\n                hasta las 17:00, con platos modernos y frescos para desayuno y almuerzo."],
+      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Abrimos los mi&eacute;rcoles de 9:30 a 17:00 y de jueves a domingo\n                de 9:30 a 21:00, con platos modernos y frescos para desayuno y almuerzo."],
       ["View menu", "Ver carta"],
       ["Reserve a table", "Reservar mesa"],
       ["Get directions", "Cómo llegar"],
@@ -223,9 +223,9 @@ const locales = {
       ["I agree that my details may be stored to process the reservation.", "Acepto que mis datos se guarden para procesar la reserva."],
       ["Confirm reservation", "Confirmar reserva"],
       ["Address", "Dirección"],
-      ["Wednesday to Saturday, 9:30 - 20:00; Sunday, 9:30 - 17:00", "Miércoles a sábado, 9:30 - 20:00; domingo, 9:30 - 17:00"],
-      ["Wednesday - Saturday", "Miércoles - sábado"],
-      ["Sunday", "Domingo"],
+      ["Wednesday, 9:30 - 17:00; Thursday to Sunday, 9:30 - 21:00", "Mi&eacute;rcoles, 9:30 - 17:00; jueves - domingo, 9:30 - 21:00"],
+      ["Thursday - Sunday", "Jueves - domingo"],
+      ["Wednesday", "Mi&eacute;rcoles"],
       ["Monday - Tuesday", "Lunes - martes"],
       ["Closed", "Cerrado"],
       ["<strong>Contact</strong>", "<strong>Contacto</strong>"],
@@ -261,7 +261,7 @@ const locales = {
     terms: "Termos",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "Muito francês. Muito descontraído. Muito vivo."],
-      ["We are open Wednesday to Saturday from 9:30 to 20:00 and on Sunday\n                until 17:00, serving modern, fresh breakfast and lunch dishes.", "Estamos abertos de quarta a sábado das 9:30 às 20:00 e ao domingo\n                até às 17:00, com pratos modernos e frescos para pequeno-almoço e almoço."],
+      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "Estamos abertos &agrave; quarta das 9:30 &agrave;s 17:00 e de quinta a domingo\n                das 9:30 &agrave;s 21:00, com pratos modernos e frescos para pequeno-almo&ccedil;o e almo&ccedil;o."],
       ["View menu", "Ver menu"],
       ["Reserve a table", "Reservar mesa"],
       ["Get directions", "Como chegar"],
@@ -310,9 +310,9 @@ const locales = {
       ["I agree that my details may be stored to process the reservation.", "Aceito que os meus dados sejam guardados para processar a reserva."],
       ["Confirm reservation", "Confirmar reserva"],
       ["Address", "Morada"],
-      ["Wednesday to Saturday, 9:30 - 20:00; Sunday, 9:30 - 17:00", "Quarta a sábado, 9:30 - 20:00; domingo, 9:30 - 17:00"],
-      ["Wednesday - Saturday", "Quarta - sábado"],
-      ["Sunday", "Domingo"],
+      ["Wednesday, 9:30 - 17:00; Thursday to Sunday, 9:30 - 21:00", "Quarta, 9:30 - 17:00; quinta - domingo, 9:30 - 21:00"],
+      ["Thursday - Sunday", "Quinta - domingo"],
+      ["Wednesday", "Quarta"],
       ["Monday - Tuesday", "Segunda - terça"],
       ["Closed", "Fechado"],
       ["<strong>Contact</strong>", "<strong>Contacto</strong>"],
@@ -348,7 +348,7 @@ const locales = {
     terms: "利用規約",
     replacements: [
       ["Very French. Very relaxed. Very alive.", "とてもフレンチに。とても気軽に。とても生き生きと。"],
-      ["We are open Wednesday to Saturday from 9:30 to 20:00 and on Sunday\n                until 17:00, serving modern, fresh breakfast and lunch dishes.", "水曜日から土曜日は9:30から20:00まで、日曜日は17:00まで営業しています。\n                モダンでフレッシュな朝食とランチをご用意しています。"],
+      ["We are open Wednesday from 9:30 to 17:00 and Thursday to Sunday\n                from 9:30 to 21:00, serving modern, fresh breakfast and lunch dishes.", "&#27700;&#26332;&#26085;&#12399;9:30&#12363;&#12425;17:00&#12414;&#12391;&#12289;&#26408;&#26332;&#26085;&#12363;&#12425;&#26085;&#26332;&#26085;&#12399;9:30&#12363;&#12425;21:00&#12414;&#12391;&#21942;&#26989;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;\n                &#12514;&#12480;&#12531;&#12391;&#12501;&#12524;&#12483;&#12471;&#12517;&#12394;&#26397;&#39135;&#12392;&#12521;&#12531;&#12481;&#12434;&#12372;&#29992;&#24847;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;"],
       ["View menu", "メニューを見る"],
       ["Reserve a table", "席を予約する"],
       ["Get directions", "道順"],
@@ -399,9 +399,9 @@ const locales = {
       ["I agree that my details may be stored to process the reservation.", "予約処理のために入力情報が保存されることに同意します。"],
       ["Confirm reservation", "予約を確定する"],
       ["Address", "住所"],
-      ["Wednesday to Saturday, 9:30 - 20:00; Sunday, 9:30 - 17:00", "水曜日から土曜日, 9:30 - 20:00; 日曜日, 9:30 - 17:00"],
-      ["Wednesday - Saturday", "水曜日 - 土曜日"],
-      ["Sunday", "日曜日"],
+      ["Wednesday, 9:30 - 17:00; Thursday to Sunday, 9:30 - 21:00", "&#27700;&#26332;&#26085;, 9:30 - 17:00; &#26408;&#26332;&#26085; - &#26085;&#26332;&#26085;, 9:30 - 21:00"],
+      ["Thursday - Sunday", "&#26408;&#26332;&#26085; - &#26085;&#26332;&#26085;"],
+      ["Wednesday", "&#27700;&#26332;&#26085;"],
       ["Monday - Tuesday", "月曜日 - 火曜日"],
       ["Closed", "休業"],
       ["Contact", "連絡先"],
@@ -536,7 +536,10 @@ function reservationPage(code, config) {
       };
       const escapeHtml = (value) =>
         String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-      const closingTimeForDate = (value) => (new Date(\`\${value}T12:00:00\`).getDay() === 0 ? "17:00" : "20:00");
+      const closingTimeForDate = (value) => {
+        const day = new Date(\`\${value}T12:00:00\`).getDay();
+        return day === 3 || day === 0 ? "17:00" : "21:00";
+      };
       const slotFitsOpeningHours = (dateValue, timeValue) =>
         new Date(\`\${dateValue}T\${timeValue}:00\`).getTime() + reservationMinutes * 60000 <=
         new Date(\`\${dateValue}T\${closingTimeForDate(dateValue)}:00\`).getTime();

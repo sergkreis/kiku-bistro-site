@@ -257,7 +257,10 @@
         return hours * 60 + minutes;
       };
       const timeFromMinutes = (value) => `${String(Math.floor(value / 60)).padStart(2, "0")}:${String(value % 60).padStart(2, "0")}`;
-      const closingTimeForDate = (value) => (new Date(`${value}T12:00:00`).getDay() === 0 ? "17:00" : "20:00");
+      const closingTimeForDate = (value) => {
+        const day = new Date(`${value}T12:00:00`).getDay();
+        return day === 3 || day === 0 ? "17:00" : "21:00";
+      };
       const adminSlotsForDate = (value) => {
         if (!value) return adminSlots.length ? adminSlots : slots;
         const end = minutesFromTime(closingTimeForDate(value)) - reservationMinutes;

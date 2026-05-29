@@ -54,7 +54,10 @@
       };
       const escapeHtml = (value) =>
         String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-      const closingTimeForDate = (value) => (new Date(`${value}T12:00:00`).getDay() === 0 ? "17:00" : "20:00");
+      const closingTimeForDate = (value) => {
+        const day = new Date(`${value}T12:00:00`).getDay();
+        return day === 3 || day === 0 ? "17:00" : "21:00";
+      };
       const slotFitsOpeningHours = (dateValue, timeValue) =>
         new Date(`${dateValue}T${timeValue}:00`).getTime() + reservationMinutes * 60000 <=
         new Date(`${dateValue}T${closingTimeForDate(dateValue)}:00`).getTime();

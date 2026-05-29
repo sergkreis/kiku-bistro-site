@@ -27,8 +27,8 @@ DB_PATH = Path(os.environ.get("KIKU_DB_PATH", DATA_DIR / "reservations.sqlite3")
 OPEN_DAYS = {2, 3, 4, 5, 6}
 PUBLIC_SLOTS = ["09:30", "10:00", "11:00", "13:00", "17:00", "18:00"]
 ADMIN_SLOT_START = "09:30"
-DEFAULT_CLOSING_TIME = "20:00"
-SUNDAY_CLOSING_TIME = "17:00"
+DEFAULT_CLOSING_TIME = "21:00"
+WEDNESDAY_CLOSING_TIME = "17:00"
 ADMIN_SLOT_INTERVAL_MINUTES = 15
 RESERVATION_MINUTES = 120
 DEFAULT_SLOT_LIMIT = 3
@@ -216,7 +216,7 @@ def is_open_day(day: date) -> bool:
 
 
 def closing_time(day: date) -> str:
-    return SUNDAY_CLOSING_TIME if day.weekday() == 6 else DEFAULT_CLOSING_TIME
+    return WEDNESDAY_CLOSING_TIME if day.weekday() in {2, 6} else DEFAULT_CLOSING_TIME
 
 
 def latest_reservation_start(day: date) -> str:
@@ -1649,4 +1649,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
