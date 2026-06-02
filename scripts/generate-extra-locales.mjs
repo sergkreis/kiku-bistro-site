@@ -682,3 +682,5 @@ for (const [code, config] of Object.entries(locales)) {
   await writeFile(join(dir, "reservation.html"), reservationPage(code, config), "utf8");
   await copyFile(join(dir, "reservation.html"), join(dir, "reservierung.html"));
 }
+
+await import("./generate-guest-pages.mjs");

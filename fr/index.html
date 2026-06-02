@@ -531,7 +531,7 @@
         header.classList.toggle("scrolled", window.scrollY > 20);
       });
 
-      if (menuToggle && mobileCarte) {
+      if (menuToggle && mobileMenu) {
         menuToggle.addEventListener("click", () => {
           const expanded = menuToggle.getAttribute("aria-expanded") === "true";
           menuToggle.setAttribute("aria-expanded", String(!expanded));
@@ -576,4 +576,3 @@
     </script>
   </body>
 </html>
-

@@ -532,6 +532,13 @@ function replaceAll(input, replacements) {
   return output;
 }
 
+function translateOutsideScripts(input, replacements) {
+  return input
+    .split(/(<script[\s\S]*?<\/script>)/gi)
+    .map((part) => (part.toLowerCase().startsWith("<script") ? part : replaceAll(part, replacements)))
+    .join("");
+}
+
 function applyLanguageSwitcher(input, locale) {
   return input
     .replace(/          <details class="language-menu">[\s\S]*?          <\/details>/, languageMenu(locale))
@@ -543,6 +550,7 @@ function repairGeneratedScript(input) {
     .replace(/enableHeartBeat[^\"]*r/g, "enableHeartBeatTimer")
     .replace(/getElementsByTag[^(]+/g, "getElementsByTagName")
     .replace(/const mobile[^\s=]+ = document\.querySelector\("\.mobile-menu"\);/g, 'const mobileMenu = document.querySelector(".mobile-menu");')
+    .replace(/menuToggle && mobile[^\s)]+/g, "menuToggle && mobileMenu")
     .replace(/mobile[^\s.]+\.querySelectorAll/g, "mobileMenu.querySelectorAll");
 }
 
@@ -566,7 +574,7 @@ for (const [locale, config] of Object.entries(locales)) {
   let reservation = sourceReservation
     .replace('<html lang="en">', `<html lang="${locale}">`)
     .replaceAll("&locale=en", `&locale=${locale}`);
-  reservation = replaceAll(reservation, config.reservation);
+  reservation = translateOutsideScripts(reservation, config.reservation);
   reservation = reservation
     .replaceAll("new Erreur", "new Error")
     .replaceAll("new Fout", "new Error")
@@ -585,3 +593,5 @@ for (const [locale, config] of Object.entries(locales)) {
   await writeFile(join(dir, "reservation.html"), reservation, "utf8");
   await copyFile(join(dir, "reservation.html"), join(dir, "reservierung.html"));
 }
+
+await import("./generate-guest-pages.mjs");

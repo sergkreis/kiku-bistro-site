@@ -43,7 +43,7 @@
 
     <script>
       const locale = "ja";
-      const copy = {"title":"Kiku Bistro | 予約の管理","eyebrow":"予約","navReserve":"予約","heading":"予約の管理","intro":"こちらで予約内容の確認、変更、キャンセルができます。","loading":"予約を読み込んでいます...","statuses":{"pending":"リクエスト","confirmed":"確定","seated":"来店済み","cancelled":"キャンセル済み","no_show":"無断キャンセル"},"date":"日付","guests":"人数","time":"時間","note":"メモ","save":"変更を保存","cancel":"予約をキャンセル","notFound":"予約が見つかりません。","updated":"予約が更新されました。","confirmCancel":"この予約をキャンセルしますか？","cancelled":"予約はキャンセルされました。","guestWord":"名","at":""};
+      const copy = {"title":"Kiku Bistro | 予約の管理","eyebrow":"予約","navReserve":"予約","heading":"予約の管理","intro":"こちらで予約内容の確認、変更、キャンセルができます。","loading":"予約を読み込んでいます...","statuses":{"pending":"リクエスト","confirmed":"確定","seated":"来店済み","cancelled":"キャンセル済み","no_show":"無断キャンセル"},"date":"日付","guests":"人数","time":"時間","note":"メモ","save":"変更を保存","cancel":"予約をキャンセル","notFound":"予約が見つかりません。","updated":"予約が更新されました。","confirmCancel":"この予約をキャンセルしますか？","cancelled":"予約はキャンセルされました。","guestWord":"名","timePrefix":"","timeSuffix":""};
       const content = document.getElementById("guest-content");
       const token = new URLSearchParams(location.search).get("token") || "";
       const slots = ["09:30","10:00","11:00","13:00","17:00","18:00"];
@@ -94,7 +94,9 @@
       const bindDateChange = (form, disabled) => {
         form.elements.date.addEventListener("change", () => {
           const availableSlots = slotsForDate(form.elements.date.value);
-          if (!availableSlots.includes(form.elements.time.value)) form.elements.time.value = "";
+          if (!availableSlots.includes(form.elements.time.value)) {
+            form.elements.time.value = "";
+          }
           form.querySelector(".time-grid").innerHTML = renderTimeTiles(form.elements.date.value, form.elements.time.value, disabled);
           bindTimeTiles(form);
         });
@@ -102,30 +104,31 @@
       const render = (reservation, message = "") => {
         const disabled = ["cancelled", "no_show"].includes(reservation.status);
         const status = copy.statuses[reservation.status] || reservation.status;
-        const connector = copy.at ? ` ${copy.at} ` : " ";
+        const timePrefix = copy.timePrefix ? ` ${copy.timePrefix} ` : " ";
         content.innerHTML = `
           <div class="guest-card">
             <div class="guest-summary">
               <div>
                 <span class="guest-status ${reservation.status}">${escapeHtml(status)}</span>
-                <h2>${escapeHtml(reservation.date)}${connector}${escapeHtml(reservation.time)}</h2>
-                <p>${escapeHtml(reservation.guests)} ${escapeHtml(copy.guestWord)} · ${escapeHtml(reservation.name)}</p>
+                <h2>${escapeHtml(reservation.date)}${timePrefix}${escapeHtml(reservation.time)}${escapeHtml(copy.timeSuffix)}</h2>
+                <p>${escapeHtml(reservation.guests)} ${escapeHtml(copy.guestWord)} &middot; ${escapeHtml(reservation.name)}</p>
               </div>
             </div>
+
             <form id="guest-change-form" class="guest-form">
               <input type="hidden" name="time" value="${escapeHtml(reservation.time)}" />
               <div class="form-row form-row-two">
-                <label><span>${copy.date}</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDate(new Date())}" ${disabled ? "disabled" : ""} required /></label>
-                <label><span>${copy.guests}</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
+                <label><span>${escapeHtml(copy.date)}</span><input type="date" name="date" value="${escapeHtml(reservation.date)}" min="${toLocalDate(new Date())}" ${disabled ? "disabled" : ""} required /></label>
+                <label><span>${escapeHtml(copy.guests)}</span><input type="number" name="guests" min="1" max="12" value="${escapeHtml(reservation.guests)}" ${disabled ? "disabled" : ""} required /></label>
               </div>
               <div class="guest-time-block">
-                <span class="guest-label">${copy.time}</span>
+                <span class="guest-label">${escapeHtml(copy.time)}</span>
                 <div class="time-grid">${renderTimeTiles(reservation.date, reservation.time, disabled)}</div>
               </div>
-              <label><span>${copy.note}</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
+              <label><span>${escapeHtml(copy.note)}</span><textarea name="note" rows="3" ${disabled ? "disabled" : ""}>${escapeHtml(reservation.note)}</textarea></label>
               <div class="guest-actions">
-                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>${copy.save}</button>
-                <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>${copy.cancel}</button>
+                <button class="btn btn-dark" type="submit" ${disabled ? "disabled" : ""}>${escapeHtml(copy.save)}</button>
+                <button class="btn btn-outline" type="button" id="guest-cancel" ${disabled ? "disabled" : ""}>${escapeHtml(copy.cancel)}</button>
               </div>
               <p class="reservation-message" id="guest-message" data-type="${message ? "success" : ""}">${escapeHtml(message)}</p>
             </form>
@@ -139,7 +142,7 @@
       };
       const load = async () => {
         if (!token) {
-          content.innerHTML = `<p class="reservation-message" data-type="error">${copy.notFound}</p>`;
+          content.innerHTML = `<p class="reservation-message" data-type="error">${escapeHtml(copy.notFound)}</p>`;
           return;
         }
         try {
