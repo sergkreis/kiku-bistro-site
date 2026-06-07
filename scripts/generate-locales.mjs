@@ -539,6 +539,10 @@ function translateOutsideScripts(input, replacements) {
     .join("");
 }
 
+function repairPdfMenuHref(input) {
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf"/g, 'href="../Kiku-Bistro-Menu.pdf"');
+}
+
 function applyLanguageSwitcher(input, locale) {
   return input
     .replace(/          <details class="language-menu">[\s\S]*?          <\/details>/, languageMenu(locale))
@@ -568,6 +572,7 @@ for (const [locale, config] of Object.entries(locales)) {
   index = replaceAll(index, commonIndexReplacements);
   index = applyLanguageSwitcher(index, locale);
   index = replaceAll(index, config.replacements);
+  index = repairPdfMenuHref(index);
   index = repairGeneratedScript(index);
   await writeFile(join(dir, "index.html"), index, "utf8");
 

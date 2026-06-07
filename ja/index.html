@@ -62,6 +62,7 @@
         <nav class="nav">
           <a href="#about">ビストロ</a>
           <a href="#menu">メニュー</a>
+          <a href="#reservation">予約</a>
           <a href="#visit">連絡先</a>
           <details class="language-menu">
             <summary>JA</summary>
@@ -101,6 +102,7 @@
       <div class="mobile-menu" id="mobile-menu">
         <a href="#about">ビストロ</a>
         <a href="#menu">メニュー</a>
+        <a href="#reservation">予約</a>
         <a href="#visit">連絡先</a>
         <div class="mobile-language-list" aria-label="Language">
           <a href="../" lang="de">DE</a>
@@ -137,7 +139,7 @@
               </p>
               <div class="hero-actions">
                 <a class="btn btn-light-solid" href="#menu">メニューを見る</a>
-                <a class="btn btn-light-outline" href="#reservation">&#24109;&#12434;&#20104;&#32004;&#12377;&#12427;</a>
+                <a class="btn btn-light-outline" href="#reservation">席を予約する</a>
 
                 <a
                   class="btn btn-light-outline"
@@ -200,28 +202,28 @@
             <div class="menu-panels">
               <div class="menu-panel active" id="tab-fruehstueck">
                 <div class="menu-group">
-                  <p class="menu-group-label">12:00&#12414;&#12391;</p>
+                  <p class="menu-group-label">12:00まで</p>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Bread basket</span>
-                      <span class="item-description">Sourdough bread, black rye sourdough with fermented malt, brioche, butter, jam and jam&oacute;n</span>
+                      <span class="item-description">Sourdough bread, black rye sourdough with fermented malt, butter, jam and jam&oacute;n</span>
                     </div>
                     <span class="item-price">8,5 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-options">
                     <div class="menu-option-heading">
-                      <span class="item-name">Eggs Benedict on brioche</span>
-                      <span class="item-description">Poached eggs, avocado, hollandaise</span>
+                      <span class="item-name">ブリオッシュのエッグベネディクト</span>
+                      <span class="item-description">ポーチドエッグ、アボカド、オランデーズソース</span>
                     </div>
                     <div class="menu-option-row">
                       <div>
-                        <span class="item-name item-name-option">With asparagus</span>
+                        <span class="item-name item-name-option">アスパラガス添え</span>
                       </div>
                       <span class="item-price">12 &euro;</span>
                     </div>
                     <div class="menu-option-row">
                       <div>
-                        <span class="item-name item-name-option">With roast beef</span>
+                        <span class="item-name item-name-option">ローストビーフ添え</span>
                       </div>
                       <span class="item-price">16 &euro;</span>
                     </div>
@@ -229,7 +231,7 @@
                   <div class="menu-item menu-item-options">
                     <div class="menu-option-heading">
                       <span class="item-name">Eggs Benedict on croissant</span>
-                      <span class="item-description">Poached eggs, avocado, hollandaise</span>
+                      <span class="item-description">ポーチドエッグ、アボカド、オランデーズソース</span>
                     </div>
                     <div class="menu-option-row">
                       <div>
@@ -253,21 +255,28 @@
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">French Toast</span>
+                      <span class="item-name">フレンチトースト</span>
                       <span class="item-description">Brioche, yuzu mascarpone, berries, caramel</span>
                     </div>
                     <span class="item-price">13 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Sweet croissant</span>
+                      <span class="item-name">スイートクロワッサン</span>
                       <span class="item-description">Yuzu mascarpone, chocolate-hazelnut praline, caramel</span>
                     </div>
                     <span class="item-price">12,5 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Homemade granola</span>
+                      <span class="item-name">Cardamom bun</span>
+                      <span class="item-description">with vanilla cream and berries</span>
+                    </div>
+                    <span class="item-price">7 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">自家製グラノーラ</span>
                       <span class="item-description">Berries, nuts, yogurt</span>
                     </div>
                     <span class="item-price">11 &euro;</span>
@@ -277,13 +286,13 @@
 
               <div class="menu-panel" id="tab-mittag">
                 <div class="menu-stack">
-                  <p class="menu-panel-title">&#12521;&#12531;&#12481;</p>
+                  <p class="menu-panel-title">ランチ</p>
                   <div class="menu-group">
-                    <p class="menu-group-label">&#21069;&#33756;</p>
+                    <p class="menu-group-label">前菜</p>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Bread basket</span>
-                      <span class="item-description">Sourdough bread, black rye sourdough with fermented malt, brioche, cream cheese, jam&oacute;n, muhammara</span>
+                      <span class="item-description">Sourdough bread, black rye sourdough with fermented malt, cream cheese, jam&oacute;n, olive paste</span>
                     </div>
                     <span class="item-price">10 &euro;</span>
                   </div>
@@ -304,7 +313,7 @@
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Trio of dips with sourdough bread</span>
-                      <span class="item-description">Tomato salsa, hummus, muhammara</span>
+                      <span class="item-description">Tomato salsa, muhammara, hummus</span>
                     </div>
                     <span class="item-price">14 &euro;</span>
                   </div>
@@ -329,14 +338,21 @@
                     </div>
                     <span class="item-price">16 &euro;</span>
                   </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Tomato stracciatella salad</span>
+                      <span class="item-description">with sourdough bread</span>
+                    </div>
+                    <span class="item-price">12 &euro;</span>
+                  </div>
                   </div>
 
                   <div class="menu-group">
-                    <p class="menu-group-label">&#12513;&#12452;&#12531;</p>
+                    <p class="menu-group-label">メイン</p>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Noodle soup</span>
-                      <span class="item-description">Pork, mushrooms, egg</span>
+                      <span class="item-name">Kimchi soup</span>
+                      <span class="item-description">char siu pork, jasmine rice</span>
                     </div>
                     <span class="item-price">16 &euro;</span>
                   </div>
@@ -357,7 +373,7 @@
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Singapore chili chicken</span>
-                      <span class="item-description">Asparagus, egg, sourdough bread</span>
+                      <span class="item-description">Asparagus, egg</span>
                     </div>
                     <span class="item-price">19,5 &euro;</span>
                   </div>
@@ -371,7 +387,7 @@
                   </div>
 
                   <div class="menu-group">
-                    <p class="menu-group-label">&#12487;&#12470;&#12540;&#12488;</p>
+                    <p class="menu-group-label">デザート</p>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Honey cake</span>
@@ -388,21 +404,21 @@
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Cheesecake</span>
-                      <span class="item-description">Cr&egrave;me anglaise and caramel</span>
+                      <span class="item-name">Tiramisu</span>
+                      <span class="item-description">with vanilla ice cream</span>
                     </div>
-                    <span class="item-price">8 &euro;</span>
+                    <span class="item-price">6,5 &euro;</span>
                   </div>
                   </div>
                 </div>
                 <p class="menu-note">
-                  &#12521;&#12531;&#12481;&#12513;&#12491;&#12517;&#12540;&#12399;&#26368;&#26032;&#12398;PDF&#12395;&#22522;&#12389;&#12356;&#12390;&#12356;&#12414;&#12377;&#12290;&#23436;&#20840;&#29256;&#12399;&#19979;&#12398;PDF&#12391;&#12372;&#35239;&#12356;&#12383;&#12384;&#12369;&#12414;&#12377;&#12290;
+                  The lunch menu is based on the current PDF menu. The full original menu is available below.
                 </p>
               </div>
             </div>
 
             <div class="menu-pdf-row">
-              <a class="btn btn-dark" href="../Kiku-Bistro-Menu.pdf" target="_blank" rel="noreferrer">&#29694;&#22312;&#12398;&#12513;&#12491;&#12517;&#12540;PDF</a>
+              <a class="btn btn-dark" href="../Kiku-Bistro-Menu.pdf" target="_blank" rel="noreferrer">現在のメニューPDF</a>
             </div>
           </div>
 
@@ -416,13 +432,13 @@
       <section class="section reservation-section" id="reservation">
         <div class="container reservation-layout">
           <div class="reservation-copy fade-up">
-            <p class="eyebrow">&#20104;&#32004;</p>
-            <h2>Kiku Bistro&#12398;&#24109;&#12434;&#20104;&#32004;&#12377;&#12427;&#12290;</h2>
-            <p>&#26085;&#20184;&#12289;&#26178;&#38291;&#12289;&#20154;&#25968;&#12434;&#20104;&#32004;&#12501;&#12457;&#12540;&#12512;&#12391;&#36984;&#25246;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</p>
+            <p class="eyebrow">予約</p>
+            <h2>Kiku Bistroの席を予約する。</h2>
+            <p>Choose your date, time and party size directly in the reservation form.</p>
             <div class="reservation-facts">
-              <p><strong>&#28382;&#22312;&#26178;&#38291;</strong> &#12372;&#20104;&#32004;&#12399;2&#26178;&#38291;&#12391;&#25215;&#12426;&#12414;&#12377;&#12290;</p>
-              <p><strong>&#12464;&#12523;&#12540;&#12503;</strong> 5&#21517;&#27096;&#20197;&#19978;&#12398;&#22580;&#21512;&#12399;&#38651;&#35441;&#12391;&#12372;&#20104;&#32004;&#12367;&#12384;&#12373;&#12356;&#12290;</p>
-              <p><strong>&#38651;&#35441;</strong> <a href="tel:+4939464139064">+49 3946 4139064</a></p>
+              <p><strong>滞在時間</strong> ご予約は2時間で承ります。</p>
+              <p><strong>グループ</strong> For 5 or more guests, please reserve by phone.</p>
+              <p><strong>電話番号</strong> <a href="tel:+4939464139064">+49 3946 4139064</a></p>
             </div>
           </div>
 
@@ -456,9 +472,9 @@
                 <p>Steinbr&uuml;cke 2<br />06484 Quedlinburg</p>
               </div>
               <div class="visit-info-card">
-                <strong>&#21942;&#26989;&#26178;&#38291;</strong>
-                <p>&#27700;&#26332;&#26085;&#12392;&#26085;&#26332;&#26085;<br />9:30 - 17:00</p>
-                <p>&#26408;&#26332;&#26085; - &#22303;&#26332;&#26085;<br />9:30 - 21:00</p>
+                <strong>営業時間</strong>
+                <p>&#27700;&#26332;&#26085; &amp; Sunday<br />9:30 - 17:00</p>
+                <p>Thursday - Saturday<br />9:30 - 21:00</p>
                 <p>月曜日 - 火曜日<br />休業</p>
               </div>
               <div class="visit-info-card">
@@ -568,4 +584,3 @@
     </script>
   </body>
 </html>
-

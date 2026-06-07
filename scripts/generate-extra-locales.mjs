@@ -446,6 +446,10 @@ function translateOutsideScripts(input, replacements) {
     .join("");
 }
 
+function repairPdfMenuHref(input) {
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf"/g, 'href="../Kiku-Bistro-Menu.pdf"');
+}
+
 function updateCommonIndex(input, current, rootPage = false) {
   const prefix = rootPage ? rootPrefix : localizedPrefix;
   const currentLabel = current.toUpperCase();
@@ -473,7 +477,7 @@ function localizedIndex(source, code, config) {
     ["Terms", config.terms],
     ...config.replacements,
   ]);
-  return html;
+  return repairPdfMenuHref(html);
 }
 
 function reservationPage(code, config) {
