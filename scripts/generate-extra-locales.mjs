@@ -24,6 +24,14 @@ const alternates = [
   '    <link rel="alternate" hreflang="x-default" href="https://kiku-bistro.de/" />',
 ].join("\n");
 
+const canonicalHref = (code) => (code === "de" ? "https://kiku-bistro.de/" : `https://kiku-bistro.de/${code}/`);
+
+const seoHeadLinks = (code) => `    <link rel="canonical" href="${canonicalHref(code)}" />
+${alternates}`;
+
+const seoHeadLinksPattern =
+  /(?:    <link rel="canonical" href="https:\/\/kiku-bistro\.de\/[^"]*" \/>\r?\n)?(?:    <link rel="alternate" hreflang="(?:de|en|fr|nl|pl|cs|it|es|pt|ja|x-default)" href="https:\/\/kiku-bistro\.de\/[^"]*" \/>\r?\n?)+/;
+
 const langLinks = (prefix) =>
   languages
     .map(([code]) => {
@@ -454,7 +462,7 @@ function updateCommonIndex(input, current, rootPage = false) {
   const prefix = rootPage ? rootPrefix : localizedPrefix;
   const currentLabel = current.toUpperCase();
   return input
-    .replace(/    <link rel="alternate" hreflang="de"[\s\S]*?    <link rel="alternate" hreflang="x-default" href="https:\/\/kiku-bistro\.de\/" \/>/, alternates)
+    .replace(seoHeadLinksPattern, `${seoHeadLinks(current)}\n`)
     .replace(/          <details class="language-menu">[\s\S]*?          <\/details>/, languageMenu(currentLabel, prefix))
     .replace(/        <div class="mobile-language-list"[\s\S]*?        <\/div>/, mobileLanguageList(rootPage ? "Sprache" : "Language", prefix));
 }

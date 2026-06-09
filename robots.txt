@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Operational endpoints and local/generated folders are not search landing pages.
+Disallow: /api/
+Disallow: /data/
+Disallow: /infra/
+Disallow: /output/
+Disallow: /scripts/
+Disallow: /__pycache__/
+
+Sitemap: https://kiku-bistro.de/sitemap.xml

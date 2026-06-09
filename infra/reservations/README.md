@@ -2,6 +2,31 @@
 
 Local reservation backend for the Kiku Bistro static site.
 
+Last documentation update: 2026-06-07.
+
+Current public booking state:
+
+```text
+Public website reservations use the Resmio widget.
+The custom public reservation form is disabled on the website.
+The internal reservation backend/API/admin remain deployed and available.
+Reservation admin: https://admin.kiku-bistro.de/
+Reservation API: https://kiku-bistro.de/api/
+```
+
+Current opening and reservation rules:
+
+```text
+Opening days: Wednesday-Sunday
+Wednesday & Sunday: 9:30 - 17:00
+Thursday - Saturday: 9:30 - 21:00
+Monday - Tuesday: closed
+Reservation duration: 2 hours
+Default slot limit: 3 active reservations per time
+Auto-confirmation: up to 4 guests when capacity is available
+5+ guests: pending request, restaurant confirms manually
+```
+
 Production shape:
 
 ```text
@@ -13,6 +38,11 @@ secrets live in /etc/kiku-reservations.env
 ```
 
 Files in this folder are templates. Do not commit real passwords.
+
+Production deploy is handled by GitHub Actions and `scripts/deploy-production.sh`.
+The deploy script updates static files, syncs localized pages, installs
+`server.py`, syncs these reservation templates to `/opt/kiku-reservations/infra`,
+restarts `kiku-reservations`, tests nginx and reloads nginx.
 
 ## Environment
 
@@ -66,4 +96,5 @@ systemctl reload nginx
 ```bash
 curl -s http://127.0.0.1:8080/api/health
 curl -s https://kiku-bistro.de/api/health
+curl -I https://admin.kiku-bistro.de/
 ```

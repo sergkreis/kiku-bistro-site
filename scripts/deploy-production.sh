@@ -23,6 +23,8 @@ install -d -o www-data -g www-data -m 750 "$DATA_DIR"
 
 install -o www-data -g www-data -m 644 "$CHECKOUT/index.html" "$WEBROOT/index.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/styles.css" "$WEBROOT/styles.css"
+install -o www-data -g www-data -m 644 "$CHECKOUT/robots.txt" "$WEBROOT/robots.txt"
+install -o www-data -g www-data -m 644 "$CHECKOUT/sitemap.xml" "$WEBROOT/sitemap.xml"
 install -o www-data -g www-data -m 644 "$CHECKOUT/impressum.html" "$WEBROOT/impressum.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/agb.html" "$WEBROOT/agb.html"
 install -o www-data -g www-data -m 644 "$CHECKOUT/Kiku-Bistro-Menu.pdf" "$WEBROOT/Kiku-Bistro-Menu.pdf"

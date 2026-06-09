@@ -2,6 +2,8 @@
 
 Production Matomo runs on the Kiku Bistro VPS in `/opt/kiku-matomo`.
 
+Last documentation update: 2026-06-07.
+
 Public URL:
 
 ```text
@@ -79,6 +81,40 @@ PDF Menue geoeffnet -> event_action contains "PDF"
 
 The public site uses `enableHeartBeatTimer` in the Matomo JavaScript tracker so
 single-page visits get more accurate time-on-site measurements.
+
+## Current menu tracking context
+
+Updated on 2026-06-07.
+
+```text
+Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
+Current menu source file: Bistro07062026.pdf
+Menu deploy commit: ed931ff Update Bistro menu
+Production workflow run: 27091768623, success
+```
+
+The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across
+all languages. Locale generation scripts repair translated PDF hrefs back to
+this filename so Matomo PDF click tracking remains grouped under the same URL.
+
+The visible website menu still tracks only the food tabs (`Frühstück` and
+`Ab 12:00 Uhr`). Drinks, wine and cocktails are present in the PDF, but are not
+rendered as a separate website tab.
+
+## Local analytics reports
+
+Generated reports are local artifacts under `output/pdf/`. They are currently
+untracked unless the user explicitly decides to commit or publish them.
+
+```text
+May 2026 report:
+output/pdf/kiku-bistro-statistik-mai-2026.pdf
+output/pdf/kiku-bistro-statistik-mai-2026-data.json
+
+Weekly report, 31.05.2026 - 06.06.2026:
+output/pdf/kiku-bistro-wochenstatistik-2026-05-31-bis-2026-06-06.pdf
+output/pdf/kiku-bistro-wochenstatistik-2026-05-31-bis-2026-06-06-data.json
+```
 
 ## Instagram UTM links
 

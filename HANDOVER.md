@@ -1,5 +1,21 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-08:
+- Added root `robots.txt` and `sitemap.xml` for production search crawlers.
+- `robots.txt` allows the public site, points crawlers to `https://kiku-bistro.de/sitemap.xml`, and excludes non-search operational/local paths such as `/api/`, `/infra/`, `/scripts/`, `/output/`, `/data/`, and `/__pycache__/`.
+- `sitemap.xml` lists canonical HTTPS non-www URLs for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA plus the current PDF menu, and includes reciprocal `hreflang` alternates for the public language pages.
+- Public language pages now include `rel="canonical"` links to the non-www URLs, and duplicated generated `hreflang` entries were removed.
+- `scripts/deploy-production.sh` now copies `robots.txt` and `sitemap.xml` into `/var/www/kiku-site`.
+
+Update 2026-06-07:
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced from `Bistro07062026.pdf`.
+- Visible food menu was updated on DE and regenerated for EN, FR, NL, PL, CS, IT, ES, PT, JA.
+- Menu changes: added Kardamomschnecke, added Tomaten-Stracciatella-Salat, replaced Nudelsuppe with Kimchisuppe, replaced Cheesecake with Tiramisu, and updated several descriptions from the PDF.
+- Locale generators now repair localized PDF hrefs back to `Kiku-Bistro-Menu.pdf`, so text translation cannot produce broken filenames such as `Kiku-Bistro-Carte.pdf` or `Kiku-Bistro-Carta.pdf`.
+- Production deploy completed from commit `ed931ff Update Bistro menu`; GitHub Actions run `27091768623` succeeded.
+- Production checks after deploy: all public locale pages returned 200, `Kiku-Bistro-Menu.pdf` returned 200, and remote PDF SHA256 matched local SHA256 `F9350E72CB665E58E6D1C2C867921455B308BD1C7FD74515FE174EF6340B090F`.
+- Note: the current PDF contains a guest Wi-Fi page. Future menu PDFs should be reviewed for public-safe content before deploy.
+
 Update 2026-05-28:
 - Public multilingual pages now cover DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 - Locale-specific reservation pages are generated for IT/ES/PT/JA as `/{locale}/reservation.html` and `/{locale}/reservierung.html`.
@@ -11,7 +27,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-05-16
+Последнее обновление: 2026-06-08
 
 ## Быстрый контекст
 
@@ -30,13 +46,13 @@ https://analytics.kiku-bistro.de/
 Глобальный индекс проектов:
 
 ```text
-C:\Users\Sergej\Documents\Codex\PROJECTS.md
+C:\Users\Sergej\Projects\codex-workspace-index\PROJECTS.md
 ```
 
 В новом чате начинать так:
 
 ```text
-Open C:\Users\Sergej\Documents\Codex\PROJECTS.md and continue Kiku Bistro.
+Open C:\Users\Sergej\Projects\codex-workspace-index\PROJECTS.md and continue Kiku Bistro.
 Then open this HANDOVER.md before making changes.
 ```
 
@@ -76,11 +92,18 @@ Docker Compose для Matomo
 ```text
 index.html                 - главная страница
 styles.css                 - стили сайта
+robots.txt                 - search crawler policy and sitemap pointer
+sitemap.xml                - canonical public URL sitemap with hreflang alternates
 impressum.html             - Impressum и Datenschutz
 agb.html                   - AGB
 Kiku-Bistro-Menu.pdf                 - актуальное PDF-меню
+en/ fr/ nl/ pl/ cs/ it/ es/ pt/ ja/ - локализованные публичные страницы
+scripts/generate-locales.mjs         - генерация FR/NL/PL/CS из EN
+scripts/generate-extra-locales.mjs   - генерация IT/ES/PT/JA и common language switcher
+scripts/deploy-production.sh         - production deploy script для GitHub Actions
 assets/                    - изображения, логотипы, favicon
 infra/matomo/              - документация и пример compose для Matomo
+infra/reservations/        - шаблоны production reservation backend
 infra/private/             - приватная локальная инфраструктурная документация, не коммитить
 README.md                  - публичное описание проекта
 HANDOVER.md                - этот технический handover
@@ -263,6 +286,18 @@ E-Mail Klick        -> event_action contains "E-Mail"
 PDF Menue geoeffnet -> event_action contains "PDF"
 ```
 
+Generated local analytics reports:
+
+```text
+May 2026 PDF report:
+C:\Users\Sergej\Projects\sites\kiku-bistro\output\pdf\kiku-bistro-statistik-mai-2026.pdf
+
+Weekly PDF report, 31.05.2026 - 06.06.2026:
+C:\Users\Sergej\Projects\sites\kiku-bistro\output\pdf\kiku-bistro-wochenstatistik-2026-05-31-bis-2026-06-06.pdf
+```
+
+`output/` is currently local/untracked unless the user explicitly decides to commit reports.
+
 ## Production reservations and GitHub deploy 2026-05-17
 
 Reservations are deployed to production.
@@ -406,31 +441,47 @@ infra/matomo/docker-compose.example.yml
 
 ## Деплой
 
-Автоматического deploy script пока нет. Текущий процесс:
+Production deploy автоматизирован через GitHub Actions. Push в `main` запускает workflow:
 
 ```text
-edit local files -> visual/test check -> git status -> commit -> push -> deploy to VPS
+.github/workflows/deploy.yml -> scripts/deploy-production.sh -> VPS /opt/kiku-bistro-site -> /var/www/kiku-site
 ```
 
-Последний production deploy: 2026-05-07.
+Обычный процесс:
 
 ```text
-Commit: eb98637 Update hours and visit photo
-Предыдущий menu commit: 8313df3 Update Bistro menu
-Проверка после деплоя: https://kiku-bistro.de/ 200, Kiku-Bistro-Menu.pdf 200, новая картинка 200
+edit local files -> local visual/test check -> git status -> commit -> push main -> check GitHub Actions -> verify production URLs
+```
+
+Последний production deploy: 2026-06-07.
+
+```text
+Commit: ed931ff Update Bistro menu
+Workflow run: 27091768623
+Result: success
+Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA отдают 200, Kiku-Bistro-Menu.pdf отдает 200, remote PDF SHA256 совпадает с локальным.
 ```
 
 Не деплоить на production без явного разрешения.
 
-Файлы, которые обычно копируются на VPS:
+Файлы и папки, которые production deploy script копирует/синхронизирует на VPS:
 
 ```text
 index.html
 styles.css
+robots.txt
+sitemap.xml
 impressum.html
 agb.html
 Kiku-Bistro-Menu.pdf
+admin.html
+reservation.html
+reservierung.html
+booking.js
+en/ fr/ nl/ pl/ cs/ it/ es/ pt/ ja/
 assets/
+server.py -> /opt/kiku-reservations/server.py
+infra/reservations/ -> /opt/kiku-reservations/infra/reservations/
 ```
 
 После копирования на VPS:
@@ -566,6 +617,9 @@ GitHub - источник правды
 Последние важные коммиты:
 
 ```text
+ed931ff Update Bistro menu
+078cc98 Fix localized reservation pages and French menu script
+abf898c Update menu hours and reservation widget
 eb98637 Update hours and visit photo
 8313df3 Update Bistro menu
 75f9e4d Update project handover docs
@@ -616,15 +670,20 @@ Ab 12:00 Uhr
 Вкладка напитков удалена.
 Порядок позиций на сайте должен повторять порядок в актуальном PDF-меню.
 
-Последнее обновление меню и PDF выполнено 2026-05-16 из файла `Bistro new (1).pdf`:
+Последнее обновление меню и PDF выполнено 2026-06-07 из файла `Bistro07062026.pdf`:
 
 ```text
 Kiku-Bistro-Menu.pdf заменен актуальным PDF.
 Frühstück и Ab 12:00 Uhr обновлены по позициям, описаниям, ценам и порядку.
-Croissant mit Jamon добавлен в Frühstück.
-Quiche удалена из сайта, потому что отсутствует в актуальном PDF.
-Croissant mit Lachs, Hausgemachtes Granola и Konsommé-Nudelsuppe обновлены по описаниям из PDF.
-Напитки из PDF не выводятся на сайте как отдельная вкладка.
+Frühstück: Brotkörbchen без Brioche в описании; добавлена Kardamomschnecke 7 €.
+Ab 12:00 Uhr: Brotkörbchen теперь с Frischkäse, Jamón, Olivenpaste.
+Ab 12:00 Uhr: добавлен Tomaten-Stracciatella-Salat 12 €.
+Ab 12:00 Uhr: Nudelsuppe заменена на Kimchisuppe 16 €.
+Ab 12:00 Uhr: Singapur Chili Huhn теперь без Sauerteigbrot в описании.
+Desserts: Cheesecake заменен на Tiramisu 6,5 €.
+Напитки, вина и коктейли из PDF не выводятся на сайте как отдельная вкладка.
+Текущий PDF содержит guest Wi-Fi page; перед будущим деплоем PDF проверять на public-safe content.
+scripts/generate-locales.mjs и scripts/generate-extra-locales.mjs чинят PDF href обратно на Kiku-Bistro-Menu.pdf после переводов.
 ```
 
 Актуальные часы на сайте после обновления 2026-05-07:
@@ -641,29 +700,32 @@ Donnerstag - Samstag: 9:30 - 21:00
 assets/visit-window-guest.jpg
 ```
 
-Важно по Eggs Benedikt:
+Важно по Eggs Benedikt после обновления 2026-06-07:
 
 ```text
-EGGS BENEDIKT AUF DER BRIOCHE
-- MIT AVOCADO
-  Pochierte Eier, Avocado, Tomate, Hollandaise
-  14 €
+EGGS BENEDIKT AUF BRIOCHE
+Pochierte Eier, Avocado, Hollandaise
+- MIT SPARGEL
+  12 €
+- MIT ROASTBEEF
+  16 €
+
+EGGS BENEDIKT AUF CROISSANT
+Pochierte Eier, Avocado, Hollandaise
+- MIT JAMÓN
+  16,5 €
 - MIT LACHS
-  Pochierte Eier, Avocado, Hollandaise
-  18 €
-- ROASTBEEF
-  Pochierte Eier, Avocado, Unagi-Béarnaise
-  18 €
+  16,5 €
 ```
 
-Эта позиция должна отображаться как группа с подпунктами, а не как три отдельные карточки.
+Эти позиции должны отображаться как группы с подпунктами, а не как отдельные карточки на каждую вариацию.
 
 ## Открытые задачи
 
 Технические:
 
 ```text
-1. Сделать deploy script.
+1. Поддерживать scripts/deploy-production.sh и GitHub Actions workflow в актуальном состоянии.
 2. Оптимизировать изображения: WebP/responsive sizes.
 3. SSH key authentication для root настроен на VPS.
 4. После подтверждения доступа по ключу отключить SSH password login.

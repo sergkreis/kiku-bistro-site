@@ -44,12 +44,16 @@ analytics.kiku-bistro.de
 .
 |-- index.html                  # главная страница
 |-- styles.css                  # основные стили
+|-- robots.txt                  # search crawler policy and sitemap pointer
+|-- sitemap.xml                 # canonical public URL sitemap with hreflang alternates
 |-- impressum.html              # Impressum и Datenschutz
 |-- agb.html                    # AGB
-|-- Kiku-Bistro-Menu.pdf                  # актуальное PDF-меню
+|-- Kiku-Bistro-Menu.pdf        # актуальное PDF-меню
 |-- HANDOVER.md                 # технический handover проекта
 |-- infra/
-|   `-- matomo/                 # документация и пример Matomo setup
+|   |-- matomo/                 # документация и пример Matomo setup
+|   `-- reservations/           # шаблоны production reservation backend
+|-- scripts/                    # генерация локалей и production deploy
 `-- assets/                     # изображения, логотипы, favicon
 ```
 
@@ -69,14 +73,25 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-05-16.
+Последнее обновление сайта: 2026-06-08.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по новому PDF-меню `Bistro new (1).pdf`.
-Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF.
-Последнее изменение меню: добавлен Croissant mit Jamon, удалена Quiche, обновлены описания Lachs/Granola/Konsommé.
+Kiku-Bistro-Menu.pdf обновлен по новому PDF-меню `Bistro07062026.pdf`.
+robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
+Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
+Последнее изменение меню: добавлена Kardamomschnecke, добавлен Tomaten-Stracciatella-Salat, Nudelsuppe заменена на Kimchisuppe, Cheesecake заменен на Tiramisu.
+Напитки, вина и коктейли остаются в PDF, но не выводятся на сайте отдельной вкладкой.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
+```
+
+Последний production deploy:
+
+```text
+Дата: 2026-06-07
+Commit: ed931ff Update Bistro menu
+Workflow: Deploy production, run 27091768623, success
+Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA отдают 200; Kiku-Bistro-Menu.pdf отдает 200 и SHA256 совпадает с локальным файлом.
 ```
 
 ## Production reservations and deploy
@@ -238,10 +253,19 @@ Matomo:
 ```text
 index.html
 styles.css
+robots.txt
+sitemap.xml
 impressum.html
 agb.html
 Kiku-Bistro-Menu.pdf
+admin.html
+reservation.html
+reservierung.html
+booking.js
+en/ fr/ nl/ pl/ cs/ it/ es/ pt/ ja/
 assets/
+server.py
+infra/reservations/
 ```
 
 После копирования:
@@ -283,6 +307,13 @@ IP сокращается
 /opt/kiku-matomo/.matomo-admin
 ```
 
+Локальные PDF-отчеты аналитики лежат в `output/pdf/` и сейчас не отслеживаются git без отдельного решения:
+
+```text
+output/pdf/kiku-bistro-statistik-mai-2026.pdf
+output/pdf/kiku-bistro-wochenstatistik-2026-05-31-bis-2026-06-06.pdf
+```
+
 ## Handover
 
 Полный технический контекст проекта:
@@ -294,5 +325,5 @@ HANDOVER.md
 Общий индекс проектов на локальной машине:
 
 ```text
-C:\Users\Sergej\Documents\Codex\PROJECTS.md
+C:\Users\Sergej\Projects\codex-workspace-index\PROJECTS.md
 ```

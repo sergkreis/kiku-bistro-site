@@ -12,7 +12,19 @@ const alternates = `    <link rel="alternate" hreflang="de" href="https://kiku-b
     <link rel="alternate" hreflang="nl" href="https://kiku-bistro.de/nl/" />
     <link rel="alternate" hreflang="pl" href="https://kiku-bistro.de/pl/" />
     <link rel="alternate" hreflang="cs" href="https://kiku-bistro.de/cs/" />
+    <link rel="alternate" hreflang="it" href="https://kiku-bistro.de/it/" />
+    <link rel="alternate" hreflang="es" href="https://kiku-bistro.de/es/" />
+    <link rel="alternate" hreflang="pt" href="https://kiku-bistro.de/pt/" />
+    <link rel="alternate" hreflang="ja" href="https://kiku-bistro.de/ja/" />
     <link rel="alternate" hreflang="x-default" href="https://kiku-bistro.de/" />`;
+
+const canonicalHref = (code) => (code === "de" ? "https://kiku-bistro.de/" : `https://kiku-bistro.de/${code}/`);
+
+const seoHeadLinks = (code) => `    <link rel="canonical" href="${canonicalHref(code)}" />
+${alternates}`;
+
+const seoHeadLinksPattern =
+  /(?:    <link rel="canonical" href="https:\/\/kiku-bistro\.de\/[^"]*" \/>\r?\n)?(?:    <link rel="alternate" hreflang="(?:de|en|fr|nl|pl|cs|it|es|pt|ja|x-default)" href="https:\/\/kiku-bistro\.de\/[^"]*" \/>\r?\n?)+/;
 
 const languageLinks = `          <a href="../" lang="de">DE</a>
           <a href="../en/" lang="en">EN</a>
@@ -516,14 +528,6 @@ const locales = {
   },
 };
 
-const commonIndexReplacements = [
-  [
-    `    <link rel="alternate" hreflang="de" href="https://kiku-bistro.de/" />
-    <link rel="alternate" hreflang="en" href="https://kiku-bistro.de/en/" />`,
-    alternates,
-  ],
-];
-
 function replaceAll(input, replacements) {
   let output = input;
   for (const [from, to] of [...replacements].sort((a, b) => b[0].length - a[0].length)) {
@@ -558,6 +562,10 @@ function repairGeneratedScript(input) {
     .replace(/mobile[^\s.]+\.querySelectorAll/g, "mobileMenu.querySelectorAll");
 }
 
+function updateSeoHeadLinks(input, locale) {
+  return input.replace(seoHeadLinksPattern, `${seoHeadLinks(locale)}\n`);
+}
+
 for (const [locale, config] of Object.entries(locales)) {
   const dir = join(root, locale);
   await mkdir(dir, { recursive: true });
@@ -569,7 +577,7 @@ for (const [locale, config] of Object.entries(locales)) {
       `content="${config.description}"`
     )
     .replace("../booking.js?v=20260525-en-1", `../booking.js?v=20260525-${locale}-1`);
-  index = replaceAll(index, commonIndexReplacements);
+  index = updateSeoHeadLinks(index, locale);
   index = applyLanguageSwitcher(index, locale);
   index = replaceAll(index, config.replacements);
   index = repairPdfMenuHref(index);
