@@ -1,5 +1,11 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-09:
+- Production nginx now redirects `www.kiku-bistro.de` to the canonical non-www domain with HTTP 301 on both HTTP and HTTPS.
+- Redirect target preserves path and query string, for example `https://www.kiku-bistro.de/fr/?utm_source=test` -> `https://kiku-bistro.de/fr/?utm_source=test`.
+- nginx config changed on the VPS at `/etc/nginx/sites-available/kiku-site`; backup created at `/etc/nginx/sites-available/kiku-site.bak-20260609-151616`.
+- Verification after reload: `http://www.kiku-bistro.de/`, `https://www.kiku-bistro.de/`, and `https://www.kiku-bistro.de/fr/` return 301 to non-www; `https://kiku-bistro.de/`, `/robots.txt`, and `/sitemap.xml` return 200.
+
 Update 2026-06-08:
 - Added root `robots.txt` and `sitemap.xml` for production search crawlers.
 - `robots.txt` allows the public site, points crawlers to `https://kiku-bistro.de/sitemap.xml`, and excludes non-search operational/local paths such as `/api/`, `/infra/`, `/scripts/`, `/output/`, `/data/`, and `/__pycache__/`.
@@ -27,7 +33,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-06-08
+Последнее обновление: 2026-06-09
 
 ## Быстрый контекст
 
@@ -186,6 +192,13 @@ from the local machine.
 kiku-bistro.de
 www.kiku-bistro.de
 analytics.kiku-bistro.de
+```
+
+Canonical public domain:
+
+```text
+https://kiku-bistro.de/
+www.kiku-bistro.de redirects with HTTP 301 to kiku-bistro.de, preserving path and query string.
 ```
 
 Ожидаемые публичные порты:
