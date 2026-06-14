@@ -25,6 +25,7 @@ install -o www-data -g www-data -m 644 "$CHECKOUT/index.html" "$WEBROOT/index.ht
 install -o www-data -g www-data -m 644 "$CHECKOUT/styles.css" "$WEBROOT/styles.css"
 install -o www-data -g www-data -m 644 "$CHECKOUT/robots.txt" "$WEBROOT/robots.txt"
 install -o www-data -g www-data -m 644 "$CHECKOUT/sitemap.xml" "$WEBROOT/sitemap.xml"
+install -o www-data -g www-data -m 644 "$CHECKOUT/assets/favicon.ico" "$WEBROOT/favicon.ico"
 for verification_file in "$CHECKOUT"/google*.html "$CHECKOUT"/BingSiteAuth*.xml; do
   [ -e "$verification_file" ] || continue
   install -o www-data -g www-data -m 644 "$verification_file" "$WEBROOT/$(basename "$verification_file")"
