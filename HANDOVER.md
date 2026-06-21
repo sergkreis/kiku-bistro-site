@@ -1,7 +1,13 @@
 # Kiku Bistro - Handover
 
 Update 2026-06-21:
-- Local menu update prepared from `C:\Users\Sergej\Desktop\Bistro new.pdf`; production deploy has not been run yet.
+- Local language suggestion prepared; production deploy has not been run yet for this change.
+- Added `assets/language-suggest.js`, a soft browser-language prompt. It checks `navigator.languages`, supports DE, EN, FR, NL, PL, CS, IT, ES, PT and JA, and shows a small dismissible banner instead of an automatic redirect.
+- The prompt stores manual language choices and dismissals in `localStorage`, preserves menu/reservation hashes where possible, and tracks prompt events in Matomo when `_paq` is available.
+- All public language pages include the script; no server-side `Accept-Language` redirect was added.
+
+Update 2026-06-21:
+- Menu update from `C:\Users\Sergej\Desktop\Bistro new.pdf` was deployed to production from commit `6d7827b Update Bistro menu`; GitHub Actions run `27897585939` succeeded.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced locally. New SHA256: `0FE982250473200482E79D9CBF3292BD9F2642FF70E7DD20211FF791ADAE9400`.
 - Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
 - Main food changes: breakfast Eggs Benedict is now one brioche group with asparagus, roast beef, salmon and jamon; breakfast added Lachstatar; removed Suesses Croissant; French Toast now has pistachio ice cream; Kardamomschnecke now has apple.
