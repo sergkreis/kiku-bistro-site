@@ -1,6 +1,12 @@
 # Kiku Bistro - Handover
 
 Update 2026-06-21:
+- Local multilingual design review completed after the `ab787b3` production deploy; new design-review fix is prepared locally but not deployed yet.
+- Production review found one real visual issue: `/ja/` on mobile had horizontal overflow in the intro/about section because the second intro heading line used `white-space: nowrap`.
+- Local fix: `styles.css` now gives intro grid children `min-width: 0` and allows the Japanese intro heading's last line to wrap. CSS cache-buster updated to `styles.css?v=20260621-design-review-1` in HTML pages and locale generators.
+- Local verification after the fix: DE, EN, FR, NL, PL, CS, IT, ES, PT and JA passed desktop `1440x1000`, mobile `390x844`, and opened mobile-menu checks with no horizontal overflow, text overflow, text overlaps, missing above-fold images, or console errors.
+
+Update 2026-06-21:
 - Local language suggestion deployed to production from commit `b36d6c7 Add language suggestion prompt`; GitHub Actions run `27897881594` succeeded.
 - Added `assets/language-suggest.js`, a soft browser-language prompt. It checks `navigator.languages`, supports DE, EN, FR, NL, PL, CS, IT, ES, PT and JA, and shows a small dismissible banner instead of an automatic redirect.
 - The prompt stores manual language choices and dismissals in `localStorage`, preserves menu/reservation hashes where possible, and tracks prompt events in Matomo when `_paq` is available.
@@ -17,11 +23,11 @@ Update 2026-06-21:
 - Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Future menu PDFs should be reviewed for public-safe content before deploy.
 
 Update 2026-06-21:
-- Frontend performance/robustness update prepared and verified locally.
+- Frontend performance/robustness update deployed to production from commit `ab787b3 Improve image loading and mobile layout`; GitHub Actions run `27907774698` succeeded.
 - Public locale index pages (DE, EN, FR, NL, PL, CS, IT, ES, PT, JA) now include explicit `width`/`height` image attributes, `decoding="async"`, lazy loading for below-fold images, and `fetchpriority="high"` for the hero bread image.
 - `styles.css` now sets base `img { height: auto; }` so HTML image dimensions reserve layout space without stretching logos, and mobile reservation grid items use `min-width: 0` to avoid horizontal overflow.
 - CSS cache-buster updated to `styles.css?v=20260621-image-attrs-3` in public, reservation, admin, legal pages, and locale generators.
-- Local verification after changes: `python3 -m py_compile server.py`, `node --check` for JS/MJS files, locale generators, and in-app browser desktop/mobile checks passed with no console errors and no horizontal overflow.
+- Verification after changes: `python3 -m py_compile server.py`, `node --check` for JS/MJS files, locale generators, GitHub Actions smoke test, production URL checks, and in-app browser desktop/mobile checks passed with no console errors and no horizontal overflow.
 
 Update 2026-06-09:
 - Production nginx now redirects `www.kiku-bistro.de` to the canonical non-www domain with HTTP 301 on both HTTP and HTTPS.

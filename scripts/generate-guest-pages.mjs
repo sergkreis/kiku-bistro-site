@@ -239,7 +239,7 @@ function renderPage(code, copy, rootPage = false) {
     <title>${copy.title}</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="${assetPrefix}assets/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="${assetPrefix}styles.css?v=20260621-image-attrs-3" />
+    <link rel="stylesheet" href="${assetPrefix}styles.css?v=20260621-design-review-1" />
   </head>
   <body class="guest-page">
     <header class="site-header">
