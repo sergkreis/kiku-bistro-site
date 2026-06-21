@@ -41,6 +41,7 @@ body {
 img {
   display: block;
   width: 100%;
+  height: auto;
 }
 
 a {
@@ -840,6 +841,7 @@ button {
 .reservation-copy {
   display: grid;
   gap: 18px;
+  min-width: 0;
 }
 
 .reservation-copy h2,
@@ -893,6 +895,7 @@ button {
   align-content: start;
   justify-items: center;
   gap: 14px;
+  min-width: 0;
   min-height: 520px;
   padding: 22px;
   border: 1px solid var(--line);
@@ -2243,7 +2246,7 @@ button {
 
 @media (max-width: 720px) {
   :root {
-    --container: calc(100vw - 28px);
+    --container: calc(100% - 28px);
   }
 
   .header-inner {

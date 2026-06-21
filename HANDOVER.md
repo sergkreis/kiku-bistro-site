@@ -16,6 +16,13 @@ Update 2026-06-21:
 - `sitemap.xml` lastmod values were updated to `2026-06-21`.
 - Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Future menu PDFs should be reviewed for public-safe content before deploy.
 
+Update 2026-06-21:
+- Frontend performance/robustness update prepared and verified locally.
+- Public locale index pages (DE, EN, FR, NL, PL, CS, IT, ES, PT, JA) now include explicit `width`/`height` image attributes, `decoding="async"`, lazy loading for below-fold images, and `fetchpriority="high"` for the hero bread image.
+- `styles.css` now sets base `img { height: auto; }` so HTML image dimensions reserve layout space without stretching logos, and mobile reservation grid items use `min-width: 0` to avoid horizontal overflow.
+- CSS cache-buster updated to `styles.css?v=20260621-image-attrs-3` in public, reservation, admin, legal pages, and locale generators.
+- Local verification after changes: `python3 -m py_compile server.py`, `node --check` for JS/MJS files, locale generators, and in-app browser desktop/mobile checks passed with no console errors and no horizontal overflow.
+
 Update 2026-06-09:
 - Production nginx now redirects `www.kiku-bistro.de` to the canonical non-www domain with HTTP 301 on both HTTP and HTTPS.
 - Redirect target preserves path and query string, for example `https://www.kiku-bistro.de/fr/?utm_source=test` -> `https://kiku-bistro.de/fr/?utm_source=test`.
@@ -49,7 +56,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-06-09
+Последнее обновление: 2026-06-21
 
 ## Быстрый контекст
 

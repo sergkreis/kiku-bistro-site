@@ -612,7 +612,7 @@ function reservationPage(code, config) {
     <title>${t.title}</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="../assets/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="../styles.css?v=20260525-lang-menu-1" />
+    <link rel="stylesheet" href="../styles.css?v=20260621-image-attrs-3" />
   </head>
   <body class="guest-page">
     <header class="site-header">
