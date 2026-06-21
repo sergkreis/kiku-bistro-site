@@ -1,5 +1,14 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-21:
+- Local menu update prepared from `C:\Users\Sergej\Desktop\Bistro new.pdf`; production deploy has not been run yet.
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced locally. New SHA256: `0FE982250473200482E79D9CBF3292BD9F2642FF70E7DD20211FF791ADAE9400`.
+- Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
+- Main food changes: breakfast Eggs Benedict is now one brioche group with asparagus, roast beef, salmon and jamon; breakfast added Lachstatar; removed Suesses Croissant; French Toast now has pistachio ice cream; Kardamomschnecke now has apple.
+- Lunch changes: Brotkorbchen uses Muhammara; removed Trio von Dips and Lachssalat; Rindertatar now has mushrooms and brioche; Tomaten-Salat replaces Tomaten-Stracciatella-Salat; Gnocchi mit Gorgonzola replaces Kimchisuppe; Rinderragout uses Steinpilze; Singapur Chili Huhn includes paprika; Honigkuchen was removed.
+- `sitemap.xml` lastmod values were updated to `2026-06-21`.
+- Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Confirm this is acceptable before production deploy.
+
 Update 2026-06-09:
 - Production nginx now redirects `www.kiku-bistro.de` to the canonical non-www domain with HTTP 301 on both HTTP and HTTPS.
 - Redirect target preserves path and query string, for example `https://www.kiku-bistro.de/fr/?utm_source=test` -> `https://kiku-bistro.de/fr/?utm_source=test`.
