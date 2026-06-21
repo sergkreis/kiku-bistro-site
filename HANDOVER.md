@@ -1,10 +1,11 @@
 # Kiku Bistro - Handover
 
 Update 2026-06-21:
-- Local language suggestion prepared; production deploy has not been run yet for this change.
+- Local language suggestion deployed to production from commit `b36d6c7 Add language suggestion prompt`; GitHub Actions run `27897881594` succeeded.
 - Added `assets/language-suggest.js`, a soft browser-language prompt. It checks `navigator.languages`, supports DE, EN, FR, NL, PL, CS, IT, ES, PT and JA, and shows a small dismissible banner instead of an automatic redirect.
 - The prompt stores manual language choices and dismissals in `localStorage`, preserves menu/reservation hashes where possible, and tracks prompt events in Matomo when `_paq` is available.
 - All public language pages include the script; no server-side `Accept-Language` redirect was added.
+- Production checks after deploy: public locale pages, the language suggestion JS and CSS returned 200; root and FR pages include the script; canonical and hreflang metadata remained valid; a production Playwright check switched a French browser from `/` to `/fr/`.
 
 Update 2026-06-21:
 - Menu update from `C:\Users\Sergej\Desktop\Bistro new.pdf` was deployed to production from commit `6d7827b Update Bistro menu`; GitHub Actions run `27897585939` succeeded.
@@ -13,7 +14,7 @@ Update 2026-06-21:
 - Main food changes: breakfast Eggs Benedict is now one brioche group with asparagus, roast beef, salmon and jamon; breakfast added Lachstatar; removed Suesses Croissant; French Toast now has pistachio ice cream; Kardamomschnecke now has apple.
 - Lunch changes: Brotkorbchen uses Muhammara; removed Trio von Dips and Lachssalat; Rindertatar now has mushrooms and brioche; Tomaten-Salat replaces Tomaten-Stracciatella-Salat; Gnocchi mit Gorgonzola replaces Kimchisuppe; Rinderragout uses Steinpilze; Singapur Chili Huhn includes paprika; Honigkuchen was removed.
 - `sitemap.xml` lastmod values were updated to `2026-06-21`.
-- Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Confirm this is acceptable before production deploy.
+- Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Future menu PDFs should be reviewed for public-safe content before deploy.
 
 Update 2026-06-09:
 - Production nginx now redirects `www.kiku-bistro.de` to the canonical non-www domain with HTTP 301 on both HTTP and HTTPS.
