@@ -1,10 +1,11 @@
 # Kiku Bistro - Handover
 
 Update 2026-06-21:
-- Local multilingual design review completed after the `ab787b3` production deploy; new design-review fix is prepared locally but not deployed yet.
+- Multilingual design-review fix deployed to production from commit `8bcc8ee Fix Japanese mobile intro overflow`; GitHub Actions run `27911744973` succeeded.
 - Production review found one real visual issue: `/ja/` on mobile had horizontal overflow in the intro/about section because the second intro heading line used `white-space: nowrap`.
-- Local fix: `styles.css` now gives intro grid children `min-width: 0` and allows the Japanese intro heading's last line to wrap. CSS cache-buster updated to `styles.css?v=20260621-design-review-1` in HTML pages and locale generators.
-- Local verification after the fix: DE, EN, FR, NL, PL, CS, IT, ES, PT and JA passed desktop `1440x1000`, mobile `390x844`, and opened mobile-menu checks with no horizontal overflow, text overflow, text overlaps, missing above-fold images, or console errors.
+- Fix: `styles.css` now gives intro grid children `min-width: 0` and allows the Japanese intro heading's last line to wrap. CSS cache-buster updated to `styles.css?v=20260621-design-review-1` in HTML pages and locale generators.
+- Verification before deploy: DE, EN, FR, NL, PL, CS, IT, ES, PT and JA passed desktop `1440x1000`, mobile `390x844`, and opened mobile-menu checks with no horizontal overflow, text overflow, text overlaps, missing above-fold images, or console errors.
+- Production checks after deploy: `/`, `/en/`, `/fr/`, `/nl/`, `/pl/`, `/cs/`, `/it/`, `/es/`, `/pt/`, `/ja/`, `/reservation.html`, `/admin.html`, and `/Kiku-Bistro-Menu.pdf` returned 200; `/ja/#about` at `390x844` uses `styles.css?v=20260621-design-review-1`, has no horizontal overflow and no console errors.
 
 Update 2026-06-21:
 - Local language suggestion deployed to production from commit `b36d6c7 Add language suggestion prompt`; GitHub Actions run `27897881594` succeeded.
@@ -495,13 +496,13 @@ Production deploy автоматизирован через GitHub Actions. Push
 edit local files -> local visual/test check -> git status -> commit -> push main -> check GitHub Actions -> verify production URLs
 ```
 
-Последний production deploy: 2026-06-07.
+Последний production deploy: 2026-06-21.
 
 ```text
-Commit: ed931ff Update Bistro menu
-Workflow run: 27091768623
+Commit: 8bcc8ee Fix Japanese mobile intro overflow
+Workflow run: 27911744973
 Result: success
-Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA отдают 200, Kiku-Bistro-Menu.pdf отдает 200, remote PDF SHA256 совпадает с локальным.
+Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf отдают 200; /ja/#about на mobile 390x844 без горизонтального overflow и без console errors.
 ```
 
 Не деплоить на production без явного разрешения.
@@ -659,6 +660,10 @@ GitHub - источник правды
 Последние важные коммиты:
 
 ```text
+8bcc8ee Fix Japanese mobile intro overflow
+ab787b3 Improve image loading and mobile layout
+6d7827b Update Bistro menu
+b36d6c7 Add language suggestion prompt
 ed931ff Update Bistro menu
 078cc98 Fix localized reservation pages and French menu script
 abf898c Update menu hours and reservation widget

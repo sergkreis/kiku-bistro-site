@@ -2,7 +2,7 @@
 
 Production Matomo runs on the Kiku Bistro VPS in `/opt/kiku-matomo`.
 
-Last documentation update: 2026-06-07.
+Last documentation update: 2026-06-21.
 
 Public URL:
 
@@ -84,13 +84,13 @@ single-page visits get more accurate time-on-site measurements.
 
 ## Current menu tracking context
 
-Updated on 2026-06-07.
+Updated on 2026-06-21.
 
 ```text
 Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
-Current menu source file: Bistro07062026.pdf
-Menu deploy commit: ed931ff Update Bistro menu
-Production workflow run: 27091768623, success
+Current menu source file: latest user-provided PDF from 2026-06-21
+Menu deploy commit: 6d7827b Update Bistro menu
+Production workflow run: 27897585939, success
 ```
 
 The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across

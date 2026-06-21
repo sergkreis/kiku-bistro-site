@@ -73,25 +73,26 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-06-08.
+Последнее обновление сайта: 2026-06-21.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по новому PDF-меню `Bistro07062026.pdf`.
+Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню 2026-06-21.
 robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
-Последнее изменение меню: добавлена Kardamomschnecke, добавлен Tomaten-Stracciatella-Salat, Nudelsuppe заменена на Kimchisuppe, Cheesecake заменен на Tiramisu.
+Последнее изменение меню: Eggs Benedict сгруппирован как brioche-варианты, добавлен Lachstatar, French Toast теперь с pistachio ice cream, Tomaten-Salat заменил Tomaten-Stracciatella-Salat, Gnocchi mit Gorgonzola заменил Kimchisuppe, Honigkuchen удален.
 Напитки, вина и коктейли остаются в PDF, но не выводятся на сайте отдельной вкладкой.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
+Последний frontend fix: японская intro/about-секция на mobile больше не вызывает горизонтальный overflow; CSS cache-buster `styles.css?v=20260621-design-review-1`.
 ```
 
 Последний production deploy:
 
 ```text
-Дата: 2026-06-07
-Commit: ed931ff Update Bistro menu
-Workflow: Deploy production, run 27091768623, success
-Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA отдают 200; Kiku-Bistro-Menu.pdf отдает 200 и SHA256 совпадает с локальным файлом.
+Дата: 2026-06-21
+Commit: 8bcc8ee Fix Japanese mobile intro overflow
+Workflow: Deploy production, run 27911744973, success
+Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf отдают 200; production /ja/#about на mobile 390x844 без горизонтального overflow и без console errors.
 ```
 
 ## Production reservations and deploy
