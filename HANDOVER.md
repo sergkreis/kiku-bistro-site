@@ -1,5 +1,14 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-26:
+- Local menu update prepared from `C:\Users\Sergej\Downloads\Bistro new (2).pdf`; production deploy has not been run yet for this change.
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced locally. New SHA256: `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`.
+- Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
+- Main food changes: Eggs Benedict with asparagus is now 13 EUR, with roast beef 17 EUR; Lachstatar is now 13,5 EUR; Pate was removed; Tomaten-Salat became Buratta-Salat with tomato, salad mix and pesto; Tiramisu is now served with ice cream; Honigkuchen mit Eis and Suesses Croissant were added.
+- `sitemap.xml` lastmod values were updated to `2026-06-26`.
+- Local checks completed: locale generators, PDF render via Poppler/pdftoppm, desktop/mobile browser menu check against the local static server, and PDF HTTP response check.
+- Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Confirm this remains acceptable before production deploy.
+
 Update 2026-06-21:
 - Multilingual design-review fix deployed to production from commit `8bcc8ee Fix Japanese mobile intro overflow`; GitHub Actions run `27911744973` succeeded.
 - Production review found one real visual issue: `/ja/` on mobile had horizontal overflow in the intro/about section because the second intro heading line used `white-space: nowrap`.
