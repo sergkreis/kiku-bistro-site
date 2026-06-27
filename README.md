@@ -82,26 +82,27 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-06-21.
+Последнее обновление сайта: 2026-06-27.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню 2026-06-21.
+Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню 2026-06-26. Live SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0.
 robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
-Последнее изменение меню: Eggs Benedict сгруппирован как brioche-варианты, добавлен Lachstatar, French Toast теперь с pistachio ice cream, Tomaten-Salat заменил Tomaten-Stracciatella-Salat, Gnocchi mit Gorgonzola заменил Kimchisuppe, Honigkuchen удален.
+Последнее изменение меню: Eggs Benedict with asparagus теперь 13 EUR, with roast beef 17 EUR; Lachstatar 13,5 EUR; Pate удален; Tomaten-Salat стал Buratta-Salat with tomato, salad mix and pesto; Tiramisu теперь с ice cream; добавлены Honigkuchen mit Eis и Suesses Croissant.
 Напитки, вина и коктейли остаются в PDF, но не выводятся на сайте отдельной вкладкой.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
 Последний frontend fix: японская intro/about-секция на mobile больше не вызывает горизонтальный overflow; CSS cache-buster `styles.css?v=20260621-design-review-1`.
 ```
 
-Последний production deploy:
+Последний production workflow/deploy sync:
 
 ```text
-Дата: 2026-06-21
-Commit: 8bcc8ee Fix Japanese mobile intro overflow
-Workflow: Deploy production, run 27911744973, success
-Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf отдают 200; production /ja/#about на mobile 390x844 без горизонтального overflow и без console errors.
+Дата: 2026-06-27
+Commit: be67b4b docs: add Google Ads handoff
+Workflow: Deploy production, run 28291282632, success
+Public content: docs-only sync; latest menu/content deploy was 2026-06-26, commit 2b3acc8 Update Bistro menu, run 28230668078, success.
+Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, robots.txt, sitemap.xml, Matomo JS и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
 ```
 
 ## Production reservations and deploy

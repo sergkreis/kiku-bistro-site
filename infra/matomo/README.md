@@ -84,13 +84,15 @@ single-page visits get more accurate time-on-site measurements.
 
 ## Current menu tracking context
 
-Updated on 2026-06-21.
+Updated on 2026-06-27.
 
 ```text
 Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
-Current menu source file: latest user-provided PDF from 2026-06-21
-Menu deploy commit: 6d7827b Update Bistro menu
-Production workflow run: 27897585939, success
+Current menu source file: latest user-provided PDF from 2026-06-26, C:\Users\Sergej\Downloads\Bistro new (2).pdf
+Current PDF SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0
+Menu deploy commit: 2b3acc8 Update Bistro menu
+Menu production workflow run: 28230668078, success
+Latest docs/deploy sync: be67b4b docs: add Google Ads handoff, workflow run 28291282632, success
 ```
 
 The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across

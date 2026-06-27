@@ -1,7 +1,8 @@
 # Kiku Bistro - Handover
 
 Update 2026-06-27:
-- Google Ads work was completed in the browser, not as website code. No production site deploy was performed for this marketing session.
+- Google Ads work was completed in the browser, not as website code. No website code/content change was needed for this marketing session.
+- Docs-only commit `be67b4b docs: add Google Ads handoff` pushed after the Ads work and the GitHub Actions `Deploy production` workflow run `28291282632` completed successfully. This synced docs but did not change the public menu/content.
 - Google Ads access issue on the current Mac was caused by DNS resolving `ads.google.com` to `0.0.0.0`/`::` through local/Tailscale DNS. Temporary workstation fix applied: Tailscale DNS acceptance disabled and Wi-Fi DNS set to `8.8.8.8` and `1.1.1.1`; DNS cache flushed. This is local machine state, not a repo/server change.
 - KIKU Bistro campaign `23977868810` (`KIKU Bistro | Suche lokal`) was optimized for breakfast/lunch search demand. Budget changed from `5,00 EUR/day` to `10,00 EUR/day`.
 - Bistro keywords now include additional exact/phrase breakfast, brunch, lunch, mittagessen, bistro, cafe/kaffee and KIKU Bistro Quedlinburg terms. Some very narrow keywords are expected to show "low search volume"; keep them for high-intent coverage unless they create clutter later.
@@ -13,13 +14,13 @@ Update 2026-06-27:
 - Do not paste Google, KeePassXC, Matomo or server secrets into chat or docs. If Matomo data is needed later, use the existing account access only through the browser/session and summarize metrics, not credentials.
 
 Update 2026-06-26:
-- Local menu update prepared from `C:\Users\Sergej\Downloads\Bistro new (2).pdf`; production deploy has not been run yet for this change.
+- Menu update from `C:\Users\Sergej\Downloads\Bistro new (2).pdf` was deployed to production from commit `2b3acc8 Update Bistro menu`; GitHub Actions run `28230668078` succeeded.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced locally. New SHA256: `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`.
 - Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
 - Main food changes: Eggs Benedict with asparagus is now 13 EUR, with roast beef 17 EUR; Lachstatar is now 13,5 EUR; Pate was removed; Tomaten-Salat became Buratta-Salat with tomato, salad mix and pesto; Tiramisu is now served with ice cream; Honigkuchen mit Eis and Suesses Croissant were added.
 - `sitemap.xml` lastmod values were updated to `2026-06-26`.
 - Local checks completed: locale generators, PDF render via Poppler/pdftoppm, desktop/mobile browser menu check against the local static server, and PDF HTTP response check.
-- Note: the new PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. Confirm this remains acceptable before production deploy.
+- Note: the deployed PDF still contains the guest Wi-Fi page, same as the previous menu PDF family. This was accepted for the current deploy; future menu PDFs should still be reviewed for public-safe content before deploy.
 
 Update 2026-06-21:
 - Multilingual design-review fix deployed to production from commit `8bcc8ee Fix Japanese mobile intro overflow`; GitHub Actions run `27911744973` succeeded.
@@ -107,6 +108,15 @@ Bistro campaign: KIKU Bistro | Suche lokal, campaignId 23977868810, budget 10,00
 Bistro focus: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches in Quedlinburg.
 Restaurant campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, budget 8,00 EUR/day, fine-dining/special-occasion positioning.
 Next Ads check: 2026-07-02 to 2026-07-04.
+```
+
+Current public menu/PDF as of 2026-06-27:
+
+```text
+Menu source: C:\Users\Sergej\Downloads\Bistro new (2).pdf
+Public PDF SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0
+Menu/content deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
+Latest docs/deploy sync: 2026-06-27, commit be67b4b docs: add Google Ads handoff, workflow run 28291282632 success.
 ```
 
 Глобальный индекс проектов:
@@ -526,13 +536,15 @@ Production deploy автоматизирован через GitHub Actions. Push
 edit local files -> local visual/test check -> git status -> commit -> push main -> check GitHub Actions -> verify production URLs
 ```
 
-Последний production deploy: 2026-06-21.
+Последний production workflow/deploy sync: 2026-06-27.
 
 ```text
-Commit: 8bcc8ee Fix Japanese mobile intro overflow
-Workflow run: 27911744973
+Commit: be67b4b docs: add Google Ads handoff
+Workflow run: 28291282632
 Result: success
-Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf отдают 200; /ja/#about на mobile 390x844 без горизонтального overflow и без console errors.
+Public content: no website code/content change; this docs-only push re-ran the deploy workflow.
+Latest menu/content deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
+Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, analytics Matomo JS, robots.txt, sitemap.xml и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`; главное меню содержит Mit Spargel 13 EUR, Mit Roastbeef 17 EUR, Buratta-Salat, Honigkuchen mit Eis и Suesses Croissant, а старых Pate/Tomaten-Salat нет.
 ```
 
 Не деплоить на production без явного разрешения.
@@ -690,6 +702,8 @@ GitHub - источник правды
 Последние важные коммиты:
 
 ```text
+be67b4b docs: add Google Ads handoff
+2b3acc8 Update Bistro menu
 8bcc8ee Fix Japanese mobile intro overflow
 ab787b3 Improve image loading and mobile layout
 6d7827b Update Bistro menu
@@ -747,19 +761,18 @@ Ab 12:00 Uhr
 Вкладка напитков удалена.
 Порядок позиций на сайте должен повторять порядок в актуальном PDF-меню.
 
-Последнее обновление меню и PDF выполнено 2026-06-07 из файла `Bistro07062026.pdf`:
+Последнее обновление меню и PDF выполнено 2026-06-26 из файла `C:\Users\Sergej\Downloads\Bistro new (2).pdf`:
 
 ```text
-Kiku-Bistro-Menu.pdf заменен актуальным PDF.
-Frühstück и Ab 12:00 Uhr обновлены по позициям, описаниям, ценам и порядку.
-Frühstück: Brotkörbchen без Brioche в описании; добавлена Kardamomschnecke 7 €.
-Ab 12:00 Uhr: Brotkörbchen теперь с Frischkäse, Jamón, Olivenpaste.
-Ab 12:00 Uhr: добавлен Tomaten-Stracciatella-Salat 12 €.
-Ab 12:00 Uhr: Nudelsuppe заменена на Kimchisuppe 16 €.
-Ab 12:00 Uhr: Singapur Chili Huhn теперь без Sauerteigbrot в описании.
-Desserts: Cheesecake заменен на Tiramisu 6,5 €.
+Kiku-Bistro-Menu.pdf заменен актуальным PDF; SHA256 FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0.
+Frühstück и Ab 12:00 Uhr обновлены на DE и EN, затем локали FR/NL/PL/CS/IT/ES/PT/JA регенерированы.
+Frühstück: Eggs Benedict with asparagus is now 13 EUR, with roast beef 17 EUR.
+Frühstück: Lachstatar is now 13,5 EUR; Suesses Croissant added.
+Ab 12:00 Uhr: Pate removed.
+Ab 12:00 Uhr: Tomaten-Salat became Buratta-Salat with tomato, salad mix and pesto.
+Desserts: Tiramisu is now served with ice cream; Honigkuchen mit Eis added.
 Напитки, вина и коктейли из PDF не выводятся на сайте как отдельная вкладка.
-Текущий PDF содержит guest Wi-Fi page; перед будущим деплоем PDF проверять на public-safe content.
+Текущий PDF содержит guest Wi-Fi page; это было принято для текущего деплоя, но перед будущим деплоем PDF все равно проверять на public-safe content.
 scripts/generate-locales.mjs и scripts/generate-extra-locales.mjs чинят PDF href обратно на Kiku-Bistro-Menu.pdf после переводов.
 ```
 
@@ -777,15 +790,15 @@ Donnerstag - Samstag: 9:30 - 21:00
 assets/visit-window-guest.jpg
 ```
 
-Важно по Eggs Benedikt после обновления 2026-06-07:
+Важно по Eggs Benedict после обновления 2026-06-26:
 
 ```text
 EGGS BENEDIKT AUF BRIOCHE
 Pochierte Eier, Avocado, Hollandaise
 - MIT SPARGEL
-  12 €
+  13 €
 - MIT ROASTBEEF
-  16 €
+  17 €
 
 EGGS BENEDIKT AUF CROISSANT
 Pochierte Eier, Avocado, Hollandaise
