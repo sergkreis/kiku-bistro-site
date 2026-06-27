@@ -92,7 +92,7 @@ Current menu source file: latest user-provided PDF from 2026-06-26, C:\Users\Ser
 Current PDF SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0
 Menu deploy commit: 2b3acc8 Update Bistro menu
 Menu production workflow run: 28230668078, success
-Latest docs/deploy sync: be67b4b docs: add Google Ads handoff, workflow run 28291282632, success
+Docs-only pushes can re-run the Deploy production workflow without changing this public menu/PDF context.
 ```
 
 The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across

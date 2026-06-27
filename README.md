@@ -95,13 +95,13 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 Последний frontend fix: японская intro/about-секция на mobile больше не вызывает горизонтальный overflow; CSS cache-buster `styles.css?v=20260621-design-review-1`.
 ```
 
-Последний production workflow/deploy sync:
+Последний content-changing production deploy:
 
 ```text
-Дата: 2026-06-27
-Commit: be67b4b docs: add Google Ads handoff
-Workflow: Deploy production, run 28291282632, success
-Public content: docs-only sync; latest menu/content deploy was 2026-06-26, commit 2b3acc8 Update Bistro menu, run 28230668078, success.
+Дата: 2026-06-26
+Commit: 2b3acc8 Update Bistro menu
+Workflow: Deploy production, run 28230668078, success
+Note: docs-only pushes can re-run the Deploy production workflow without changing public menu/content.
 Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, robots.txt, sitemap.xml, Matomo JS и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
 ```
 

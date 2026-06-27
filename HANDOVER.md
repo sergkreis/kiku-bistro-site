@@ -115,8 +115,8 @@ Current public menu/PDF as of 2026-06-27:
 ```text
 Menu source: C:\Users\Sergej\Downloads\Bistro new (2).pdf
 Public PDF SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0
-Menu/content deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
-Latest docs/deploy sync: 2026-06-27, commit be67b4b docs: add Google Ads handoff, workflow run 28291282632 success.
+Latest content-changing menu deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
+Docs-only pushes can re-run the Deploy production workflow without changing public menu/content; use GitHub Actions for the latest docs-only workflow run if needed.
 ```
 
 Глобальный индекс проектов:
@@ -536,14 +536,13 @@ Production deploy автоматизирован через GitHub Actions. Push
 edit local files -> local visual/test check -> git status -> commit -> push main -> check GitHub Actions -> verify production URLs
 ```
 
-Последний production workflow/deploy sync: 2026-06-27.
+Последний content-changing production deploy: 2026-06-26.
 
 ```text
-Commit: be67b4b docs: add Google Ads handoff
-Workflow run: 28291282632
+Commit: 2b3acc8 Update Bistro menu
+Workflow run: 28230668078
 Result: success
-Public content: no website code/content change; this docs-only push re-ran the deploy workflow.
-Latest menu/content deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
+Note: docs-only pushes can re-run the Deploy production workflow without changing public menu/content; do not treat those as menu/content changes.
 Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, analytics Matomo JS, robots.txt, sitemap.xml и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`; главное меню содержит Mit Spargel 13 EUR, Mit Roastbeef 17 EUR, Buratta-Salat, Honigkuchen mit Eis и Suesses Croissant, а старых Pate/Tomaten-Salat нет.
 ```
 
