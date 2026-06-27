@@ -1,5 +1,17 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-27:
+- Google Ads work was completed in the browser, not as website code. No production site deploy was performed for this marketing session.
+- Google Ads access issue on the current Mac was caused by DNS resolving `ads.google.com` to `0.0.0.0`/`::` through local/Tailscale DNS. Temporary workstation fix applied: Tailscale DNS acceptance disabled and Wi-Fi DNS set to `8.8.8.8` and `1.1.1.1`; DNS cache flushed. This is local machine state, not a repo/server change.
+- KIKU Bistro campaign `23977868810` (`KIKU Bistro | Suche lokal`) was optimized for breakfast/lunch search demand. Budget changed from `5,00 EUR/day` to `10,00 EUR/day`.
+- Bistro keywords now include additional exact/phrase breakfast, brunch, lunch, mittagessen, bistro, cafe/kaffee and KIKU Bistro Quedlinburg terms. Some very narrow keywords are expected to show "low search volume"; keep them for high-intent coverage unless they create clutter later.
+- Bistro negative keywords expanded at campaign level to protect spend from hotel/holiday/recipe/job/delivery intent, including terms such as `hotel`, `urlaub`, `rezept`, `jobs`, `lieferdienst`, `takeaway`, `uebernachtung`.
+- Bistro ad schedule was changed from all-day/all-week to Wednesday-Sunday `08:00-15:00` in Europe/Berlin. Monday-Tuesday are excluded because the website states they are closed; ads start before the 9:30 opening to catch planning searches.
+- Bistro responsive search ad already mentions `Fruehstueck, Lunch und Kaffee im KIKU Bistro in Quedlinburg`; Google still marked ad strength as poor, so next optimization can add more headline/description variants if the UI permits without triggering final URL reauth.
+- KIKU Restaurant campaign `23979471269` (`KIKU Restaurant | Fine Dining Search`) was published earlier in the session. Budget: `8,00 EUR/day`. Positioning: special occasion / fine dining, broader regional reach than Quedlinburg only.
+- Next Ads review window: 2026-07-02 to 2026-07-04. Check search terms, CPC, spend, top-of-page visibility for `fruehstueck/fruehstueck quedlinburg`, Bistro clicks during scheduled hours, and whether budget should move from `10 EUR/day` toward `12 EUR/day`.
+- Do not paste Google, KeePassXC, Matomo or server secrets into chat or docs. If Matomo data is needed later, use the existing account access only through the browser/session and summarize metrics, not credentials.
+
 Update 2026-06-26:
 - Local menu update prepared from `C:\Users\Sergej\Downloads\Bistro new (2).pdf`; production deploy has not been run yet for this change.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced locally. New SHA256: `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`.
@@ -72,7 +84,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-06-21
+Последнее обновление: 2026-06-27
 
 ## Быстрый контекст
 
@@ -86,6 +98,15 @@ https://kiku-bistro.de/
 
 ```text
 https://analytics.kiku-bistro.de/
+```
+
+Marketing / Google Ads context as of 2026-06-27:
+
+```text
+Bistro campaign: KIKU Bistro | Suche lokal, campaignId 23977868810, budget 10,00 EUR/day, schedule Wednesday-Sunday 08:00-15:00.
+Bistro focus: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches in Quedlinburg.
+Restaurant campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, budget 8,00 EUR/day, fine-dining/special-occasion positioning.
+Next Ads check: 2026-07-02 to 2026-07-04.
 ```
 
 Глобальный индекс проектов:

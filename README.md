@@ -20,6 +20,15 @@ https://github.com/sergkreis/kiku-bistro-site
 https://analytics.kiku-bistro.de/
 ```
 
+Google Ads / marketing context:
+
+```text
+KIKU Bistro Search campaign: KIKU Bistro | Suche lokal, campaignId 23977868810.
+Current Bistro Ads strategy as of 2026-06-27: breakfast/lunch search intent in Quedlinburg, 10,00 EUR/day, ad schedule Wednesday-Sunday 08:00-15:00 Europe/Berlin, with hotel/holiday/recipe/job/delivery negative keywords.
+KIKU Restaurant Search campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, 8,00 EUR/day.
+Next Ads check: 2026-07-02 to 2026-07-04, review search terms, top-of-page visibility, CPC, spend, and whether Bistro breakfast/lunch keywords need budget or copy changes.
+```
+
 ## Статус
 
 Сайт развернут на отдельном production VPS и отдается через nginx как обычный статический сайт.
@@ -306,6 +315,14 @@ IP сокращается
 
 ```text
 /opt/kiku-matomo/.matomo-admin
+```
+
+Google Ads tracking currently uses campaign UTM parameters such as:
+
+```text
+utm_source=google
+utm_medium=cpc
+utm_campaign=bistro_search_local
 ```
 
 Локальные PDF-отчеты аналитики лежат в `output/pdf/` и сейчас не отслеживаются git без отдельного решения:

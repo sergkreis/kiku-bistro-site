@@ -2,7 +2,7 @@
 
 Production Matomo runs on the Kiku Bistro VPS in `/opt/kiku-matomo`.
 
-Last documentation update: 2026-06-21.
+Last documentation update: 2026-06-27.
 
 Public URL:
 
@@ -138,3 +138,36 @@ change only `utm_campaign`, for example:
 ```text
 https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=menu_may_2026&utm_content=story
 ```
+
+## Google Ads / CPC campaign context
+
+Updated on 2026-06-27.
+
+The Bistro Google Ads campaign currently points traffic to the Bistro site with
+Google CPC UTM parameters:
+
+```text
+utm_source=google
+utm_medium=cpc
+utm_campaign=bistro_search_local
+```
+
+Current Bistro campaign focus:
+
+```text
+Campaign: KIKU Bistro | Suche lokal
+Google Ads campaign ID: 23977868810
+Budget: 10,00 EUR/day
+Schedule: Wednesday-Sunday, 08:00-15:00 Europe/Berlin
+Intent: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches around Quedlinburg
+```
+
+Next reporting check:
+
+```text
+2026-07-02 to 2026-07-04
+```
+
+Review Matomo traffic for the `bistro_search_local` UTM campaign together with
+Google Ads search terms, CPC, spend, and top-of-page visibility. Keep credential
+details out of commits and chat.
