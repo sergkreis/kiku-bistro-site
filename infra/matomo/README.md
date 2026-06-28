@@ -143,7 +143,7 @@ https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=menu
 
 ## Google Ads / CPC campaign context
 
-Updated on 2026-06-27.
+Updated on 2026-06-28.
 
 The Bistro Google Ads campaign currently points traffic to the Bistro site with
 Google CPC UTM parameters:
@@ -162,7 +162,24 @@ Google Ads campaign ID: 23977868810
 Budget: 10,00 EUR/day
 Schedule: Wednesday-Sunday, 08:00-15:00 Europe/Berlin
 Intent: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches around Quedlinburg
+Location asset: campaign-level group KIKU Bistro only, only KIKU Bistro at Steinbrücke 2
+Campaign-level broad negatives include hotel/holiday/accommodation/delivery/jobs/recipe intent plus restaurant/fine-dining terms: urlaub, jan fribus, fine dining, fine-dining, degustation, abendessen, dinner, kiku restaurant
 ```
+
+Restaurant campaign separation:
+
+```text
+Campaign: KIKU Restaurant | Fine Dining Search
+Google Ads campaign ID: 23979471269
+Budget: 8,00 EUR/day
+Location asset: campaign-level group KIKU Restaurant only, only KIKU at Pölle 8
+Campaign-level broad negatives: frühstück, fruehstueck, breakfast, brunch, café, cafe, kaffee, coffee, lunch, mittagessen, mittagstisch, bistro
+```
+
+The 2026-06-28 Ads fix separated the two Google Business Profile locations after
+the Bistro breakfast ad rendered the Restaurant local card in Google Search.
+Historical Google Ads location reporting can still show both locations; active
+configuration should be checked in the upper location asset association grid.
 
 Next reporting check:
 

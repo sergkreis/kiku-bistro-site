@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiku-bistro.de/</loc>
-    <lastmod>2026-06-26</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="de" href="https://kiku-bistro.de/" />
@@ -170,6 +170,12 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://kiku-bistro.de/pt/" />
     <xhtml:link rel="alternate" hreflang="ja" href="https://kiku-bistro.de/ja/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://kiku-bistro.de/" />
+  </url>
+  <url>
+    <loc>https://kiku-bistro.de/llms.txt</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://kiku-bistro.de/Kiku-Bistro-Menu.pdf</loc>

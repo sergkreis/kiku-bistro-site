@@ -27,49 +27,269 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Restaurant",
-        "@id": "https://kiku-bistro.de/#restaurant",
-        "name": "Kiku Bistro",
-        "url": "https://kiku-bistro.de/",
-        "logo": "https://kiku-bistro.de/assets/header-flower.png",
-        "image": [
-          "https://kiku-bistro.de/assets/hero-bread.jpg",
-          "https://kiku-bistro.de/assets/menu-breakfast.png",
-          "https://kiku-bistro.de/assets/interior-kiku-144.jpg"
-        ],
-        "telephone": "+4939464139064",
-        "email": "info@kiku-bistro.de",
-        "priceRange": "\u20ac\u20ac",
-        "servesCuisine": ["Bistro", "Breakfast", "Lunch", "Dinner", "Modern European"],
-        "acceptsReservations": true,
-        "hasMenu": "https://kiku-bistro.de/Kiku-Bistro-Menu.pdf",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Steinbr\u00fccke 2",
-          "postalCode": "06484",
-          "addressLocality": "Quedlinburg",
-          "addressCountry": "DE"
-        },
-        "hasMap": "https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg",
-        "openingHoursSpecification": [
+        "@graph": [
           {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["https://schema.org/Wednesday", "https://schema.org/Sunday"],
-            "opens": "09:30",
-            "closes": "17:00"
+            "@type": ["Restaurant", "CafeOrCoffeeShop"],
+            "@id": "https://kiku-bistro.de/#restaurant",
+            "name": "Kiku Bistro",
+            "alternateName": ["KIKU Bistro", "Kiku Bistro Quedlinburg"],
+            "url": "https://kiku-bistro.de/",
+            "description": "Kiku Bistro is a modern breakfast, brunch, lunch and coffee bistro in Quedlinburg at Steinbr\u00fccke 2.",
+            "disambiguatingDescription": "Kiku Bistro serves breakfast, brunch, lunch, coffee and patisserie at Steinbr\u00fccke 2 in Quedlinburg. It is separate from KIKU Restaurant, the fine-dining restaurant at P\u00f6lle 8.",
+            "logo": "https://kiku-bistro.de/assets/header-flower.png",
+            "image": [
+              "https://kiku-bistro.de/assets/hero-bread.jpg",
+              "https://kiku-bistro.de/assets/menu-breakfast.png",
+              "https://kiku-bistro.de/assets/interior-kiku-144.jpg"
+            ],
+            "telephone": "+4939464139064",
+            "email": "info@kiku-bistro.de",
+            "priceRange": "\u20ac\u20ac",
+            "servesCuisine": ["Modern European", "Bistro", "Breakfast", "Brunch", "Lunch", "Coffee", "Patisserie"],
+            "acceptsReservations": true,
+            "menu": { "@id": "https://kiku-bistro.de/#menu" },
+            "hasMenu": { "@id": "https://kiku-bistro.de/#menu" },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Steinbr\u00fccke 2",
+              "postalCode": "06484",
+              "addressLocality": "Quedlinburg",
+              "addressRegion": "Sachsen-Anhalt",
+              "addressCountry": "DE"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 51.7883485,
+              "longitude": 11.1418539
+            },
+            "hasMap": "https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg",
+            "areaServed": {
+              "@type": "City",
+              "name": "Quedlinburg"
+            },
+            "openingHours": ["We 09:30-17:00", "Th-Sa 09:30-21:00", "Su 09:30-17:00"],
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["https://schema.org/Wednesday", "https://schema.org/Sunday"],
+                "opens": "09:30",
+                "closes": "17:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "https://schema.org/Thursday",
+                  "https://schema.org/Friday",
+                  "https://schema.org/Saturday"
+                ],
+                "opens": "09:30",
+                "closes": "21:00"
+              }
+            ],
+            "potentialAction": {
+              "@type": "ReserveAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://kiku-bistro.de/#reservierung",
+                "inLanguage": "de"
+              },
+              "result": {
+                "@type": "FoodEstablishmentReservation"
+              }
+            },
+            "sameAs": ["https://www.instagram.com/kiku_bistro/"]
           },
           {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "https://schema.org/Thursday",
-              "https://schema.org/Friday",
-              "https://schema.org/Saturday"
-            ],
-            "opens": "09:30",
-            "closes": "21:00"
+            "@type": "Menu",
+            "@id": "https://kiku-bistro.de/#menu",
+            "name": "Kiku Bistro Speisekarte",
+            "url": "https://kiku-bistro.de/Kiku-Bistro-Menu.pdf",
+            "inLanguage": "de",
+            "mainEntityOfPage": "https://kiku-bistro.de/#menu",
+            "hasMenuSection": [
+              {
+                "@type": "MenuSection",
+                "name": "Fr\u00fchst\u00fcck",
+                "hasMenuItem": [
+                  {
+                    "@type": "MenuItem",
+                    "name": "Brotk\u00f6rbchen",
+                    "description": "Sauerteigbrot, Schwarzroggen-Sauerteigbrot mit fermentiertem Malz, Butter, Marmelade und Jam\u00f3n",
+                    "offers": { "@type": "Offer", "price": "8.50", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Eggs Benedict auf Brioche mit Spargel",
+                    "description": "Pochierte Eier, Avocado, Hollandaise",
+                    "offers": { "@type": "Offer", "price": "13.00", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Eggs Benedict auf Brioche mit Roastbeef",
+                    "description": "Pochierte Eier, Avocado, Hollandaise",
+                    "offers": { "@type": "Offer", "price": "17.00", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Eggs Benedict auf Brioche mit Lachs",
+                    "description": "Pochierte Eier, Avocado, Hollandaise",
+                    "offers": { "@type": "Offer", "price": "16.50", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Eggs Benedict auf Brioche mit Jam\u00f3n",
+                    "description": "Pochierte Eier, Avocado, Hollandaise",
+                    "offers": { "@type": "Offer", "price": "16.50", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Shakshuka",
+                    "description": "Eier, Tomatensauce, Paprika, Feta",
+                    "offers": { "@type": "Offer", "price": "15.00", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Lachstatar",
+                    "description": "Guacamole, Tomaten, Mango-Mayo",
+                    "offers": { "@type": "Offer", "price": "13.50", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "French Toast",
+                    "description": "Brioche, Yuzu-Mascarpone, Beeren, Pistazieneis",
+                    "offers": { "@type": "Offer", "price": "13.00", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Kardamomschnecke",
+                    "description": "Mit Vanillecreme und Apfel",
+                    "offers": { "@type": "Offer", "price": "7.00", "priceCurrency": "EUR" }
+                  },
+                  {
+                    "@type": "MenuItem",
+                    "name": "Hausgemachtes Granola",
+                    "description": "Beeren, N\u00fcsse, Joghurt",
+                    "offers": { "@type": "Offer", "price": "11.00", "priceCurrency": "EUR" }
+                  }
+                ]
+              },
+              {
+                "@type": "MenuSection",
+                "name": "Lunch ab 12:00 Uhr",
+                "hasMenuSection": [
+                  {
+                    "@type": "MenuSection",
+                    "name": "Vorspeisen",
+                    "hasMenuItem": [
+                      {
+                        "@type": "MenuItem",
+                        "name": "Brotk\u00f6rbchen",
+                        "description": "Sauerteigbrot, Schwarzroggen-Sauerteigbrot mit fermentiertem Malz, Frischk\u00e4se, Jam\u00f3n, Muhammara",
+                        "offers": { "@type": "Offer", "price": "10.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Hummus mit Sauerteigbrot",
+                        "description": "Tomaten, Particella",
+                        "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Lachstatar",
+                        "description": "Guacamole, Tomaten, Mango-Mayo",
+                        "offers": { "@type": "Offer", "price": "13.50", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Rindertatar",
+                        "description": "Pilze, Brioche",
+                        "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Buratta-Salat",
+                        "description": "Tomaten, Salatmix, Pesto",
+                        "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" }
+                      }
+                    ]
+                  },
+                  {
+                    "@type": "MenuSection",
+                    "name": "Hauptg\u00e4nge",
+                    "hasMenuItem": [
+                      {
+                        "@type": "MenuItem",
+                        "name": "Gnocchi mit Gorgonzola",
+                        "description": "Garnelen, Bisque",
+                        "offers": { "@type": "Offer", "price": "21.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Fjordforellensteak",
+                        "description": "Pastinakenp\u00fcree, Tomatensalsa, Beurre Blanc",
+                        "offers": { "@type": "Offer", "price": "22.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Rinderragout",
+                        "description": "Kartoffelp\u00fcree, Karotten, Steinpilze, Jus",
+                        "offers": { "@type": "Offer", "price": "24.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Singapur Chili Huhn",
+                        "description": "Spargel, Paprika, Ei",
+                        "offers": { "@type": "Offer", "price": "19.50", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Spitzkohl Steak",
+                        "description": "Beurre Blanc, Parmesancreme",
+                        "offers": { "@type": "Offer", "price": "16.00", "priceCurrency": "EUR" }
+                      }
+                    ]
+                  },
+                  {
+                    "@type": "MenuSection",
+                    "name": "Desserts",
+                    "hasMenuItem": [
+                      {
+                        "@type": "MenuItem",
+                        "name": "Kardamomschnecke",
+                        "description": "Mit Vanillecreme und Apfel",
+                        "offers": { "@type": "Offer", "price": "7.00", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Tiramisu mit Eis",
+                        "offers": { "@type": "Offer", "price": "6.50", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "Honigkuchen mit Eis",
+                        "offers": { "@type": "Offer", "price": "7.50", "priceCurrency": "EUR" }
+                      },
+                      {
+                        "@type": "MenuItem",
+                        "name": "S\u00fcsses Croissant",
+                        "description": "Yuzu-Mascarpone, Schokolan-Haselnuss-Praline, Karamel",
+                        "offers": { "@type": "Offer", "price": "12.50", "priceCurrency": "EUR" }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://kiku-bistro.de/#website",
+            "name": "Kiku Bistro",
+            "url": "https://kiku-bistro.de/",
+            "inLanguage": ["de", "en", "fr", "nl", "pl", "cs", "it", "es", "pt", "ja"],
+            "publisher": { "@id": "https://kiku-bistro.de/#restaurant" }
           }
-        ],
-        "sameAs": ["https://www.instagram.com/kiku_bistro/"]
+        ]
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

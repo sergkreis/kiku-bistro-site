@@ -1,5 +1,20 @@
 # Kiku Bistro - Handover
 
+Update 2026-06-28:
+- AI/search optimization added as website code with no visual UI change: root `llms.txt`, explicit `Allow: /llms.txt` in `robots.txt`, `llms.txt` entry in `sitemap.xml`, and production deploy copy in `scripts/deploy-production.sh`.
+- Root `index.html` JSON-LD was expanded from a basic `Restaurant` object to an `@graph` with `Restaurant`/`CafeOrCoffeeShop`, `Menu`, and `WebSite`. It now includes disambiguation from KIKU Restaurant at Pölle 8, geo coordinates for Steinbrücke 2 (`51.7883485`, `11.1418539` from OpenStreetMap/Nominatim), area served Quedlinburg, reservation action, opening hours, and structured menu sections/items/prices from the current 2026-06-26 menu.
+- Validation completed locally: JSON-LD parsed with Node from `index.html`; `sitemap.xml` contains `https://kiku-bistro.de/llms.txt`; `llms.txt` contains Bistro/Restaurant disambiguation; `node --check` passed for locale generator scripts. After deploy, verify `https://kiku-bistro.de/llms.txt` returns 200 and production homepage still exposes the JSON-LD graph.
+- Google Ads live fix completed for the wrong local ad card shown on breakfast searches such as `frühstück quedlinburg sonntag`. Root cause: both Kiku Google Business Profile locations were inherited through the account-level location asset (`all locations`), so the Bistro breakfast ad could render the Restaurant GBP card `KIKU, Pölle 8` while using Bistro ad copy.
+- Bistro campaign `23977868810` (`KIKU Bistro | Suche lokal`) now uses campaign-level location group `KIKU Bistro only`, containing only `KIKU Bistro, Steinbrücke 2, 06484 Quedlinburg`. Verified in Google Ads on 2026-06-28: active association row `KIKU Bistro only KIKU Bistro | Suche lokal Campaign`; no active `all locations` account-level association.
+- Restaurant campaign `23979471269` (`KIKU Restaurant | Fine Dining Search`) now uses campaign-level location group `KIKU Restaurant only`, containing only `KIKU, Pölle 8, 06484 Quedlinburg`. Verified in Google Ads on 2026-06-28: active association row `KIKU Restaurant only KIKU Restaurant | Fine Dining Search Campaign`; no active `all locations` account-level association.
+- Restaurant campaign negatives added at campaign level as broad match to stop breakfast/Bistro intent from matching the fine-dining campaign: `frühstück`, `fruehstueck`, `breakfast`, `brunch`, `café`, `cafe`, `kaffee`, `coffee`, `lunch`, `mittagessen`, `mittagstisch`, `bistro`.
+- Bistro campaign negatives added at campaign level as broad match to stop holiday and restaurant/fine-dining intent from matching the Bistro campaign: `urlaub`, `jan fribus`, `fine dining`, `fine-dining`, `degustation`, `abendessen`, `dinner`, `kiku restaurant`. Important: broad negative `restaurant` was intentionally not added, to avoid cutting normal lunch/cafe discovery too aggressively.
+- Important Google Ads UI note: the lower location asset performance/reporting table can still show historical rows for both `KIKU Pölle 8` and `KIKU Bistro Steinbrücke 2`. For active configuration, trust the upper association grid row and confirm `all locations` is not active.
+- External mobile Google Search check after the fix: `frühstück quedlinburg sonntag`, `frühstück quedlinburg`, and `brunch quedlinburg` showed Sponsored `KIKU Bistro` with address `2 Steinbrücke`; no Sponsored `KIKU`/Pölle restaurant card appeared for those breakfast/brunch queries. `lunch quedlinburg` and `mittagessen quedlinburg` showed the Bistro campaign as eligible in Google's advertiser overlay, but no paid KIKU card appeared in that live SERP sample.
+- Wider external mobile SERP matrix on 2026-06-28 covered breakfast/brunch/cafe/lunch/Bistro brand/Restaurant brand/fine-dining/dinner/negative-intent queries. No wrong Sponsored `KIKU`/Pölle restaurant card appeared on Bistro intent. Restaurant campaign was not eligible on Bistro breakfast/brunch/cafe/lunch query samples. Hotel/delivery/jobs/recipe negatives held. `urlaub quedlinburg frühstück` still showed Bistro campaign eligible in Google's advertiser overlay, so verify/add the Bistro `urlaub` negative once Ads UI access works again. Restaurant/fine-dining/generic restaurant queries did not show a user-facing Sponsored KIKU card in the sample, but Bistro campaign was often eligible; verify search terms later and add Bistro negatives if it spends on restaurant intent.
+- After adding the Bistro negatives, external mobile Google Search was rechecked: `urlaub quedlinburg frühstück`, `kiku restaurant quedlinburg`, `restaurant kiku quedlinburg`, `jan fribus quedlinburg`, `fine dining quedlinburg`, and `abendessen quedlinburg` no longer made Bistro campaign eligible. Restaurant campaign remained eligible for `kiku restaurant`, `restaurant kiku`, `jan fribus`, and `fine dining`; `abendessen quedlinburg` showed no KIKU Sponsored card in the live sample.
+- Live Google Search/Maps ads may need propagation time. Re-check the query that triggered the screenshot after propagation and again in the 2026-07-02 to 2026-07-04 review window.
+
 Update 2026-06-27:
 - Google Ads work was completed in the browser, not as website code. No website code/content change was needed for this marketing session.
 - Docs-only commit `be67b4b docs: add Google Ads handoff` pushed after the Ads work and the GitHub Actions `Deploy production` workflow run `28291282632` completed successfully. This synced docs but did not change the public menu/content.
@@ -101,12 +116,16 @@ https://kiku-bistro.de/
 https://analytics.kiku-bistro.de/
 ```
 
-Marketing / Google Ads context as of 2026-06-27:
+Marketing / Google Ads context as of 2026-06-28:
 
 ```text
 Bistro campaign: KIKU Bistro | Suche lokal, campaignId 23977868810, budget 10,00 EUR/day, schedule Wednesday-Sunday 08:00-15:00.
 Bistro focus: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches in Quedlinburg.
+Bistro location asset: campaign-level group KIKU Bistro only, only KIKU Bistro at Steinbrücke 2.
+Bistro negatives: hotel/holiday/accommodation/delivery/jobs/recipe intent plus restaurant/fine-dining intent such as urlaub, jan fribus, fine dining, abendessen, dinner, kiku restaurant.
 Restaurant campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, budget 8,00 EUR/day, fine-dining/special-occasion positioning.
+Restaurant location asset: campaign-level group KIKU Restaurant only, only KIKU at Pölle 8.
+Restaurant negatives: breakfast/brunch/cafe/kaffee/lunch/mittagessen/bistro intent excluded at campaign level.
 Next Ads check: 2026-07-02 to 2026-07-04.
 ```
 

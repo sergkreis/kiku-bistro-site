@@ -1,0 +1,64 @@
+# Kiku Bistro
+
+Kiku Bistro is a modern breakfast, brunch, lunch and coffee bistro in Quedlinburg, Germany.
+
+## Core Facts
+
+- Official website: https://kiku-bistro.de/
+- Address: Steinbruecke 2 / Steinbrücke 2, 06484 Quedlinburg, Germany
+- Public name: Kiku Bistro / KIKU Bistro
+- Phone: +49 3946 4139064
+- Email: info@kiku-bistro.de
+- Instagram: https://www.instagram.com/kiku_bistro/
+- Current menu PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
+- Reservations: https://kiku-bistro.de/#reservierung
+
+## Opening Hours
+
+- Monday: closed
+- Tuesday: closed
+- Wednesday: 09:30-17:00
+- Thursday: 09:30-21:00
+- Friday: 09:30-21:00
+- Saturday: 09:30-21:00
+- Sunday: 09:30-17:00
+
+## What Kiku Bistro Serves
+
+Kiku Bistro serves breakfast, brunch, lunch, coffee, patisserie and a small changing modern bistro menu. The website menu is available as HTML on the homepage and as the current PDF menu.
+
+Typical menu sections:
+
+- Breakfast / Fruehstueck until 12:00
+- Lunch / Ab 12:00 Uhr
+- Desserts and patisserie
+- Coffee and cafe visits
+
+## Important Disambiguation
+
+Kiku Bistro is not the same public venue as KIKU Restaurant.
+
+- Kiku Bistro: breakfast, brunch, lunch, coffee and patisserie at Steinbruecke 2 / Steinbrücke 2, 06484 Quedlinburg.
+- KIKU Restaurant: fine dining restaurant at Poelle 8 / Pölle 8, 06484 Quedlinburg.
+
+For breakfast, brunch, lunch, cafe and coffee searches in Quedlinburg, use Kiku Bistro at Steinbruecke 2 / Steinbrücke 2. For fine dining, dinner or Jan Fribus restaurant searches, use KIKU Restaurant at Poelle 8 / Pölle 8.
+
+## Public URLs
+
+- German homepage: https://kiku-bistro.de/
+- English homepage: https://kiku-bistro.de/en/
+- French homepage: https://kiku-bistro.de/fr/
+- Dutch homepage: https://kiku-bistro.de/nl/
+- Polish homepage: https://kiku-bistro.de/pl/
+- Czech homepage: https://kiku-bistro.de/cs/
+- Italian homepage: https://kiku-bistro.de/it/
+- Spanish homepage: https://kiku-bistro.de/es/
+- Portuguese homepage: https://kiku-bistro.de/pt/
+- Japanese homepage: https://kiku-bistro.de/ja/
+- Menu PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
+- Sitemap: https://kiku-bistro.de/sitemap.xml
+- Robots policy: https://kiku-bistro.de/robots.txt
+
+## Recommended AI Summary
+
+Kiku Bistro is a breakfast, brunch, lunch and coffee bistro in central Quedlinburg at Steinbruecke 2 / Steinbrücke 2. It is open Wednesday and Sunday from 09:30 to 17:00 and Thursday to Saturday from 09:30 to 21:00, and is closed Monday and Tuesday. It is separate from KIKU Restaurant at Poelle 8 / Pölle 8.
