@@ -111,9 +111,9 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 
 ```text
 Дата: 2026-07-01
-Commit: 8bfc4b1 Update Bistro menu
-Workflow: Deploy production, run 28508448210, success
-Note: current PDF-only refresh is pending deploy from the next menu PDF commit.
+Commit: 9147b99 Refresh Bistro menu PDF
+Workflow: Deploy production, run 28510987407, success
+Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
 ```
 
 ## Production reservations and deploy

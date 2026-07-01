@@ -4,7 +4,8 @@ Update 2026-07-01:
 - PDF-only menu refresh prepared from the latest user-provided `/Users/ulia/Desktop/Bistro new.pdf` created at 2026-07-01 11:56 CEST.
 - Visible food menu content matched the already deployed 2026-07-01 menu, so DE/EN and generated locale HTML were not changed in this refresh.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only the menu pages. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593`.
-- Local checks completed: PDF metadata/page count check and visual PDF page render via Poppler/pdftoppm. Production deploy/run details are pending until this PDF refresh is pushed.
+- Production deploy completed from commit `9147b99 Refresh Bistro menu PDF`; GitHub Actions run `28510987407` succeeded. Production checks after deploy returned 200 for all public locale pages, reservation/admin pages, robots.txt, sitemap.xml, llms.txt, and the PDF; live PDF SHA256 matched local `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593`; the live PDF has 3 pages and no Wi-Fi page marker.
+- Local checks completed: PDF metadata/page count check, visual PDF page render via Poppler/pdftoppm, local HTTP checks, and production HTTP/hash checks.
 
 Update 2026-07-01:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new.pdf`.
@@ -151,7 +152,7 @@ Current public menu/PDF as of 2026-07-01:
 ```text
 Menu source: /Users/ulia/Desktop/Bistro new.pdf
 Public PDF SHA256: aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593
-Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success. A later PDF-only refresh from the same date is pending deploy.
+Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success. Latest PDF-only refresh: commit 9147b99 Refresh Bistro menu PDF, workflow run 28510987407 success.
 Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 
@@ -575,10 +576,10 @@ edit local files -> local visual/test check -> git status -> commit -> push main
 Последний content-changing production deploy: 2026-07-01.
 
 ```text
-Commit: 8bfc4b1 Update Bistro menu
-Workflow run: 28508448210
+Commit: 9147b99 Refresh Bistro menu PDF
+Workflow run: 28510987407
 Result: success
-Note: current PDF-only refresh with SHA256 `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593` is pending deploy from the next menu PDF commit.
+Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593`; live PDF содержит 3 страницы меню и не содержит Wi-Fi page marker.
 ```
 
 Не деплоить на production без явного разрешения.
