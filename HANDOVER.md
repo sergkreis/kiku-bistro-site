@@ -1,8 +1,18 @@
 # Kiku Bistro - Handover
 
+Update 2026-07-01:
+- Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new.pdf`.
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only the menu pages. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`.
+- Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
+- Main food changes: breakfast Brotkörbchen is now 10,5 EUR; Stulle - Benedict base is 11,9 EUR with roast beef 16,9 EUR; Stulle - Tomaten und Burrata added at 13,9 EUR; Shakshuka is 14,9 EUR; French Toast is 12,9 EUR; Kardamomschnecke is 6,9 EUR.
+- Lunch changes: simple Brotkörbchen is 3,5 EUR and Brotkörbchen mit Butter & Dips is 10,5 EUR; Hummus is 7,9 EUR; Rindertatar and Burrata-Salat are 11,9 EUR; Caesar Salat, Schnitzel and Trüffelrisotto were added; Fjordforellensteak, Spitzkohl Steak and Süßes Croissant were removed.
+- Locale generator dictionaries were extended for the new menu strings so future regeneration keeps the translated pages localized.
+- `sitemap.xml` lastmod values were updated to `2026-07-01`.
+- Local checks completed: locale generators, PDF metadata/page count check, PDF render via Poppler/pdftoppm, static HTML checks, and local HTTP checks.
+
 Update 2026-06-28:
 - AI/search optimization added as website code with no visual UI change: root `llms.txt`, explicit `Allow: /llms.txt` in `robots.txt`, `llms.txt` entry in `sitemap.xml`, and production deploy copy in `scripts/deploy-production.sh`.
-- Root `index.html` JSON-LD was expanded from a basic `Restaurant` object to an `@graph` with `Restaurant`/`CafeOrCoffeeShop`, `Menu`, and `WebSite`. It now includes disambiguation from KIKU Restaurant at Pölle 8, geo coordinates for Steinbrücke 2 (`51.7883485`, `11.1418539` from OpenStreetMap/Nominatim), area served Quedlinburg, reservation action, opening hours, and structured menu sections/items/prices from the current 2026-06-26 menu.
+- Root `index.html` JSON-LD was expanded from a basic `Restaurant` object to an `@graph` with `Restaurant`/`CafeOrCoffeeShop`, `Menu`, and `WebSite`. It now includes disambiguation from KIKU Restaurant at Pölle 8, geo coordinates for Steinbrücke 2 (`51.7883485`, `11.1418539` from OpenStreetMap/Nominatim), area served Quedlinburg, reservation action, opening hours, and structured menu sections/items/prices. The structured menu was refreshed again on 2026-07-01.
 - Validation completed locally: JSON-LD parsed with Node from `index.html`; `sitemap.xml` contains `https://kiku-bistro.de/llms.txt`; `llms.txt` contains Bistro/Restaurant disambiguation; `node --check` passed for locale generator scripts. After deploy, verify `https://kiku-bistro.de/llms.txt` returns 200 and production homepage still exposes the JSON-LD graph.
 - Google Ads live fix completed for the wrong local ad card shown on breakfast searches such as `frühstück quedlinburg sonntag`. Root cause: both Kiku Google Business Profile locations were inherited through the account-level location asset (`all locations`), so the Bistro breakfast ad could render the Restaurant GBP card `KIKU, Pölle 8` while using Bistro ad copy.
 - Bistro campaign `23977868810` (`KIKU Bistro | Suche lokal`) now uses campaign-level location group `KIKU Bistro only`, containing only `KIKU Bistro, Steinbrücke 2, 06484 Quedlinburg`. Verified in Google Ads on 2026-06-28: active association row `KIKU Bistro only KIKU Bistro | Suche lokal Campaign`; no active `all locations` account-level association.
@@ -129,13 +139,13 @@ Restaurant negatives: breakfast/brunch/cafe/kaffee/lunch/mittagessen/bistro inte
 Next Ads check: 2026-07-02 to 2026-07-04.
 ```
 
-Current public menu/PDF as of 2026-06-27:
+Current public menu/PDF as of 2026-07-01:
 
 ```text
-Menu source: C:\Users\Sergej\Downloads\Bistro new (2).pdf
-Public PDF SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0
-Latest content-changing menu deploy: 2026-06-26, commit 2b3acc8 Update Bistro menu, workflow run 28230668078 success.
-Docs-only pushes can re-run the Deploy production workflow without changing public menu/content; use GitHub Actions for the latest docs-only workflow run if needed.
+Menu source: /Users/ulia/Desktop/Bistro new.pdf
+Public PDF SHA256: c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad
+Latest content-changing menu deploy: 2026-07-01, this menu deploy commit. Check GitHub Actions after push for the workflow run.
+Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 
 Глобальный индекс проектов:
@@ -555,14 +565,13 @@ Production deploy автоматизирован через GitHub Actions. Push
 edit local files -> local visual/test check -> git status -> commit -> push main -> check GitHub Actions -> verify production URLs
 ```
 
-Последний content-changing production deploy: 2026-06-26.
+Последний content-changing production deploy: 2026-07-01.
 
 ```text
-Commit: 2b3acc8 Update Bistro menu
-Workflow run: 28230668078
-Result: success
-Note: docs-only pushes can re-run the Deploy production workflow without changing public menu/content; do not treat those as menu/content changes.
-Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, analytics Matomo JS, robots.txt, sitemap.xml и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0`; главное меню содержит Mit Spargel 13 EUR, Mit Roastbeef 17 EUR, Buratta-Salat, Honigkuchen mit Eis и Suesses Croissant, а старых Pate/Tomaten-Salat нет.
+Commit: this 2026-07-01 menu deploy commit
+Workflow run: check GitHub Actions after push
+Result: pending until push workflow finishes
+Проверка перед push: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml и Kiku-Bistro-Menu.pdf локально отдают 200. PDF SHA256 `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`; главное меню содержит Stulle - Tomaten und Burrata, Caesar Salat, Schnitzel и Trüffelrisotto, а старых Fjordforellensteak/Spitzkohl Steak/Süßes Croissant нет.
 ```
 
 Не деплоить на production без явного разрешения.
@@ -779,18 +788,17 @@ Ab 12:00 Uhr
 Вкладка напитков удалена.
 Порядок позиций на сайте должен повторять порядок в актуальном PDF-меню.
 
-Последнее обновление меню и PDF выполнено 2026-06-26 из файла `C:\Users\Sergej\Downloads\Bistro new (2).pdf`:
+Последнее обновление меню и PDF выполнено 2026-07-01 из файла `/Users/ulia/Desktop/Bistro new.pdf`:
 
 ```text
-Kiku-Bistro-Menu.pdf заменен актуальным PDF; SHA256 FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0.
+Kiku-Bistro-Menu.pdf заменен актуальным публичным PDF из 3 страниц меню; SHA256 c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad.
 Frühstück и Ab 12:00 Uhr обновлены на DE и EN, затем локали FR/NL/PL/CS/IT/ES/PT/JA регенерированы.
-Frühstück: Eggs Benedict with asparagus is now 13 EUR, with roast beef 17 EUR.
-Frühstück: Lachstatar is now 13,5 EUR; Suesses Croissant added.
-Ab 12:00 Uhr: Pate removed.
-Ab 12:00 Uhr: Tomaten-Salat became Buratta-Salat with tomato, salad mix and pesto.
-Desserts: Tiramisu is now served with ice cream; Honigkuchen mit Eis added.
+Frühstück: Brotkörbchen 10,5 EUR; Stulle - Benedict 11,9 EUR; Stulle - Tomaten und Burrata 13,9 EUR.
+Ab 12:00 Uhr: Brotkörbchen 3,5 EUR; Brotkörbchen mit Butter & Dips 10,5 EUR; Caesar Salat added.
+Hauptgänge: Gnocchi 21,9 EUR; Rinderragout 24,5 EUR; Schnitzel and Trüffelrisotto added.
+Desserts: Kardamomschnecke 6,9 EUR; Tiramisu and Honigkuchen updated without "mit Eis" in the visible item names.
 Напитки, вина и коктейли из PDF не выводятся на сайте как отдельная вкладка.
-Текущий PDF содержит guest Wi-Fi page; это было принято для текущего деплоя, но перед будущим деплоем PDF все равно проверять на public-safe content.
+Публичный PDF не содержит первую страницу исходного PDF с guest Wi-Fi credentials; перед будущим деплоем PDF все равно проверять на public-safe content.
 scripts/generate-locales.mjs и scripts/generate-extra-locales.mjs чинят PDF href обратно на Kiku-Bistro-Menu.pdf после переводов.
 ```
 

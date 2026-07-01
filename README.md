@@ -94,14 +94,14 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-06-27.
+Последнее обновление сайта: 2026-07-01.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню 2026-06-26. Live SHA256: FEE11FE868E9E7F934652239B4E20CAA836D687B29009483DA06D29E17D76BB0.
+Kiku-Bistro-Menu.pdf обновлен по пользовательскому PDF-меню `Bistro new.pdf` от 2026-07-01; публичная PDF-версия содержит только страницы меню, без первой страницы с гостевым Wi-Fi.
 robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
-Последнее изменение меню: Eggs Benedict with asparagus теперь 13 EUR, with roast beef 17 EUR; Lachstatar 13,5 EUR; Pate удален; Tomaten-Salat стал Buratta-Salat with tomato, salad mix and pesto; Tiramisu теперь с ice cream; добавлены Honigkuchen mit Eis и Suesses Croissant.
+Последнее изменение меню: обновлены цены завтраков; добавлен Stulle - Tomaten und Burrata; в ланче добавлены Brotkörbchen mit Butter & Dips, Caesar Salat, Schnitzel и Trüffelrisotto; убраны Fjordforellensteak, Spitzkohl Steak и Süßes Croissant.
 Напитки, вина и коктейли остаются в PDF, но не выводятся на сайте отдельной вкладкой.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
 Последний frontend fix: японская intro/about-секция на mobile больше не вызывает горизонтальный overflow; CSS cache-buster `styles.css?v=20260621-design-review-1`.
@@ -110,11 +110,10 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 Последний content-changing production deploy:
 
 ```text
-Дата: 2026-06-26
-Commit: 2b3acc8 Update Bistro menu
-Workflow: Deploy production, run 28230668078, success
-Note: docs-only pushes can re-run the Deploy production workflow without changing public menu/content.
-Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, api health, robots.txt, sitemap.xml, Matomo JS и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
+Дата: 2026-07-01
+Commit: this 2026-07-01 menu deploy commit
+Workflow: Deploy production, check GitHub Actions after push
+Проверка перед push: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf локально отдают 200; PDF содержит 3 страницы меню.
 ```
 
 ## Production reservations and deploy
