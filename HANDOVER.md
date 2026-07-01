@@ -1,6 +1,12 @@
 # Kiku Bistro - Handover
 
 Update 2026-07-01:
+- PDF-only menu refresh prepared from the latest user-provided `/Users/ulia/Desktop/Bistro new.pdf` created at 2026-07-01 11:56 CEST.
+- Visible food menu content matched the already deployed 2026-07-01 menu, so DE/EN and generated locale HTML were not changed in this refresh.
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only the menu pages. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593`.
+- Local checks completed: PDF metadata/page count check and visual PDF page render via Poppler/pdftoppm. Production deploy/run details are pending until this PDF refresh is pushed.
+
+Update 2026-07-01:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new.pdf`.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only the menu pages. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`.
 - Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
@@ -144,8 +150,8 @@ Current public menu/PDF as of 2026-07-01:
 
 ```text
 Menu source: /Users/ulia/Desktop/Bistro new.pdf
-Public PDF SHA256: c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad
-Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success.
+Public PDF SHA256: aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593
+Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success. A later PDF-only refresh from the same date is pending deploy.
 Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 
@@ -572,7 +578,7 @@ edit local files -> local visual/test check -> git status -> commit -> push main
 Commit: 8bfc4b1 Update Bistro menu
 Workflow run: 28508448210
 Result: success
-Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`; главное меню содержит Stulle - Tomaten und Burrata, Caesar Salat, Schnitzel и Trüffelrisotto, а старых Fjordforellensteak/Spitzkohl Steak/Süßes Croissant нет.
+Note: current PDF-only refresh with SHA256 `aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593` is pending deploy from the next menu PDF commit.
 ```
 
 Не деплоить на production без явного разрешения.
@@ -792,7 +798,7 @@ Ab 12:00 Uhr
 Последнее обновление меню и PDF выполнено 2026-07-01 из файла `/Users/ulia/Desktop/Bistro new.pdf`:
 
 ```text
-Kiku-Bistro-Menu.pdf заменен актуальным публичным PDF из 3 страниц меню; SHA256 c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad.
+Kiku-Bistro-Menu.pdf заменен актуальным публичным PDF из 3 страниц меню; SHA256 aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593.
 Frühstück и Ab 12:00 Uhr обновлены на DE и EN, затем локали FR/NL/PL/CS/IT/ES/PT/JA регенерированы.
 Frühstück: Brotkörbchen 10,5 EUR; Stulle - Benedict 11,9 EUR; Stulle - Tomaten und Burrata 13,9 EUR.
 Ab 12:00 Uhr: Brotkörbchen 3,5 EUR; Brotkörbchen mit Butter & Dips 10,5 EUR; Caesar Salat added.

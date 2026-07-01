@@ -98,7 +98,7 @@ assets/visit-window-guest.jpg
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по пользовательскому PDF-меню `Bistro new.pdf` от 2026-07-01; публичная PDF-версия содержит только страницы меню, без первой страницы с гостевым Wi-Fi.
+Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню `Bistro new.pdf` от 2026-07-01; публичная PDF-версия содержит только страницы меню, без первой страницы с гостевым Wi-Fi.
 robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
 Последнее изменение меню: обновлены цены завтраков; добавлен Stulle - Tomaten und Burrata; в ланче добавлены Brotkörbchen mit Butter & Dips, Caesar Salat, Schnitzel и Trüffelrisotto; убраны Fjordforellensteak, Spitzkohl Steak и Süßes Croissant.
@@ -113,7 +113,7 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 Дата: 2026-07-01
 Commit: 8bfc4b1 Update Bistro menu
 Workflow: Deploy production, run 28508448210, success
-Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
+Note: current PDF-only refresh is pending deploy from the next menu PDF commit.
 ```
 
 ## Production reservations and deploy
