@@ -111,9 +111,9 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 
 ```text
 Дата: 2026-07-01
-Commit: this 2026-07-01 menu deploy commit
-Workflow: Deploy production, check GitHub Actions after push
-Проверка перед push: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html и Kiku-Bistro-Menu.pdf локально отдают 200; PDF содержит 3 страницы меню.
+Commit: 8bfc4b1 Update Bistro menu
+Workflow: Deploy production, run 28508448210, success
+Проверка: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200; live PDF hash совпадает с локальным актуальным PDF.
 ```
 
 ## Production reservations and deploy

@@ -7,6 +7,7 @@ Update 2026-07-01:
 - Main food changes: breakfast Brotkörbchen is now 10,5 EUR; Stulle - Benedict base is 11,9 EUR with roast beef 16,9 EUR; Stulle - Tomaten und Burrata added at 13,9 EUR; Shakshuka is 14,9 EUR; French Toast is 12,9 EUR; Kardamomschnecke is 6,9 EUR.
 - Lunch changes: simple Brotkörbchen is 3,5 EUR and Brotkörbchen mit Butter & Dips is 10,5 EUR; Hummus is 7,9 EUR; Rindertatar and Burrata-Salat are 11,9 EUR; Caesar Salat, Schnitzel and Trüffelrisotto were added; Fjordforellensteak, Spitzkohl Steak and Süßes Croissant were removed.
 - Locale generator dictionaries were extended for the new menu strings so future regeneration keeps the translated pages localized.
+- Production deploy completed from commit `8bfc4b1 Update Bistro menu`; GitHub Actions run `28508448210` succeeded. Production checks after deploy returned 200 for all public locale pages, reservation/admin pages, robots.txt, sitemap.xml, llms.txt, and the PDF; live PDF SHA256 matched local `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`.
 - `sitemap.xml` lastmod values were updated to `2026-07-01`.
 - Local checks completed: locale generators, PDF metadata/page count check, PDF render via Poppler/pdftoppm, static HTML checks, and local HTTP checks.
 
@@ -144,7 +145,7 @@ Current public menu/PDF as of 2026-07-01:
 ```text
 Menu source: /Users/ulia/Desktop/Bistro new.pdf
 Public PDF SHA256: c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad
-Latest content-changing menu deploy: 2026-07-01, this menu deploy commit. Check GitHub Actions after push for the workflow run.
+Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success.
 Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 
@@ -568,10 +569,10 @@ edit local files -> local visual/test check -> git status -> commit -> push main
 Последний content-changing production deploy: 2026-07-01.
 
 ```text
-Commit: this 2026-07-01 menu deploy commit
-Workflow run: check GitHub Actions after push
-Result: pending until push workflow finishes
-Проверка перед push: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml и Kiku-Bistro-Menu.pdf локально отдают 200. PDF SHA256 `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`; главное меню содержит Stulle - Tomaten und Burrata, Caesar Salat, Schnitzel и Trüffelrisotto, а старых Fjordforellensteak/Spitzkohl Steak/Süßes Croissant нет.
+Commit: 8bfc4b1 Update Bistro menu
+Workflow run: 28508448210
+Result: success
+Проверка после деплоя: все языковые страницы DE/EN/FR/NL/PL/CS/IT/ES/PT/JA, reservation.html, admin.html, robots.txt, sitemap.xml, llms.txt и Kiku-Bistro-Menu.pdf отдают 200. Live PDF SHA256 совпадает с локальным `c96d8ee722465a9fc73fc39726effa84e677c6d39f1e62bf561713726d4d02ad`; главное меню содержит Stulle - Tomaten und Burrata, Caesar Salat, Schnitzel и Trüffelrisotto, а старых Fjordforellensteak/Spitzkohl Steak/Süßes Croissant нет.
 ```
 
 Не деплоить на production без явного разрешения.
