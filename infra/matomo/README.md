@@ -142,7 +142,7 @@ https://kiku-bistro.de/?utm_source=instagram&utm_medium=social&utm_campaign=menu
 
 ## Google Ads / CPC campaign context
 
-Updated on 2026-06-28.
+Updated on 2026-07-02.
 
 The Bistro Google Ads campaign currently points traffic to the Bistro site with
 Google CPC UTM parameters:
@@ -159,7 +159,7 @@ Current Bistro campaign focus:
 Campaign: KIKU Bistro | Suche lokal
 Google Ads campaign ID: 23977868810
 Budget: 10,00 EUR/day
-Schedule: Wednesday-Sunday, 08:00-15:00 Europe/Berlin
+Schedule: Wednesday-Sunday, 08:00-15:00 plus Tuesday-Saturday, 18:00-22:00 Europe/Berlin
 Intent: breakfast, brunch, lunch, mittagessen, cafe/kaffee and KIKU Bistro searches around Quedlinburg
 Location asset: campaign-level group KIKU Bistro only, only KIKU Bistro at Steinbrücke 2
 Campaign-level broad negatives include hotel/holiday/accommodation/delivery/jobs/recipe intent plus restaurant/fine-dining terms: urlaub, jan fribus, fine dining, fine-dining, degustation, abendessen, dinner, kiku restaurant

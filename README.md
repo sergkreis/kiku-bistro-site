@@ -24,12 +24,12 @@ Google Ads / marketing context:
 
 ```text
 KIKU Bistro Search campaign: KIKU Bistro | Suche lokal, campaignId 23977868810.
-Current Bistro Ads strategy as of 2026-06-28: breakfast/lunch search intent in Quedlinburg, 10,00 EUR/day, ad schedule Wednesday-Sunday 08:00-15:00 Europe/Berlin, with hotel/holiday/recipe/job/delivery negative keywords.
+Current Bistro Ads strategy as of 2026-07-02: breakfast/lunch search intent in Quedlinburg, 10,00 EUR/day, ad schedule Wednesday-Sunday 08:00-15:00 plus an evening breakfast-planning test Tuesday-Saturday 18:00-22:00 Europe/Berlin, with hotel/holiday/recipe/job/delivery negative keywords.
 Bistro location asset: campaign-level Google Ads location group KIKU Bistro only, containing only KIKU Bistro at Steinbrücke 2.
 Bistro negatives include hotel/holiday/accommodation/delivery/jobs/recipe intent and restaurant/fine-dining terms such as urlaub, jan fribus, fine dining, abendessen, dinner, kiku restaurant.
 KIKU Restaurant Search campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, 8,00 EUR/day.
 Restaurant location asset: campaign-level Google Ads location group KIKU Restaurant only, containing only KIKU at Pölle 8. Restaurant campaign has broad-match negatives for breakfast/brunch/cafe/kaffee/lunch/mittagessen/bistro intent.
-Next Ads check: 2026-07-02 to 2026-07-04, review search terms, top-of-page visibility, CPC, spend, and whether Bistro breakfast/lunch keywords need budget or copy changes.
+Next Ads check: 2026-07-05 to 2026-07-09, review morning vs evening performance, search terms, top-of-page visibility, CPC, spend, and whether Bistro breakfast/lunch keywords need budget or copy changes.
 ```
 
 AI/search context:
