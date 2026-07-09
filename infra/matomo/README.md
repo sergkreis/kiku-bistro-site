@@ -2,7 +2,7 @@
 
 Production Matomo runs on the Kiku Bistro VPS in `/opt/kiku-matomo`.
 
-Last documentation update: 2026-06-27.
+Last documentation update: 2026-07-09.
 
 Public URL:
 
@@ -38,6 +38,7 @@ Current privacy mode:
   - route planning links
   - email links
   - PDF menu link
+  - phone links
   - menu tab clicks
 
 Production nginx exposes Matomo through a dedicated virtual host:
@@ -58,7 +59,7 @@ credentials live only on the server.
 
 ## City geolocation and goals update
 
-Updated on 2026-05-08.
+Updated on 2026-07-09.
 
 ```text
 GeoIP provider: geoip2php
@@ -77,6 +78,7 @@ Goals configured in Matomo for site ID 1:
 Route geplant       -> event_action contains "Route planen"
 E-Mail Klick        -> event_action contains "E-Mail"
 PDF Menue geoeffnet -> event_action contains "PDF"
+Telefon Klick       -> event_action contains "Telefon"
 ```
 
 The public site uses `enableHeartBeatTimer` in the Matomo JavaScript tracker so
@@ -84,7 +86,7 @@ single-page visits get more accurate time-on-site measurements.
 
 ## Current menu tracking context
 
-Updated on 2026-07-01.
+Updated on 2026-07-09.
 
 ```text
 Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
@@ -189,3 +191,22 @@ Next reporting check:
 Review Matomo traffic for the `bistro_search_local` UTM campaign together with
 Google Ads search terms, CPC, spend, and top-of-page visibility. Keep credential
 details out of commits and chat.
+
+## Google Ads conversion bridge
+
+Updated on 2026-07-09.
+
+The public site now has a generic, inactive Google Ads conversion bridge for
+tracked click actions:
+
+```text
+phone    -> tel: links, Matomo event_action "Telefon"
+email    -> mailto: links, Matomo event_action "E-Mail"
+route    -> Google Maps route links, Matomo event_action "Route planen"
+menu_pdf -> PDF menu links, Matomo event_action "PDF öffnen"
+```
+
+The bridge does not send data to Google by itself. It only calls `gtag` if a
+future script defines `window.KIKU_GOOGLE_ADS_CONVERSIONS` with real Google Ads
+conversion labels and a Google tag is present. Before enabling it, confirm the
+Datenschutz/consent decision and keep Google Ads IDs/secrets out of commits.

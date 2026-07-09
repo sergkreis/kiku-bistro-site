@@ -555,22 +555,48 @@
         });
       });
 
-      const trackEvent = (category, action, name) => {
+      const googleAdsConversions = window.KIKU_GOOGLE_ADS_CONVERSIONS || {};
+
+      const trackGoogleAdsConversion = (key) => {
+        const conversion = googleAdsConversions[key];
+        if (!conversion || typeof window.gtag !== "function") {
+          return;
+        }
+
+        const payload = { send_to: conversion.sendTo };
+        if (conversion.value !== undefined) {
+          payload.value = conversion.value;
+        }
+        if (conversion.currency) {
+          payload.currency = conversion.currency;
+        }
+
+        window.gtag("event", "conversion", payload);
+      };
+
+      const trackEvent = (category, action, name, googleAdsKey) => {
         if (window._paq) {
           window._paq.push(["trackEvent", category, action, name]);
         }
+        if (googleAdsKey) {
+          trackGoogleAdsConversion(googleAdsKey);
+        }
       };
 
+      document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+        link.addEventListener("click", () => trackEvent("Contact", "Telefon", link.href, "phone"));
+      });
+
       document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
-        link.addEventListener("click", () => trackEvent("Contact", "E-Mail", link.href));
+        link.addEventListener("click", () => trackEvent("Contact", "E-Mail", link.href, "email"));
       });
 
       document.querySelectorAll('a[href*="maps.google.com"]').forEach((link) => {
-        link.addEventListener("click", () => trackEvent("Contact", "Get directions", link.href));
+        link.addEventListener("click", () => trackEvent("Contact", "Get directions", link.href, "route"));
       });
 
       document.querySelectorAll('a[href$=".pdf"], a[href$=".PDF"]').forEach((link) => {
-        link.addEventListener("click", () => trackEvent("Menu", "PDF", link.href));
+        link.addEventListener("click", () => trackEvent("Menu", "PDF", link.href, "menu_pdf"));
       });
     </script>
   </body>

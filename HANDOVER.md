@@ -1,5 +1,13 @@
 # Kiku Bistro - Handover
 
+Update 2026-07-09:
+- Website-side conversion preparation was added for the Bistro site. Public language pages now track `tel:` clicks in Matomo and have a generic Google Ads conversion hook for future conversion keys: `phone`, `email`, `route`, and `menu_pdf`.
+- No Google tag / `gtag` / Google Ads conversion ID was added to the website yet. The hook only fires if `window.KIKU_GOOGLE_ADS_CONVERSIONS` is configured later and `window.gtag` exists, so the site does not currently send these website conversion events to Google.
+- Matomo goal added for site ID 1: `Telefon Klick` with `event_action contains "Telefon"`. Existing goals remain `Route geplant`, `E-Mail Klick`, and `PDF Menue geoeffnet`.
+- Google Ads conversions page was checked in the browser. Existing goal groups were visible for phone leads, contact, route, interaction, outgoing click, and page view, but the Google Ads UI repeatedly timed out when opening conversion action settings / creation. Finish Ads-side conversion labels when the UI is stable.
+- Before adding a Google tag, confirm the Datenschutz/consent decision and obtain the exact Google Ads conversion ID/labels for `phone`, `email`, `route`, and `menu_pdf`.
+- `scripts/generate-locales.mjs` was aligned with the current language switcher so future locale regeneration keeps IT/ES/PT/JA links.
+
 Update 2026-07-01:
 - PDF-only menu refresh prepared from the latest user-provided `/Users/ulia/Desktop/Bistro new.pdf` created at 2026-07-01 11:56 CEST.
 - Visible food menu content matched the already deployed 2026-07-01 menu, so DE/EN and generated locale HTML were not changed in this refresh.
@@ -118,7 +126,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-06-27
+Последнее обновление: 2026-07-09
 
 ## Быстрый контекст
 
@@ -145,6 +153,14 @@ Restaurant campaign: KIKU Restaurant | Fine Dining Search, campaignId 2397947126
 Restaurant location asset: campaign-level group KIKU Restaurant only, only KIKU at Pölle 8.
 Restaurant negatives: breakfast/brunch/cafe/kaffee/lunch/mittagessen/bistro intent excluded at campaign level.
 Next Ads check: 2026-07-05 to 2026-07-09.
+```
+
+Conversion / analytics context as of 2026-07-09:
+
+```text
+Matomo goals for site ID 1: Route geplant, E-Mail Klick, PDF Menue geoeffnet, Telefon Klick.
+Website click events: route links, email links, PDF menu links, menu tabs, and phone links.
+Google Ads website conversion hook exists but is intentionally inactive until Google Ads conversion ID/labels and consent/privacy handling are confirmed.
 ```
 
 Current public menu/PDF as of 2026-07-01:

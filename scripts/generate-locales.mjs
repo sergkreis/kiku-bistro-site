@@ -31,14 +31,22 @@ const languageLinks = `          <a href="../" lang="de">DE</a>
           <a href="../fr/" lang="fr">FR</a>
           <a href="../nl/" lang="nl">NL</a>
           <a href="../pl/" lang="pl">PL</a>
-          <a href="../cs/" lang="cs">CS</a>`;
+          <a href="../cs/" lang="cs">CS</a>
+          <a href="../it/" lang="it">IT</a>
+          <a href="../es/" lang="es">ES</a>
+          <a href="../pt/" lang="pt">PT</a>
+          <a href="../ja/" lang="ja">JA</a>`;
 
 const mobileLanguageLinks = `        <a href="../" lang="de">Deutsch</a>
         <a href="../en/" lang="en">English</a>
         <a href="../fr/" lang="fr">Français</a>
         <a href="../nl/" lang="nl">Nederlands</a>
         <a href="../pl/" lang="pl">Polski</a>
-        <a href="../cs/" lang="cs">Čeština</a>`;
+        <a href="../cs/" lang="cs">Čeština</a>
+        <a href="../it/" lang="it">Italiano</a>
+        <a href="../es/" lang="es">Español</a>
+        <a href="../pt/" lang="pt">Português</a>
+        <a href="../ja/" lang="ja">日本語</a>`;
 
 const languageMenu = (current) => `          <details class="language-menu">
             <summary>${current.toUpperCase()}</summary>
@@ -49,6 +57,10 @@ const languageMenu = (current) => `          <details class="language-menu">
               <a href="../nl/" lang="nl">NL</a>
               <a href="../pl/" lang="pl">PL</a>
               <a href="../cs/" lang="cs">CS</a>
+              <a href="../it/" lang="it">IT</a>
+              <a href="../es/" lang="es">ES</a>
+              <a href="../pt/" lang="pt">PT</a>
+              <a href="../ja/" lang="ja">JA</a>
             </div>
           </details>`;
 
@@ -59,6 +71,10 @@ const mobileLanguageList = `        <div class="mobile-language-list" aria-label
           <a href="../nl/" lang="nl">NL</a>
           <a href="../pl/" lang="pl">PL</a>
           <a href="../cs/" lang="cs">CS</a>
+          <a href="../it/" lang="it">IT</a>
+          <a href="../es/" lang="es">ES</a>
+          <a href="../pt/" lang="pt">PT</a>
+          <a href="../ja/" lang="ja">JA</a>
         </div>`;
 
 const locales = {

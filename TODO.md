@@ -1,6 +1,6 @@
 # Kiku Bistro TODO
 
-Last updated: 2026-07-02.
+Last updated: 2026-07-09.
 
 ## Google Ads follow-up
 
@@ -13,11 +13,14 @@ Last updated: 2026-07-02.
 - Compare morning schedule rows with the new Tuesday-Saturday `18:00-22:00` breakfast-planning rows before increasing budget.
 - If ad strength still shows "poor", add more responsive search ad headline/description variants focused on breakfast, lunch, menu, opening days and central Quedlinburg location.
 - Keep Bistro and Restaurant location assets separated: Bistro campaign uses `KIKU Bistro only`; Restaurant campaign uses `KIKU Restaurant only`. Do not restore account-level `all locations` on either campaign unless both ad strategies are redesigned.
+- Finish the Google Ads conversion setup when the Ads UI is stable: obtain/create conversion labels for website actions `phone`, `email`, `route`, and `menu_pdf`.
+- Before installing a Google tag on the public site, confirm Datenschutz/consent handling. The current website code only has an inactive conversion hook and does not send these events to Google yet.
 
 ## Website / analytics
 
 - Keep public opening hours aligned everywhere: Monday-Tuesday closed; Wednesday and Sunday 9:30-17:00; Thursday-Saturday 9:30-21:00.
 - Keep Google Ads landing URLs tagged with `utm_source=google`, `utm_medium=cpc`, and a campaign-specific `utm_campaign`.
+- Verify the new Matomo phone goal after production deploy by clicking a public `tel:` link and checking that `Telefon Klick` records future conversions.
 - After deploying the AI/search update, verify production `https://kiku-bistro.de/llms.txt` returns 200 and production homepage JSON-LD still parses as Restaurant/Menu/WebSite graph.
 - Add a Matomo/analytics review for AI traffic sources and user agents: ChatGPT, Perplexity, Gemini, Copilot, OAI-SearchBot, GPTBot, ChatGPT-User, PerplexityBot and Perplexity-User.
 - Do not commit credentials, `.env`, Matomo admin details, KeePassXC data, local databases or private infra notes.
