@@ -4,6 +4,7 @@ Last updated: 2026-07-09.
 
 ## Google Ads follow-up
 
+- After deploying Google Ads conversion tracking, verify `KIKU Bistro Website Interaction` in Google Ads diagnostics / Tag Assistant, then re-check status and conversion counts after 24-48 hours.
 - Check Bistro campaign `KIKU Bistro | Suche lokal` (`campaignId 23977868810`) between 2026-07-05 and 2026-07-09 after the 2026-07-02 evening schedule test.
 - Re-check live Google Search/Maps results after the 2026-06-28 location asset fix: breakfast/Bistro queries in Quedlinburg should show the Bistro location (`KIKU Bistro`, Steinbrücke 2), not the Restaurant location (`KIKU`, Pölle 8).
 - Review search terms for possible cross-campaign leakage after the 2026-06-28 negative keyword update. Bistro campaign now has broad negatives for `urlaub`, `jan fribus`, `fine dining`, `fine-dining`, `degustation`, `abendessen`, `dinner`, and `kiku restaurant`; add more only if real spend/search terms confirm leakage.
@@ -13,11 +14,11 @@ Last updated: 2026-07-09.
 - Compare morning schedule rows with the new Tuesday-Saturday `18:00-22:00` breakfast-planning rows before increasing budget.
 - If ad strength still shows "poor", add more responsive search ad headline/description variants focused on breakfast, lunch, menu, opening days and central Quedlinburg location.
 - Keep Bistro and Restaurant location assets separated: Bistro campaign uses `KIKU Bistro only`; Restaurant campaign uses `KIKU Restaurant only`. Do not restore account-level `all locations` on either campaign unless both ad strategies are redesigned.
-- Finish the Google Ads conversion setup when the Ads UI is stable: obtain/create conversion labels for website actions `phone`, `email`, `route`, and `menu_pdf`.
-- Before installing a Google tag on the public site, confirm Datenschutz/consent handling. The current website code only has an inactive conversion hook and does not send these events to Google yet.
+- Google Ads website conversion setup is active via one conversion action. Do not create separate labels for `phone`, `email`, `route`, and `menu_pdf` unless the reporting strategy changes.
 
 ## Website / analytics
 
+- Google Ads conversion action `KIKU Bistro Website Interaction` tracks high-intent website clicks via `assets/google-ads-conversions.js`: PDF menu, route, phone, and email. Enhanced conversions are not enabled.
 - Keep public opening hours aligned everywhere: Monday-Tuesday closed; Wednesday and Sunday 9:30-17:00; Thursday-Saturday 9:30-21:00.
 - Keep Google Ads landing URLs tagged with `utm_source=google`, `utm_medium=cpc`, and a campaign-specific `utm_campaign`.
 - Verify the new Matomo phone goal after production deploy by clicking a public `tel:` link and checking that `Telefon Klick` records future conversions.

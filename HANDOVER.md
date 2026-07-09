@@ -8,13 +8,14 @@ Update 2026-07-09:
 - `sitemap.xml` lastmod values for public menu pages and the PDF were updated to `2026-07-09`.
 - Locale generator dictionaries were extended for the new menu strings so future regeneration keeps the translated pages localized.
 
-Update 2026-07-09:
-- Website-side conversion preparation was added for the Bistro site. Public language pages now track `tel:` clicks in Matomo and have a generic Google Ads conversion hook for future conversion keys: `phone`, `email`, `route`, and `menu_pdf`.
-- No Google tag / `gtag` / Google Ads conversion ID was added to the website yet. The hook only fires if `window.KIKU_GOOGLE_ADS_CONVERSIONS` is configured later and `window.gtag` exists, so the site does not currently send these website conversion events to Google.
+- Website-side conversion tracking is now active for the Bistro site. Public language pages track `tel:`, `mailto:`, Google Maps route, and PDF menu clicks in Matomo and map the same high-intent clicks to Google Ads keys `phone`, `email`, `route`, and `menu_pdf`.
 - Matomo goal added for site ID 1: `Telefon Klick` with `event_action contains "Telefon"`. Existing goals remain `Route geplant`, `E-Mail Klick`, and `PDF Menue geoeffnet`.
-- Google Ads conversions page was checked in the browser. Existing goal groups were visible for phone leads, contact, route, interaction, outgoing click, and page view, but the Google Ads UI repeatedly timed out when opening conversion action settings / creation. Finish Ads-side conversion labels when the UI is stable.
-- Before adding a Google tag, confirm the Datenschutz/consent decision and obtain the exact Google Ads conversion ID/labels for `phone`, `email`, `route`, and `menu_pdf`.
 - `scripts/generate-locales.mjs` was aligned with the current language switcher so future locale regeneration keeps IT/ES/PT/JA links.
+- Google Ads conversion tracking was added for the Bistro campaign workflow. In Google Ads, a website conversion action was created: `KIKU Bistro Website Interaction`, category `Contact`, primary action, count `One`, default value `1 EUR`. Event snippet target: `AW-11328671562/KH47CO3Zus0cEMqe95kq`.
+- `assets/google-ads-conversions.js` is loaded by all public language index pages. It installs the Google tag, defines `window.KIKU_GOOGLE_ADS_CONVERSIONS`, maps all four website actions to the Google Ads conversion action, and does not change the visible site.
+- Enhanced conversions were intentionally not enabled; no email/phone user-provided data is sent to Google Ads. The Google tag is configured with `allow_ad_personalization_signals` set to `false` and `send_page_view: false`.
+- `impressum.html` / Datenschutz was updated with a Google Ads Conversion Tracking section. This is a factual implementation note and should still be treated as subject to legal review.
+- Follow-up after deploy: use Google Ads Tag Assistant / conversion diagnostics and then re-check Google Ads conversion status after 24-48 hours. Initial status may remain inactive until a valid tagged click happens and Google processes it.
 
 Update 2026-07-01:
 - PDF-only menu refresh prepared from the latest user-provided `/Users/ulia/Desktop/Bistro new.pdf` created at 2026-07-01 11:56 CEST.
@@ -168,7 +169,7 @@ Conversion / analytics context as of 2026-07-09:
 ```text
 Matomo goals for site ID 1: Route geplant, E-Mail Klick, PDF Menue geoeffnet, Telefon Klick.
 Website click events: route links, email links, PDF menu links, menu tabs, and phone links.
-Google Ads website conversion hook exists but is intentionally inactive until Google Ads conversion ID/labels and consent/privacy handling are confirmed.
+Google Ads website conversion hook is active via assets/google-ads-conversions.js and one conversion action: KIKU Bistro Website Interaction.
 ```
 
 Current public menu/PDF as of 2026-07-09:

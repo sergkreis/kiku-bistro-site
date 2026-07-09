@@ -194,8 +194,8 @@ details out of commits and chat.
 
 Updated on 2026-07-09.
 
-The public site now has a generic, inactive Google Ads conversion bridge for
-tracked click actions:
+The public site now has an active Google Ads conversion bridge for tracked click
+actions:
 
 ```text
 phone    -> tel: links, Matomo event_action "Telefon"
@@ -204,7 +204,8 @@ route    -> Google Maps route links, Matomo event_action "Route planen"
 menu_pdf -> PDF menu links, Matomo event_action "PDF öffnen"
 ```
 
-The bridge does not send data to Google by itself. It only calls `gtag` if a
-future script defines `window.KIKU_GOOGLE_ADS_CONVERSIONS` with real Google Ads
-conversion labels and a Google tag is present. Before enabling it, confirm the
-Datenschutz/consent decision and keep Google Ads IDs/secrets out of commits.
+`assets/google-ads-conversions.js` loads the Google tag, defines
+`window.KIKU_GOOGLE_ADS_CONVERSIONS`, and maps all four website actions to the
+Google Ads conversion action `KIKU Bistro Website Interaction`. Enhanced
+conversions are not enabled, and ad personalization signals are disabled on the
+tag. The Matomo events remain separate and more granular for local reporting.
