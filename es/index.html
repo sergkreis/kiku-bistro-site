@@ -410,7 +410,7 @@
             </div>
 
             <div class="menu-pdf-row">
-              <a class="btn btn-dark" href="../Kiku-Bistro-Menu.pdf" target="_blank" rel="noreferrer">Carta actual en PDF</a>
+              <a class="btn btn-dark" href="../Kiku-Bistro-Menu.pdf?v=20260709-menu" target="_blank" rel="noreferrer">Carta actual en PDF</a>
             </div>
           </div>
 
@@ -596,7 +596,7 @@
         link.addEventListener("click", () => trackEvent("Contact", "Get directions", link.href, "route"));
       });
 
-      document.querySelectorAll('a[href$=".pdf"], a[href$=".PDF"]').forEach((link) => {
+      document.querySelectorAll('a[href*=".pdf"], a[href*=".PDF"]').forEach((link) => {
         link.addEventListener("click", () => trackEvent("Menu", "PDF", link.href, "menu_pdf"));
       });
     </script>

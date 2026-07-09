@@ -803,7 +803,7 @@ function translateOutsideScripts(input, replacements) {
 }
 
 function repairPdfMenuHref(input) {
-  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf"/g, 'href="../Kiku-Bistro-Menu.pdf"');
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20260709-menu"');
 }
 
 function applyLanguageSwitcher(input, locale) {
