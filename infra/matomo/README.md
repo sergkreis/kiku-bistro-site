@@ -90,10 +90,8 @@ Updated on 2026-07-09.
 
 ```text
 Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
-Current menu source file: user-provided Bistro new.pdf from 2026-07-01
-Current public PDF SHA256: aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593
-Menu deploy commit: 9147b99 Refresh Bistro menu PDF
-Production workflow run: 28510987407, success
+Current menu source file: user-provided Bistro new1.pdf from 2026-07-09
+Current public PDF SHA256: cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b
 ```
 
 The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across

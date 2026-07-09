@@ -1,6 +1,14 @@
 # Kiku Bistro - Handover
 
 Update 2026-07-09:
+- Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.
+- Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only pages 2-4 from the source PDF. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b`.
+- Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT, JA.
+- Main visible changes: lunch `Gnocchi` and `Schnitzel` were removed; `Fischsuppe` was added at 18,9 EUR; desserts now include `Süßes Croissant` at 10,5 EUR and `Schichttorte` at 6,9 EUR; `Honigkuchen` was removed; `Burrata-Salat` spelling was corrected.
+- `sitemap.xml` lastmod values for public menu pages and the PDF were updated to `2026-07-09`.
+- Locale generator dictionaries were extended for the new menu strings so future regeneration keeps the translated pages localized.
+
+Update 2026-07-09:
 - Website-side conversion preparation was added for the Bistro site. Public language pages now track `tel:` clicks in Matomo and have a generic Google Ads conversion hook for future conversion keys: `phone`, `email`, `route`, and `menu_pdf`.
 - No Google tag / `gtag` / Google Ads conversion ID was added to the website yet. The hook only fires if `window.KIKU_GOOGLE_ADS_CONVERSIONS` is configured later and `window.gtag` exists, so the site does not currently send these website conversion events to Google.
 - Matomo goal added for site ID 1: `Telefon Klick` with `event_action contains "Telefon"`. Existing goals remain `Route geplant`, `E-Mail Klick`, and `PDF Menue geoeffnet`.
@@ -163,12 +171,11 @@ Website click events: route links, email links, PDF menu links, menu tabs, and p
 Google Ads website conversion hook exists but is intentionally inactive until Google Ads conversion ID/labels and consent/privacy handling are confirmed.
 ```
 
-Current public menu/PDF as of 2026-07-01:
+Current public menu/PDF as of 2026-07-09:
 
 ```text
-Menu source: /Users/ulia/Desktop/Bistro new.pdf
-Public PDF SHA256: aea8d5a2f41bc4778b0c5cf0d9546f764e62eb5b8e7f38bc3c7f672172981593
-Latest content-changing menu deploy: 2026-07-01, commit 8bfc4b1 Update Bistro menu, workflow run 28508448210 success. Latest PDF-only refresh: commit 9147b99 Refresh Bistro menu PDF, workflow run 28510987407 success.
+Menu source: /Users/ulia/Desktop/Bistro new1.pdf
+Public PDF SHA256: cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b
 Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 
