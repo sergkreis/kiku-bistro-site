@@ -7,6 +7,7 @@ Update 2026-07-10:
 - GitHub Actions validates Bash, Python and JavaScript syntax before connecting to the VPS. The first release-based deploy preserves the previous direct web/backend files as legacy releases.
 - Atomic release migration completed from commit `ef92263 Wait for services during atomic deploy`; GitHub Actions run `29109450349` succeeded. Active production web/backend releases are `ef92263-20260710170054`; the previous web directory and backend version remain available as legacy releases.
 - The first migration attempt correctly rolled the backend link back when its immediate health request arrived before Python had opened port 8080. Health checks now retry for up to 10 seconds before declaring failure. Production verification after the successful retry returned 200 for all public locales and both health endpoints; legacy public `POST /api/reservations` returned 410.
+- Locale generators now normalize LF, CRLF and legacy CR newlines before applying multiline translations, so menu regeneration is consistent on Windows, macOS and Linux. CI converts the English source pages to CRLF, regenerates all locales and fails if any published HTML output drifts.
 
 Update 2026-07-09:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.

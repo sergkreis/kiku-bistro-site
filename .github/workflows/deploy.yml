@@ -30,6 +30,17 @@ jobs:
           node --check scripts/generate-locales.mjs
           node --check scripts/generate-extra-locales.mjs
           node --check scripts/generate-guest-pages.mjs
+          python3 - <<'PY'
+          from pathlib import Path
+
+          for name in ("en/index.html", "en/reservation.html"):
+              path = Path(name)
+              content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+              path.write_bytes(content.replace(b"\n", b"\r\n"))
+          PY
+          node scripts/generate-locales.mjs
+          node scripts/generate-extra-locales.mjs
+          git diff --exit-code -- index.html reservation.html reservierung.html en fr nl pl cs it es pt ja
 
       - name: Prepare SSH
         run: |

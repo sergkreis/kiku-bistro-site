@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const normalizeNewlines = (value) => value.replace(/\r\n?/g, "\n");
 const languages = [
   ["de", "Deutsch"],
   ["en", "English"],
@@ -927,13 +928,13 @@ function reservationPage(code, config) {
 `;
 }
 
-const enIndex = await readFile(join(root, "en", "index.html"), "utf8");
-const rootIndex = await readFile(join(root, "index.html"), "utf8");
+const enIndex = normalizeNewlines(await readFile(join(root, "en", "index.html"), "utf8"));
+const rootIndex = normalizeNewlines(await readFile(join(root, "index.html"), "utf8"));
 await writeFile(join(root, "index.html"), updateCommonIndex(rootIndex, "de", true), "utf8");
 
 for (const code of ["en", "fr", "nl", "pl", "cs"]) {
   const file = join(root, code, "index.html");
-  const html = await readFile(file, "utf8");
+  const html = normalizeNewlines(await readFile(file, "utf8"));
   await writeFile(file, updateCommonIndex(html, code), "utf8");
 }
 

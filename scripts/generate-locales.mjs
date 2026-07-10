@@ -3,8 +3,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const sourceIndex = await readFile(join(root, "en", "index.html"), "utf8");
-const sourceReservation = await readFile(join(root, "en", "reservation.html"), "utf8");
+const normalizeNewlines = (value) => value.replace(/\r\n?/g, "\n");
+const sourceIndex = normalizeNewlines(await readFile(join(root, "en", "index.html"), "utf8"));
+const sourceReservation = normalizeNewlines(await readFile(join(root, "en", "reservation.html"), "utf8"));
 
 const alternates = `    <link rel="alternate" hreflang="de" href="https://kiku-bistro.de/" />
     <link rel="alternate" hreflang="en" href="https://kiku-bistro.de/en/" />
