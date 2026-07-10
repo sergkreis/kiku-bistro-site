@@ -160,6 +160,7 @@ VPS checkout: /opt/kiku-bistro-site
 Web releases: /var/www/kiku-site-releases; active link: /var/www/kiku-site
 Backend releases: /opt/kiku-reservations/releases; active link: /opt/kiku-reservations/current
 Failed service/nginx health checks restore the previous web and backend release links.
+After a successful deploy, the five newest regular web and backend releases are kept; legacy releases and active links are never removed.
 ```
 
 Required GitHub repository secrets:

@@ -9,6 +9,18 @@ BACKEND="${BACKEND:-/opt/kiku-reservations}"
 DATA_DIR="${DATA_DIR:-/var/lib/kiku-reservations}"
 WEB_RELEASES_DIR="${WEB_RELEASES_DIR:-${WEBROOT}-releases}"
 BACKEND_RELEASES_DIR="${BACKEND_RELEASES_DIR:-${BACKEND}/releases}"
+RELEASES_TO_KEEP="${RELEASES_TO_KEEP:-5}"
+
+case "$RELEASES_TO_KEEP" in
+  ''|*[!0-9]*)
+    echo "RELEASES_TO_KEEP must be an integer of at least 2" >&2
+    exit 1
+    ;;
+esac
+if [ "$RELEASES_TO_KEEP" -lt 2 ]; then
+  echo "RELEASES_TO_KEEP must be at least 2" >&2
+  exit 1
+fi
 
 if [ ! -d "$CHECKOUT/.git" ]; then
   rm -rf "$CHECKOUT"
@@ -49,6 +61,41 @@ wait_for_url() {
     sleep 0.5
   done
   curl --fail --silent --show-error "$@" >/dev/null
+}
+
+prune_releases() {
+  local releases_dir="$1"
+  local active_link="$2"
+  local keep_count="$3"
+  local active_release
+  local kept=0
+  local release
+  local -a releases
+
+  if ! active_release="$(readlink -f "$active_link")" || [ -z "$active_release" ] || [ ! -d "$active_release" ]; then
+    echo "Warning: active release link could not be resolved: $active_link" >&2
+    return 1
+  fi
+  mapfile -t releases < <(
+    find "$releases_dir" -mindepth 1 -maxdepth 1 -type d \
+      ! -name 'legacy-*' ! -name '.staging-*' \
+      -printf '%T@ %p\n' | sort -nr | cut -d' ' -f2-
+  )
+
+  for release in "${releases[@]}"; do
+    if [ "$kept" -lt "$keep_count" ]; then
+      kept=$((kept + 1))
+      continue
+    fi
+    if [ "$(readlink -f "$release")" = "$active_release" ]; then
+      continue
+    fi
+    if ! rm -rf -- "$release"; then
+      echo "Warning: could not remove old release $release" >&2
+      return 1
+    fi
+    echo "removed_old_release=$release"
+  done
 }
 
 rollback() {
@@ -176,11 +223,15 @@ wait_for_url \
   --resolve kiku-bistro.de:443:127.0.0.1 \
   https://kiku-bistro.de/
 
+web_activated=false
+backend_activated=false
+
+prune_releases "$WEB_RELEASES_DIR" "$WEBROOT" "$RELEASES_TO_KEEP" || true
+prune_releases "$BACKEND_RELEASES_DIR" "$BACKEND/current" "$RELEASES_TO_KEEP" || true
+
 echo "deployed_commit=$commit"
 echo "web_release=$web_release"
 echo "backend_release=$backend_release"
+echo "releases_to_keep=$RELEASES_TO_KEEP"
 echo "kiku-reservations=$(systemctl is-active kiku-reservations)"
 echo "nginx=$(systemctl is-active nginx)"
-
-web_activated=false
-backend_activated=false

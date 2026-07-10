@@ -8,6 +8,8 @@ Update 2026-07-10:
 - Atomic release migration completed from commit `ef92263 Wait for services during atomic deploy`; GitHub Actions run `29109450349` succeeded. Active production web/backend releases are `ef92263-20260710170054`; the previous web directory and backend version remain available as legacy releases.
 - The first migration attempt correctly rolled the backend link back when its immediate health request arrived before Python had opened port 8080. Health checks now retry for up to 10 seconds before declaring failure. Production verification after the successful retry returned 200 for all public locales and both health endpoints; legacy public `POST /api/reservations` returned 410.
 - Locale generators now normalize LF, CRLF and legacy CR newlines before applying multiline translations, so menu regeneration is consistent on Windows, macOS and Linux. CI converts the English source pages to CRLF, regenerates all locales and fails if any published HTML output drifts.
+- Successful deploys now retain the five newest regular web releases and five newest regular backend releases. `legacy-*` directories and active symlink targets are excluded from cleanup; cleanup failures are warnings and do not roll back a healthy release. Override only with `RELEASES_TO_KEEP`, minimum 2.
+- GitHub Actions checkout was updated from `actions/checkout@v4` to the current official `actions/checkout@v7` (Node.js 24 runtime).
 
 Update 2026-07-09:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.

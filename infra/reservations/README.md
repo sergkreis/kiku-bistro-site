@@ -44,7 +44,8 @@ Files in this folder are templates. Do not commit real passwords.
 Production deploy is handled by GitHub Actions and `scripts/deploy-production.sh`.
 The deploy script builds versioned web and backend releases, validates them,
 switches `current` symlinks, and rolls both links back if the service or nginx
-health checks fail.
+health checks fail. After success it keeps the five newest regular releases;
+legacy releases and active symlink targets are preserved.
 
 ## Environment
 
