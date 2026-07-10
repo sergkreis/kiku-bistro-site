@@ -32,9 +32,9 @@ Auto-confirmation: up to 4 guests when capacity is available
 Production shape:
 
 ```text
-nginx serves static files from /var/www/kiku-site
+nginx serves static files through the atomic release link /var/www/kiku-site
 nginx proxies /api/ to 127.0.0.1:8080
-systemd runs /opt/kiku-reservations/server.py
+systemd runs /opt/kiku-reservations/current/server.py
 SQLite lives in /var/lib/kiku-reservations/reservations.sqlite3
 secrets live in /etc/kiku-reservations.env
 ```
@@ -42,16 +42,16 @@ secrets live in /etc/kiku-reservations.env
 Files in this folder are templates. Do not commit real passwords.
 
 Production deploy is handled by GitHub Actions and `scripts/deploy-production.sh`.
-The deploy script updates static files, syncs localized pages, installs
-`server.py`, syncs these reservation templates to `/opt/kiku-reservations/infra`,
-restarts `kiku-reservations`, tests nginx and reloads nginx.
+The deploy script builds versioned web and backend releases, validates them,
+switches `current` symlinks, and rolls both links back if the service or nginx
+health checks fail.
 
 ## Environment
 
 Copy the example file on the VPS:
 
 ```bash
-cp /opt/kiku-reservations/infra/reservations/kiku-reservations.env.example /etc/kiku-reservations.env
+cp /opt/kiku-reservations/current/infra/reservations/kiku-reservations.env.example /etc/kiku-reservations.env
 chmod 600 /etc/kiku-reservations.env
 ```
 
@@ -77,7 +77,7 @@ KIKU_SMTP_FROM=info@kiku-bistro.de
 Install service:
 
 ```bash
-cp /opt/kiku-reservations/infra/reservations/kiku-reservations.service /etc/systemd/system/kiku-reservations.service
+cp /opt/kiku-reservations/current/infra/reservations/kiku-reservations.service /etc/systemd/system/kiku-reservations.service
 systemctl daemon-reload
 systemctl enable --now kiku-reservations
 systemctl status kiku-reservations --no-pager

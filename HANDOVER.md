@@ -3,6 +3,8 @@
 Update 2026-07-10:
 - Disabled legacy public booking creation at `POST /api/reservations`; it now returns HTTP `410 Gone` and directs guests to the Resmio widget used by the public website.
 - Resmio is unaffected. Internal admin booking and existing guest management links remain available.
+- Production deploy now builds versioned web and backend releases before activation. `/var/www/kiku-site` and `/opt/kiku-reservations/current` are release symlinks; service/nginx health-check failures restore the previous targets.
+- GitHub Actions validates Bash, Python and JavaScript syntax before connecting to the VPS. The first release-based deploy preserves the previous direct web/backend files as legacy releases.
 
 Update 2026-07-09:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.
@@ -628,18 +630,17 @@ reservierung.html
 booking.js
 en/ fr/ nl/ pl/ cs/ it/ es/ pt/ ja/
 assets/
-server.py -> /opt/kiku-reservations/server.py
-infra/reservations/ -> /opt/kiku-reservations/infra/reservations/
+server.py -> /opt/kiku-reservations/releases/<release>/server.py
+infra/reservations/ -> /opt/kiku-reservations/releases/<release>/infra/reservations/
 ```
 
-После копирования на VPS:
+После сборки release deploy script атомарно переключает `/var/www/kiku-site` и
+`/opt/kiku-reservations/current`. Ручное копирование в активные пути больше не
+используется. Проверка после переключения:
 
 ```bash
-chown -R www-data:www-data /var/www/kiku-site
-find /var/www/kiku-site -type d -exec chmod 755 {} +
-find /var/www/kiku-site -type f -exec chmod 644 {} +
 nginx -t
-systemctl reload nginx
+systemctl is-active kiku-reservations nginx
 ```
 
 Для изменений nginx:

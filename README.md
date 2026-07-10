@@ -157,6 +157,9 @@ Workflow: .github/workflows/deploy.yml
 Deploy script: scripts/deploy-production.sh
 Trigger: push to main, or manual workflow_dispatch
 VPS checkout: /opt/kiku-bistro-site
+Web releases: /var/www/kiku-site-releases; active link: /var/www/kiku-site
+Backend releases: /opt/kiku-reservations/releases; active link: /opt/kiku-reservations/current
+Failed service/nginx health checks restore the previous web and backend release links.
 ```
 
 Required GitHub repository secrets:
@@ -254,10 +257,10 @@ Production VPS:
 217.154.193.255
 ```
 
-Папка сайта на сервере:
+Активный release сайта на сервере:
 
 ```text
-/var/www/kiku-site
+/var/www/kiku-site -> /var/www/kiku-site-releases/<release>
 ```
 
 nginx config:
@@ -272,7 +275,8 @@ Matomo:
 /opt/kiku-matomo
 ```
 
-Для деплоя обычно копируются:
+Production deploy собирает перечисленные файлы в новом release-каталоге и
+переключает активную ссылку только после проверок:
 
 ```text
 index.html
@@ -288,18 +292,16 @@ reservierung.html
 booking.js
 en/ fr/ nl/ pl/ cs/ it/ es/ pt/ ja/
 assets/
-server.py
-infra/reservations/
+server.py -> /opt/kiku-reservations/releases/<release>/server.py
+infra/reservations/ -> /opt/kiku-reservations/releases/<release>/infra/reservations/
 ```
 
-После копирования:
+Ручное копирование в `/var/www/kiku-site` больше не используется. Проверка после
+автоматического переключения:
 
 ```bash
-chown -R www-data:www-data /var/www/kiku-site
-find /var/www/kiku-site -type d -exec chmod 755 {} +
-find /var/www/kiku-site -type f -exec chmod 644 {} +
 nginx -t
-systemctl reload nginx
+systemctl is-active kiku-reservations nginx
 ```
 
 ## Matomo

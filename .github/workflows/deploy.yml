@@ -17,6 +17,20 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate release
+        run: |
+          bash -n scripts/deploy-production.sh
+          python3 -m py_compile server.py
+          node --check booking.js
+          node --check assets/google-ads-conversions.js
+          node --check assets/language-suggest.js
+          node --check scripts/generate-locales.mjs
+          node --check scripts/generate-extra-locales.mjs
+          node --check scripts/generate-guest-pages.mjs
+
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh

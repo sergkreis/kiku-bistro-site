@@ -5,9 +5,9 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/opt/kiku-reservations
+WorkingDirectory=/opt/kiku-reservations/current
 EnvironmentFile=/etc/kiku-reservations.env
-ExecStart=/usr/bin/python3 /opt/kiku-reservations/server.py
+ExecStart=/usr/bin/python3 /opt/kiku-reservations/current/server.py
 Restart=on-failure
 RestartSec=5
 User=www-data
