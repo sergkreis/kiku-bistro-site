@@ -39,6 +39,18 @@ activate_link() {
   mv -Tf "$next_link" "$link"
 }
 
+wait_for_url() {
+  local attempt
+
+  for attempt in $(seq 1 20); do
+    if curl --fail --silent --show-error "$@" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.5
+  done
+  curl --fail --silent --show-error "$@" >/dev/null
+}
+
 rollback() {
   set +e
   echo "Deployment failed; rolling back release links" >&2
@@ -139,7 +151,7 @@ backend_activated=true
 systemctl daemon-reload
 systemctl restart kiku-reservations
 systemctl is-active --quiet kiku-reservations
-curl --fail --silent --show-error http://127.0.0.1:8080/api/health >/dev/null
+wait_for_url http://127.0.0.1:8080/api/health
 
 if [ ! -L "$WEBROOT" ]; then
   legacy_web="$WEB_RELEASES_DIR/legacy-$(date -u +%Y%m%d%H%M%S)"
@@ -157,12 +169,12 @@ activate_link "$web_release" "$WEBROOT"
 web_activated=true
 nginx -t
 systemctl reload nginx
-curl --fail --silent --show-error \
+wait_for_url \
   --resolve kiku-bistro.de:443:127.0.0.1 \
-  https://kiku-bistro.de/api/health >/dev/null
-curl --fail --silent --show-error \
+  https://kiku-bistro.de/api/health
+wait_for_url \
   --resolve kiku-bistro.de:443:127.0.0.1 \
-  https://kiku-bistro.de/ >/dev/null
+  https://kiku-bistro.de/
 
 echo "deployed_commit=$commit"
 echo "web_release=$web_release"
