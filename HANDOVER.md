@@ -10,6 +10,7 @@ Update 2026-07-10:
 - Locale generators now normalize LF, CRLF and legacy CR newlines before applying multiline translations, so menu regeneration is consistent on Windows, macOS and Linux. CI converts the English source pages to CRLF, regenerates all locales and fails if any published HTML output drifts.
 - Successful deploys now retain the five newest regular web releases and five newest regular backend releases. `legacy-*` directories and active symlink targets are excluded from cleanup; cleanup failures are warnings and do not roll back a healthy release. Override only with `RELEASES_TO_KEEP`, minimum 2.
 - GitHub Actions checkout was updated from `actions/checkout@v4` to the current official `actions/checkout@v7` (Node.js 24 runtime).
+- Release retention and checkout v7 deployed successfully from commit `0f2c649 Add release retention and update checkout`; GitHub Actions run `29112863437` succeeded without the previous Node.js deprecation warning. Production has four regular web releases, four regular backend releases, and one preserved legacy release for each as of 2026-07-10.
 
 Update 2026-07-09:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.
