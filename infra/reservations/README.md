@@ -9,6 +9,8 @@ Current public booking state:
 ```text
 Public website reservations use the Resmio widget.
 The custom public reservation form is disabled on the website.
+POST /api/reservations is disabled and returns HTTP 410 Gone.
+Existing guest management links remain available for legacy reservations.
 The internal reservation backend/API/admin remain deployed and available.
 Reservation admin: https://admin.kiku-bistro.de/
 Reservation API: https://kiku-bistro.de/api/

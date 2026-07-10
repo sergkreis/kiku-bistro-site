@@ -1130,7 +1130,11 @@ class KikuHandler(SimpleHTTPRequestHandler):
             clear_auth_cookie(self)
             return
         if parsed.path == "/api/reservations":
-            self.handle_create_reservation()
+            json_response(
+                self,
+                HTTPStatus.GONE,
+                {"errors": ["Direct reservations are no longer accepted. Please use the Resmio widget on the website."]},
+            )
             return
         if parsed.path == "/api/admin/reservations":
             if not require_admin(self):

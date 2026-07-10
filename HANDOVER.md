@@ -1,5 +1,9 @@
 # Kiku Bistro - Handover
 
+Update 2026-07-10:
+- Disabled legacy public booking creation at `POST /api/reservations`; it now returns HTTP `410 Gone` and directs guests to the Resmio widget used by the public website.
+- Resmio is unaffected. Internal admin booking and existing guest management links remain available.
+
 Update 2026-07-09:
 - Menu update prepared from user-provided `/Users/ulia/Desktop/Bistro new1.pdf` created at 2026-07-09 12:03 CEST.
 - Public PDF menu `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing only pages 2-4 from the source PDF. The first page with guest Wi-Fi credentials was intentionally not published. New SHA256: `cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b`.

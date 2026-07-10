@@ -123,6 +123,7 @@ Reservations are live in production.
 
 ```text
 Public booking widget: Resmio widget on the website; internal admin booking remains at https://admin.kiku-bistro.de/
+Legacy public booking creation via POST /api/reservations is disabled with HTTP 410 Gone; existing guest management links remain available.
 Reservation admin: https://admin.kiku-bistro.de/
 Reservation API: https://kiku-bistro.de/api/
 Analytics admin: https://analytics.kiku-bistro.de/
