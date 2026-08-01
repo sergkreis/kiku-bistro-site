@@ -1,5 +1,14 @@
 # Kiku Bistro - Handover
 
+Update 2026-08-01:
+- Google Ads optimization was completed directly in campaign `23977868810` (`KIKU Bistro | Suche lokal`); no website code or Resmio configuration was changed.
+- Campaign URL suffix is now `utm_source=google&utm_medium=cpc&utm_campaign=bistro_search_local&utm_id={campaignid}&utm_term={keyword}&utm_content={creative}`. This improves attribution for future Google Ads clicks in Matomo; July 2026 sessions are not reclassified retroactively.
+- Exact-match campaign negatives added: `[quedlinburg altstadt]`, `[cafe halberstadt]`, `[frühstück thale]`, and `[restaurant halberstadt]`. Converting generic queries were intentionally left active.
+- Bistro schedule test expanded without increasing the budget: Wednesday `15:00-17:00`, Thursday-Saturday `15:00-18:00`, and Sunday `15:00-17:00`. Existing Wednesday-Sunday `08:00-15:00` and Tuesday-Saturday `18:00-22:00` rows remain active. Account timezone: Europe/Berlin (`GMT+02:00` at the time of the change).
+- Bistro budget remains `10,00 EUR/day`; Google Ads still reports the campaign as limited by budget, so the added daytime eligibility is intended to redistribute the existing budget rather than raise it.
+- Campaign `23979630955` belongs to the separate Kreis-VST project and must not be included in KIKU Bistro reporting or changed from this project. KIKU Restaurant was not added to Bistro Matomo, and Resmio remains a separate booking service.
+- Review the new daytime rows around 2026-08-15 to 2026-08-16. Compare clicks, CPC, conversions and CPA by schedule row, and compare Google Ads clicks with Matomo traffic for `utm_campaign=bistro_search_local`.
+
 Update 2026-07-10:
 - Disabled legacy public booking creation at `POST /api/reservations`; it now returns HTTP `410 Gone` and directs guests to the Resmio widget used by the public website.
 - Resmio is unaffected. Internal admin booking and existing guest management links remain available.
