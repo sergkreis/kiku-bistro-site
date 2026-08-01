@@ -24,13 +24,15 @@ Google Ads / marketing context:
 
 ```text
 KIKU Bistro Search campaign: KIKU Bistro | Suche lokal, campaignId 23977868810.
-Current Bistro Ads strategy as of 2026-07-02: breakfast/lunch search intent in Quedlinburg, 10,00 EUR/day, ad schedule Wednesday-Sunday 08:00-15:00 plus an evening breakfast-planning test Tuesday-Saturday 18:00-22:00 Europe/Berlin, with hotel/holiday/recipe/job/delivery negative keywords.
+Current Bistro Ads strategy as of 2026-08-01: breakfast/lunch search intent in Quedlinburg, 10,00 EUR/day, schedule Wednesday-Sunday 08:00-15:00, Tuesday-Saturday 18:00-22:00, plus a daytime test Wednesday 15:00-17:00, Thursday-Saturday 15:00-18:00, and Sunday 15:00-17:00 in Europe/Berlin.
 Google Ads conversion tracking added 2026-07-09: conversion action KIKU Bistro Website Interaction tracks high-intent clicks on PDF menu, route, phone, and email via assets/google-ads-conversions.js. Enhanced conversions are not enabled.
 Bistro location asset: campaign-level Google Ads location group KIKU Bistro only, containing only KIKU Bistro at Steinbrücke 2.
-Bistro negatives include hotel/holiday/accommodation/delivery/jobs/recipe intent and restaurant/fine-dining terms such as urlaub, jan fribus, fine dining, abendessen, dinner, kiku restaurant.
+Bistro negatives include hotel/holiday/accommodation/delivery/jobs/recipe intent and restaurant/fine-dining terms such as urlaub, jan fribus, fine dining, abendessen, dinner, and kiku restaurant. Exact negatives added 2026-08-01: [quedlinburg altstadt], [cafe halberstadt], [frühstück thale], and [restaurant halberstadt].
+Campaign URL suffix set 2026-08-01: utm_source=google&utm_medium=cpc&utm_campaign=bistro_search_local&utm_id={campaignid}&utm_term={keyword}&utm_content={creative}. It affects future clicks only; historical July traffic is not reattributed.
 KIKU Restaurant Search campaign: KIKU Restaurant | Fine Dining Search, campaignId 23979471269, 8,00 EUR/day.
 Restaurant location asset: campaign-level Google Ads location group KIKU Restaurant only, containing only KIKU at Pölle 8. Restaurant campaign has broad-match negatives for breakfast/brunch/cafe/kaffee/lunch/mittagessen/bistro intent.
-Next Ads check: 2026-07-05 to 2026-07-09, review morning vs evening performance, search terms, top-of-page visibility, CPC, spend, and whether Bistro breakfast/lunch keywords need budget or copy changes.
+Campaign 23979630955 belongs to the separate Kreis-VST project; exclude it from KIKU reporting and do not change it from this repository context.
+Next Ads check: 2026-08-15 to 2026-08-16, compare clicks, CPC, conversions and CPA for the new daytime rows against the existing morning/evening rows; keep the budget at 10,00 EUR/day during the test.
 ```
 
 AI/search context:
@@ -334,12 +336,10 @@ IP сокращается
 /opt/kiku-matomo/.matomo-admin
 ```
 
-Google Ads tracking currently uses campaign UTM parameters such as:
+Google Ads campaign `23977868810` currently uses this URL suffix:
 
 ```text
-utm_source=google
-utm_medium=cpc
-utm_campaign=bistro_search_local
+utm_source=google&utm_medium=cpc&utm_campaign=bistro_search_local&utm_id={campaignid}&utm_term={keyword}&utm_content={creative}
 ```
 
 Локальные PDF-отчеты аналитики лежат в `output/pdf/` и сейчас не отслеживаются git без отдельного решения:
