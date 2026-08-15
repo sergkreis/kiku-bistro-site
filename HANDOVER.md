@@ -9,6 +9,14 @@ Update 2026-08-01:
 - Campaign `23979630955` belongs to the separate Kreis-VST project and must not be included in KIKU Bistro reporting or changed from this project. KIKU Restaurant was not added to Bistro Matomo, and Resmio remains a separate booking service.
 - Review the new daytime rows around 2026-08-15 to 2026-08-16. Compare clicks, CPC, conversions and CPA by schedule row, and compare Google Ads clicks with Matomo traffic for `utm_campaign=bistro_search_local`.
 
+Update 2026-08-15:
+- Menu update prepared from the user-provided `Bistro new.pdf`.
+- Public `Kiku-Bistro-Menu.pdf` was replaced with a sanitized 3-page version containing source pages 2-4 only. The first page with guest Wi-Fi credentials was intentionally not published, and identifying PDF metadata was removed. New SHA256: `a131e9444e33c36efa5e24301de11e35d9fd2c830d2fd8354207bdab971cb0f8`.
+- Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT and JA. Drinks, wine and cocktails remain PDF-only.
+- Breakfast removed `Kardamomschnecke`. Lunch removed `Fischsuppe` and `Rinderragout`, and added `Gnocchi`, `Ente`, `Pasta-Orzo` and `Spitzkohlsteak`. Desserts are now `Käsekuchen`, `Tiramisu` and `French Toast`.
+- PDF cache-busting links and `sitemap.xml` menu-page/PDF lastmod values were updated to `2026-08-15`.
+- This entry records the prepared source state only; production deployment must be documented after GitHub Actions and live verification succeed.
+
 Update 2026-07-10:
 - Disabled legacy public booking creation at `POST /api/reservations`; it now returns HTTP `410 Gone` and directs guests to the Resmio widget used by the public website.
 - Resmio is unaffected. Internal admin booking and existing guest management links remain available.
@@ -156,7 +164,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление: 2026-07-09
+Последнее обновление меню подготовлено: 2026-08-15
 
 ## Быстрый контекст
 
@@ -193,11 +201,11 @@ Website click events: route links, email links, PDF menu links, menu tabs, and p
 Google Ads website conversion hook is active via assets/google-ads-conversions.js and one conversion action: KIKU Bistro Website Interaction.
 ```
 
-Current public menu/PDF as of 2026-07-09:
+Current prepared menu/PDF as of 2026-08-15:
 
 ```text
-Menu source: /Users/ulia/Desktop/Bistro new1.pdf
-Public PDF SHA256: cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b
+Menu source: user-provided Bistro new.pdf
+Public PDF SHA256: a131e9444e33c36efa5e24301de11e35d9fd2c830d2fd8354207bdab971cb0f8
 Public PDF is sanitized to 3 menu pages; the source PDF's first page with guest Wi-Fi credentials is intentionally not published.
 ```
 

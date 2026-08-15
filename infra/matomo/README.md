@@ -86,12 +86,12 @@ single-page visits get more accurate time-on-site measurements.
 
 ## Current menu tracking context
 
-Updated on 2026-07-09.
+Updated on 2026-08-15.
 
 ```text
 Current public PDF: https://kiku-bistro.de/Kiku-Bistro-Menu.pdf
-Current menu source file: user-provided Bistro new1.pdf from 2026-07-09
-Current public PDF SHA256: cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b
+Current menu source file: user-provided Bistro new.pdf from 2026-08-15
+Current public PDF SHA256: a131e9444e33c36efa5e24301de11e35d9fd2c830d2fd8354207bdab971cb0f8
 ```
 
 The public site keeps one canonical PDF filename, `Kiku-Bistro-Menu.pdf`, across

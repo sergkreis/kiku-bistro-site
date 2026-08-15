@@ -97,14 +97,14 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление сайта: 2026-07-09.
+Последнее обновление меню подготовлено: 2026-08-15.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.
-Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню `Bistro new1.pdf` от 2026-07-09; публичная PDF-версия содержит только страницы меню, без первой страницы с гостевым Wi-Fi.
+Kiku-Bistro-Menu.pdf обновлен по последнему пользовательскому PDF-меню `Bistro new.pdf` от 2026-08-15; публичная PDF-версия содержит только страницы 2-4 с меню, без первой страницы с гостевым Wi-Fi.
 robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTTPS non-www URLs and reciprocal hreflang alternates for DE, EN, FR, NL, PL, CS, IT, ES, PT, JA.
 Меню на сайте сверяется с PDF и сохраняет порядок позиций из PDF для вкладок Frühstück и Ab 12:00 Uhr.
-Последнее изменение меню: в ланче убраны Gnocchi и Schnitzel, добавлена Fischsuppe; в десертах добавлены Süßes Croissant и Schichttorte, убран Honigkuchen; исправлено написание Burrata-Salat.
+Последнее изменение меню: на завтраке убрана Kardamomschnecke; в ланче убраны Fischsuppe и Rinderragout, добавлены Gnocchi, Ente, Pasta-Orzo и Spitzkohlsteak; десерты теперь Käsekuchen, Tiramisu и French Toast.
 Напитки, вина и коктейли остаются в PDF, но не выводятся на сайте отдельной вкладкой.
 Нижнее фото visit-секции: assets/visit-window-guest.jpg
 Последний frontend fix: японская intro/about-секция на mobile больше не вызывает горизонтальный overflow; CSS cache-buster `styles.css?v=20260621-design-review-1`.
@@ -113,9 +113,9 @@ robots.txt and sitemap.xml added for search crawlers; sitemap uses canonical HTT
 Последний подготовленный content-changing menu update:
 
 ```text
-Дата: 2026-07-09
-Source PDF: /Users/ulia/Desktop/Bistro new1.pdf
-Public PDF SHA256: cfaaffcfb19703606cad4a42291eba70555c320cd3dda0a54f115d42ab97fc8b
+Дата: 2026-08-15
+Source PDF: Bistro new.pdf (user-provided)
+Public PDF SHA256: a131e9444e33c36efa5e24301de11e35d9fd2c830d2fd8354207bdab971cb0f8
 Проверка: локальный публичный PDF содержит 3 страницы меню и не содержит страницу с гостевым Wi-Fi.
 ```
 
