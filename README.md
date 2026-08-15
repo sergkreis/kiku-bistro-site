@@ -97,7 +97,7 @@ assets/visit-window-guest.jpg
 
 ## Актуальный контент
 
-Последнее обновление меню подготовлено: 2026-08-15.
+Последнее обновление меню опубликовано: 2026-08-15.
 
 ```text
 Часы работы: Mittwoch & Sonntag, 9:30 - 17:00; Donnerstag - Samstag, 9:30 - 21:00; Montag - Dienstag, Ruhetag.

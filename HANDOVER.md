@@ -15,7 +15,7 @@ Update 2026-08-15:
 - Visible food menu was updated on DE and EN, then regenerated for FR, NL, PL, CS, IT, ES, PT and JA. Drinks, wine and cocktails remain PDF-only.
 - Breakfast removed `Kardamomschnecke`. Lunch removed `Fischsuppe` and `Rinderragout`, and added `Gnocchi`, `Ente`, `Pasta-Orzo` and `Spitzkohlsteak`. Desserts are now `Käsekuchen`, `Tiramisu` and `French Toast`.
 - PDF cache-busting links and `sitemap.xml` menu-page/PDF lastmod values were updated to `2026-08-15`.
-- This entry records the prepared source state only; production deployment must be documented after GitHub Actions and live verification succeed.
+- Production deployment completed from commit `2a06328 Update Bistro menu`; GitHub Actions run `31913911205` succeeded. All ten locale pages and the public PDF returned HTTP 200, the live PDF SHA256 matched `a131e9444e33c36efa5e24301de11e35d9fd2c830d2fd8354207bdab971cb0f8`, and the production menu passed browser/console verification.
 
 Update 2026-07-10:
 - Disabled legacy public booking creation at `POST /api/reservations`; it now returns HTTP `410 Gone` and directs guests to the Resmio widget used by the public website.
@@ -164,7 +164,7 @@ Update 2026-05-29:
 - Public PDF menu renamed to `Kiku-Bistro-Menu.pdf` and updated from `Bistro new (1).pdf`.
 - Visible food menu/prices updated from the new PDF.
 
-Последнее обновление меню подготовлено: 2026-08-15
+Последнее обновление меню опубликовано: 2026-08-15
 
 ## Быстрый контекст
 
@@ -201,7 +201,7 @@ Website click events: route links, email links, PDF menu links, menu tabs, and p
 Google Ads website conversion hook is active via assets/google-ads-conversions.js and one conversion action: KIKU Bistro Website Interaction.
 ```
 
-Current prepared menu/PDF as of 2026-08-15:
+Current public menu/PDF as of 2026-08-15:
 
 ```text
 Menu source: user-provided Bistro new.pdf
