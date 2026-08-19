@@ -2173,14 +2173,9 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   .intro-layout,
   .menu-layout,
   .reservation-layout,
-  .restaurant-layout,
   .visit-layout,
   .footer-inner {
     grid-template-columns: 1fr;
-  }
-
-  .restaurant-logo-wrap {
-    justify-content: flex-start;
   }
 
   .intro-photo {
@@ -2326,6 +2321,14 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 @media (max-width: 720px) {
   :root {
     --container: calc(100% - 28px);
+  }
+
+  .restaurant-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .restaurant-logo-wrap {
+    justify-content: flex-start;
   }
 
   .header-inner {
