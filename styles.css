@@ -918,15 +918,33 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 }
 
 .restaurant-section {
-  background: var(--green);
-  color: var(--white);
+  background: rgba(246, 248, 240, 0.54);
 }
 
-.restaurant-callout {
+.restaurant-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(320px, 1.22fr);
   gap: 40px;
-  align-items: end;
+  align-items: center;
+}
+
+.restaurant-media {
+  min-width: 0;
+}
+
+.restaurant-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.restaurant-photo img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
 }
 
 .restaurant-copy {
@@ -937,18 +955,18 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 }
 
 .restaurant-copy .eyebrow {
-  color: rgba(255, 253, 248, 0.72);
+  color: var(--gold);
 }
 
 .restaurant-copy h2 {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(2.2rem, 4.4vw, 4rem);
   line-height: 0.98;
-  color: var(--white);
+  color: var(--green);
 }
 
 .restaurant-copy p {
-  color: rgba(255, 253, 248, 0.82);
+  color: var(--text-muted);
 }
 
 .restaurant-facts {
@@ -956,7 +974,7 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   flex-wrap: wrap;
   gap: 12px 28px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 253, 248, 0.24);
+  border-top: 1px solid var(--line);
 }
 
 .restaurant-facts p {
@@ -965,21 +983,15 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 
 .restaurant-facts strong {
   display: block;
-  color: var(--white);
+  color: var(--green);
   font-size: 0.82rem;
   text-transform: uppercase;
 }
 
 .restaurant-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-width: 0;
-}
-
-.btn-restaurant {
-  background: var(--white);
-  color: var(--green);
-  border-color: rgba(255, 253, 248, 0.72);
 }
 
 .admin-panel-hidden {
@@ -2170,14 +2182,10 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   .intro-layout,
   .menu-layout,
   .reservation-layout,
-  .restaurant-callout,
+  .restaurant-layout,
   .visit-layout,
   .footer-inner {
     grid-template-columns: 1fr;
-  }
-
-  .restaurant-actions {
-    justify-content: flex-start;
   }
 
   .intro-photo {
