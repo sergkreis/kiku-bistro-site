@@ -933,6 +933,12 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   min-width: 0;
 }
 
+.restaurant-logo {
+  width: min(100%, 360px);
+  height: auto;
+  margin-bottom: 4px;
+}
+
 .restaurant-copy .eyebrow {
   color: var(--gold);
 }
