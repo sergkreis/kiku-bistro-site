@@ -917,6 +917,71 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   place-items: start center;
 }
 
+.restaurant-section {
+  background: var(--green);
+  color: var(--white);
+}
+
+.restaurant-callout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: end;
+}
+
+.restaurant-copy {
+  display: grid;
+  gap: 18px;
+  max-width: 760px;
+  min-width: 0;
+}
+
+.restaurant-copy .eyebrow {
+  color: rgba(255, 253, 248, 0.72);
+}
+
+.restaurant-copy h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.2rem, 4.4vw, 4rem);
+  line-height: 0.98;
+  color: var(--white);
+}
+
+.restaurant-copy p {
+  color: rgba(255, 253, 248, 0.82);
+}
+
+.restaurant-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 253, 248, 0.24);
+}
+
+.restaurant-facts p {
+  margin: 0;
+}
+
+.restaurant-facts strong {
+  display: block;
+  color: var(--white);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.restaurant-actions {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.btn-restaurant {
+  background: var(--white);
+  color: var(--green);
+  border-color: rgba(255, 253, 248, 0.72);
+}
+
 .admin-panel-hidden {
   display: none;
 }
@@ -2105,9 +2170,14 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   .intro-layout,
   .menu-layout,
   .reservation-layout,
+  .restaurant-callout,
   .visit-layout,
   .footer-inner {
     grid-template-columns: 1fr;
+  }
+
+  .restaurant-actions {
+    justify-content: flex-start;
   }
 
   .intro-photo {
