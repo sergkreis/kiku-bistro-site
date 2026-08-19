@@ -922,21 +922,27 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 }
 
 .restaurant-layout {
-  display: flex;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: minmax(0, 0.98fr) minmax(260px, 0.82fr);
+  gap: 44px;
+  align-items: center;
 }
 
 .restaurant-copy {
   display: grid;
   gap: 18px;
-  max-width: 760px;
+  min-width: 0;
+}
+
+.restaurant-logo-wrap {
+  display: flex;
+  justify-content: flex-end;
   min-width: 0;
 }
 
 .restaurant-logo {
-  width: min(100%, 360px);
+  width: min(100%, 420px);
   height: auto;
-  margin-bottom: 4px;
 }
 
 .restaurant-copy .eyebrow {
@@ -2167,9 +2173,14 @@ html[lang="ja"] .intro-statement h1 span:last-child {
   .intro-layout,
   .menu-layout,
   .reservation-layout,
+  .restaurant-layout,
   .visit-layout,
   .footer-inner {
     grid-template-columns: 1fr;
+  }
+
+  .restaurant-logo-wrap {
+    justify-content: flex-start;
   }
 
   .intro-photo {
