@@ -541,12 +541,13 @@ button {
 }
 
 .intro-statement h1 {
-  font-size: clamp(3.2rem, 7vw, 6rem);
-  line-height: 0.76;
-  max-width: none;
-  display: grid;
-  gap: 0.045em;
-  margin: -0.08em 0 0.08em;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.12;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: block;
+  margin: 0;
 }
 
 .intro-statement h1 span {
