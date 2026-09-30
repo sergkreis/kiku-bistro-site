@@ -78,5 +78,8 @@ export function updateIntro(html, locale) {
  const pattern = /(<div class="intro-statement fade-up">)[\s\S]*?(<\/div>)/g;
  if ([...html.matchAll(pattern)].length !== 1) throw new Error('Expected one intro block');
  const body = `\n            <h1>${escape(copy[0])}</h1>\n` + copy.slice(1).map((text, i) => `            <p${i === 2 ? ' class="intro-accent"' : i === 4 ? ' class="statement-footer"' : ''}>${escape(text)}</p>`).join('\n') + '\n          ';
- return html.replace(pattern, (_, open, close) => open + body + close);
+ const menuHeading = /(<section class="section menu-section" id="menu">[\s\S]*?<h2>)[\s\S]*?(<\/h2>)/;
+ if (!menuHeading.test(html)) throw new Error('Missing menu heading');
+ return html.replace(pattern, (_, open, close) => open + body + close)
+   .replace(menuHeading, (_, open, close) => open + escape(copy[3]) + close);
 }
