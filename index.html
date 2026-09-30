@@ -25,424 +25,444 @@
     <link rel="alternate" hreflang="ja" href="https://kiku-bistro.de/ja/" />
     <link rel="alternate" hreflang="x-default" href="https://kiku-bistro.de/" />
     <script type="application/ld+json">
-      {
-              "@context": "https://schema.org",
-              "@graph": [
-                      {
-                              "@type": [
-                                      "Restaurant",
-                                      "CafeOrCoffeeShop"
-                              ],
-                              "@id": "https://kiku-bistro.de/#restaurant",
-                              "name": "Kiku Bistro",
-                              "alternateName": [
-                                      "KIKU Bistro",
-                                      "Kiku Bistro Quedlinburg"
-                              ],
-                              "url": "https://kiku-bistro.de/",
-                              "description": "Kiku Bistro is a modern breakfast, brunch, lunch and coffee bistro in Quedlinburg at Steinbrücke 2.",
-                              "disambiguatingDescription": "Kiku Bistro serves breakfast, brunch, lunch, coffee and patisserie at Steinbrücke 2 in Quedlinburg. It is separate from KIKU Restaurant, the fine-dining restaurant at Pölle 8.",
-                              "logo": "https://kiku-bistro.de/assets/header-flower.png",
-                              "image": [
-                                      "https://kiku-bistro.de/assets/hero-bread.jpg",
-                                      "https://kiku-bistro.de/assets/menu-breakfast.png",
-                                      "https://kiku-bistro.de/assets/interior-kiku-144.jpg"
-                              ],
-                              "telephone": "+4939464139064",
-                              "email": "info@kiku-bistro.de",
-                              "priceRange": "€€",
-                              "servesCuisine": [
-                                      "Modern European",
-                                      "Bistro",
-                                      "Breakfast",
-                                      "Brunch",
-                                      "Lunch",
-                                      "Coffee",
-                                      "Patisserie"
-                              ],
-                              "acceptsReservations": true,
-                              "menu": {
-                                      "@id": "https://kiku-bistro.de/#menu"
-                              },
-                              "hasMenu": {
-                                      "@id": "https://kiku-bistro.de/#menu"
-                              },
-                              "address": {
-                                      "@type": "PostalAddress",
-                                      "streetAddress": "Steinbrücke 2",
-                                      "postalCode": "06484",
-                                      "addressLocality": "Quedlinburg",
-                                      "addressRegion": "Sachsen-Anhalt",
-                                      "addressCountry": "DE"
-                              },
-                              "geo": {
-                                      "@type": "GeoCoordinates",
-                                      "latitude": 51.7883485,
-                                      "longitude": 11.1418539
-                              },
-                              "hasMap": "https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg",
-                              "areaServed": {
-                                      "@type": "City",
-                                      "name": "Quedlinburg"
-                              },
-                              "openingHours": [
-                                      "We 09:30-17:00",
-                                      "Th-Sa 09:30-21:00",
-                                      "Su 09:30-17:00"
-                              ],
-                              "openingHoursSpecification": [
-                                      {
-                                              "@type": "OpeningHoursSpecification",
-                                              "dayOfWeek": [
-                                                      "https://schema.org/Wednesday",
-                                                      "https://schema.org/Sunday"
-                                              ],
-                                              "opens": "09:30",
-                                              "closes": "17:00"
-                                      },
-                                      {
-                                              "@type": "OpeningHoursSpecification",
-                                              "dayOfWeek": [
-                                                      "https://schema.org/Thursday",
-                                                      "https://schema.org/Friday",
-                                                      "https://schema.org/Saturday"
-                                              ],
-                                              "opens": "09:30",
-                                              "closes": "21:00"
-                                      }
-                              ],
-                              "potentialAction": {
-                                      "@type": "ReserveAction",
-                                      "target": {
-                                              "@type": "EntryPoint",
-                                              "urlTemplate": "https://kiku-bistro.de/#reservierung",
-                                              "inLanguage": "de"
-                                      },
-                                      "result": {
-                                              "@type": "FoodEstablishmentReservation"
-                                      }
-                              },
-                              "sameAs": [
-                                      "https://www.instagram.com/kiku_bistro/"
-                              ]
-                      },
-                      {
-                              "@type": "Menu",
-                              "@id": "https://kiku-bistro.de/#menu",
-                              "name": "Kiku Bistro Speisekarte",
-                              "url": "https://kiku-bistro.de/Kiku-Bistro-Menu.pdf",
-                              "inLanguage": "de",
-                              "mainEntityOfPage": "https://kiku-bistro.de/#menu",
-                              "hasMenuSection": [
-                                      {
-                                              "@type": "MenuSection",
-                                              "name": "Frühstück",
-                                              "hasMenuItem": [
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Brotkörbchen",
-                                                              "description": "Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, Käse und Jamón",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "10.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Stulle - Benedict",
-                                                              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "11.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Stulle - Benedict mit Roastbeef",
-                                                              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "16.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Stulle - Benedict mit Lachs",
-                                                              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "16.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Stulle - Benedict mit Jamón",
-                                                              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "16.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Stulle - Tomaten und Burrata",
-                                                              "description": "Brioche, Avocado, Pesto",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "13.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Shakshuka",
-                                                              "description": "Eier, Tomatensauce, Paprika, Feta",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "14.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Lachstatar",
-                                                              "description": "Guacamole, Tomaten, Mango-Mayo",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "13.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "French Toast",
-                                                              "description": "Brioche, Yuzu-Mascarpone, Beeren, Pistazieneis",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "12.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Hausgemachtes Granola",
-                                                              "description": "Beeren, Nüsse, Joghurt",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "11.00",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      }
-                                              ]
-                                      },
-                                      {
-                                              "@type": "MenuSection",
-                                              "name": "Vorspeisen und Salate",
-                                              "hasMenuItem": [
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Brotkörbchen",
-                                                              "description": "Hausgemachtes Sauerteigbrot, Schwarzroggenbrot",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "3.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Brotkörbchen mit Butter & Dips",
-                                                              "description": "Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, Käse und Jamón",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "10.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Hummus mit Sauerteigbrot",
-                                                              "description": "Tomaten, Particella",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "7.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Lachstatar",
-                                                              "description": "Guacamole, Tomaten, Mango-Mayo",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "13.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Rindertatar",
-                                                              "description": "Brioche, Pilze, Salatmix",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "11.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Burrata-Salat",
-                                                              "description": "Tomaten, Salatmix, Pesto",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "11.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Caesar Salat",
-                                                              "description": "Hähnchen, Salatmix, Parmesan",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "14.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      }
-                                              ]
-                                      },
-                                      {
-                                              "@type": "MenuSection",
-                                              "name": "Hauptgänge",
-                                              "hasMenuItem": [
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Gnocchi",
-                                                              "description": "Gorgonzola, Garnelen, Bisque",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "21.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Ente",
-                                                              "description": "Rote Bete, Jus",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "24.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Pasta-Orzo",
-                                                              "description": "Rind, Pilze, Parmesan, Hoisin",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "24.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Singapur Chili Huhn",
-                                                              "description": "Paprika, Zwiebeln, Ei",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "19.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Trüffelrisotto",
-                                                              "description": "Pilze, Parmesan",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "19.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Spitzkohlsteak",
-                                                              "description": "Blumenkohlpüree, Beurre blanc",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "16.00",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      }
-                                              ]
-                                      },
-                                      {
-                                              "@type": "MenuSection",
-                                              "name": "Desserts",
-                                              "hasMenuItem": [
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Käsekuchen",
-                                                              "description": "Vanillecreme, Karamell, Apfelkompott",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "5.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "Tiramisu",
-                                                              "description": "Mascarpone, Kaffee, Vanilleeis",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "6.50",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      },
-                                                      {
-                                                              "@type": "MenuItem",
-                                                              "name": "French Toast",
-                                                              "description": "Brioche, Yuzu-Mascarpone, Beeren, Pistazieneis",
-                                                              "offers": {
-                                                                      "@type": "Offer",
-                                                                      "price": "12.90",
-                                                                      "priceCurrency": "EUR"
-                                                              }
-                                                      }
-                                              ]
-                                      }
-                              ]
-                      },
-                      {
-                              "@type": "WebSite",
-                              "@id": "https://kiku-bistro.de/#website",
-                              "name": "Kiku Bistro",
-                              "url": "https://kiku-bistro.de/",
-                              "inLanguage": [
-                                      "de",
-                                      "en",
-                                      "fr",
-                                      "nl",
-                                      "pl",
-                                      "cs",
-                                      "it",
-                                      "es",
-                                      "pt",
-                                      "ja"
-                              ],
-                              "publisher": {
-                                      "@id": "https://kiku-bistro.de/#restaurant"
-                              }
-                      }
-              ]
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Restaurant",
+        "CafeOrCoffeeShop"
+      ],
+      "@id": "https://kiku-bistro.de/#restaurant",
+      "name": "Kiku Bistro",
+      "alternateName": [
+        "KIKU Bistro",
+        "Kiku Bistro Quedlinburg"
+      ],
+      "url": "https://kiku-bistro.de/",
+      "description": "Kiku Bistro is a modern breakfast, brunch, lunch and coffee bistro in Quedlinburg at Steinbrücke 2.",
+      "disambiguatingDescription": "Kiku Bistro serves breakfast, brunch, lunch, coffee and patisserie at Steinbrücke 2 in Quedlinburg. It is separate from KIKU Restaurant, the fine-dining restaurant at Pölle 8.",
+      "logo": "https://kiku-bistro.de/assets/header-flower.png",
+      "image": [
+        "https://kiku-bistro.de/assets/hero-bread.jpg",
+        "https://kiku-bistro.de/assets/menu-breakfast.png",
+        "https://kiku-bistro.de/assets/interior-kiku-144.jpg"
+      ],
+      "telephone": "+4939464139064",
+      "email": "info@kiku-bistro.de",
+      "priceRange": "€€",
+      "servesCuisine": [
+        "Modern European",
+        "Bistro",
+        "Breakfast",
+        "Brunch",
+        "Lunch",
+        "Coffee",
+        "Patisserie"
+      ],
+      "acceptsReservations": true,
+      "menu": {
+        "@id": "https://kiku-bistro.de/#menu"
+      },
+      "hasMenu": {
+        "@id": "https://kiku-bistro.de/#menu"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Steinbrücke 2",
+        "postalCode": "06484",
+        "addressLocality": "Quedlinburg",
+        "addressRegion": "Sachsen-Anhalt",
+        "addressCountry": "DE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 51.7883485,
+        "longitude": 11.1418539
+      },
+      "hasMap": "https://maps.google.com/?q=Steinbr%C3%BCcke+2+06484+Quedlinburg",
+      "areaServed": {
+        "@type": "City",
+        "name": "Quedlinburg"
+      },
+      "openingHours": [
+        "We 09:30-17:00",
+        "Th-Sa 09:30-21:00",
+        "Su 09:30-17:00"
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "https://schema.org/Wednesday",
+            "https://schema.org/Sunday"
+          ],
+          "opens": "09:30",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday",
+            "https://schema.org/Saturday"
+          ],
+          "opens": "09:30",
+          "closes": "21:00"
+        }
+      ],
+      "potentialAction": {
+        "@type": "ReserveAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://kiku-bistro.de/#reservierung",
+          "inLanguage": "de"
+        },
+        "result": {
+          "@type": "FoodEstablishmentReservation"
+        }
+      },
+      "sameAs": [
+        "https://www.instagram.com/kiku_bistro/"
+      ]
+    },
+    {
+      "@type": "Menu",
+      "@id": "https://kiku-bistro.de/#menu",
+      "name": "Kiku Bistro Speisekarte",
+      "url": "https://kiku-bistro.de/Kiku-Bistro-Menu.pdf",
+      "inLanguage": "de",
+      "mainEntityOfPage": "https://kiku-bistro.de/#menu",
+      "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "name": "Frühstück",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Brotkörbchen",
+              "description": "Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, Käse und Jamón",
+              "offers": {
+                "@type": "Offer",
+                "price": "10.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Stulle - Benedict",
+              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
+              "offers": {
+                "@type": "Offer",
+                "price": "11.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Stulle - Benedict mit Roastbeef",
+              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
+              "offers": {
+                "@type": "Offer",
+                "price": "16.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Stulle - Benedict mit Lachs",
+              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
+              "offers": {
+                "@type": "Offer",
+                "price": "16.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Stulle - Benedict mit Jamón",
+              "description": "Brioche, pochierte Eier, Avocado, Hollandaise",
+              "offers": {
+                "@type": "Offer",
+                "price": "16.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Stulle - Tomaten & Burrata",
+              "description": "Brioche, Avocado, Pesto",
+              "offers": {
+                "@type": "Offer",
+                "price": "13.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Rührei",
+              "description": "Sauerteigbrot, Strachatella, Tomaten",
+              "offers": {
+                "@type": "Offer",
+                "price": "14.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Shakshuka",
+              "description": "Eier, Tomatensauce, Paprika, Feta",
+              "offers": {
+                "@type": "Offer",
+                "price": "14.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Fjordforellentatar",
+              "description": "Guacamole, Tomaten, Mango-Mayo",
+              "offers": {
+                "@type": "Offer",
+                "price": "16.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "French Toast",
+              "description": "Brioche, Yuzu-Mascarpone, Beeren",
+              "offers": {
+                "@type": "Offer",
+                "price": "12.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Hausgemachtes Granola",
+              "description": "Beeren, Nüsse, Joghurt",
+              "offers": {
+                "@type": "Offer",
+                "price": "11.00",
+                "priceCurrency": "EUR"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Vorspeisen und Salate",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Brotkörbchen",
+              "description": "Hausgemachtes Sauerteigbrot und Schwarzroggenbrot",
+              "offers": {
+                "@type": "Offer",
+                "price": "3.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Brotkörbchen mit Butter & Dips",
+              "description": "Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, Käse und Jamón",
+              "offers": {
+                "@type": "Offer",
+                "price": "10.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Hummus mit Sauerteigbrot",
+              "description": "Tomaten, Oliven, Feta",
+              "offers": {
+                "@type": "Offer",
+                "price": "7.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Fjordforellentatar",
+              "description": "Guacamole, Tomatensalsa, Mango-Mayo",
+              "offers": {
+                "@type": "Offer",
+                "price": "16.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Rindertatar",
+              "description": "Brioche, Pilze, Salatmix",
+              "offers": {
+                "@type": "Offer",
+                "price": "11.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Burrata-Salat",
+              "description": "Basilikumpesto & Tomatenconcassée",
+              "offers": {
+                "@type": "Offer",
+                "price": "11.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Caesar Salat",
+              "description": "Hähnchen, Salatmix, Parmesan",
+              "offers": {
+                "@type": "Offer",
+                "price": "14.90",
+                "priceCurrency": "EUR"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Hauptgänge",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Fischsuppe",
+              "description": "Lachs & Garnelen, Pilze, Tomaten",
+              "offers": {
+                "@type": "Offer",
+                "price": "21.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Black Pepper Beef",
+              "description": "Kürbispüree, Jus",
+              "offers": {
+                "@type": "Offer",
+                "price": "24.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Ente",
+              "description": "Rote Bete, Erdnüsse, Hoisin",
+              "offers": {
+                "@type": "Offer",
+                "price": "24.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Singapur Chili Huhn",
+              "description": "Paprika, Zwiebeln, Ei",
+              "offers": {
+                "@type": "Offer",
+                "price": "19.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Trüffelrisotto",
+              "description": "Pilze, Parmesan",
+              "offers": {
+                "@type": "Offer",
+                "price": "19.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Spitzkohlsteak",
+              "description": "Blumenkohlpüree, Fjordforellenkaviar-Beurre-blanc",
+              "offers": {
+                "@type": "Offer",
+                "price": "18.00",
+                "priceCurrency": "EUR"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Desserts",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Käsekuchen",
+              "description": "Vanillecreme, Karamell, Pfirsich",
+              "offers": {
+                "@type": "Offer",
+                "price": "5.90",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Pfirsichküchen",
+              "description": "Vanillecreme, Feigen",
+              "offers": {
+                "@type": "Offer",
+                "price": "6.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Tiramisu",
+              "description": "Mascarpone, Kaffee, Vanilleeis",
+              "offers": {
+                "@type": "Offer",
+                "price": "6.50",
+                "priceCurrency": "EUR"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "French Toast",
+              "description": "Brioche, Yuzu-Mascarpone, Beeren",
+              "offers": {
+                "@type": "Offer",
+                "price": "12.90",
+                "priceCurrency": "EUR"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://kiku-bistro.de/#website",
+      "name": "Kiku Bistro",
+      "url": "https://kiku-bistro.de/",
+      "inLanguage": [
+        "de",
+        "en",
+        "fr",
+        "nl",
+        "pl",
+        "cs",
+        "it",
+        "es",
+        "pt",
+        "ja"
+      ],
+      "publisher": {
+        "@id": "https://kiku-bistro.de/#restaurant"
       }
+    }
+  ]
+}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -633,66 +653,67 @@
               <div class="menu-panel active" id="tab-fruehstueck">
                 <div class="menu-group">
                   <p class="menu-group-label">Bis 12:00 Uhr</p>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Brotk&ouml;rbchen</span>
-	                      <span class="item-description">Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, K&auml;se und Jam&oacute;n</span>
-	                    </div>
-	                    <span class="item-price">10,5 &euro;</span>
-	                  </div>
-	                  <div class="menu-item menu-item-options">
-	                    <div class="menu-option-heading">
-	                      <span class="item-name">Stulle - Benedict</span>
-	                      <span class="item-description">Brioche, pochierte Eier, Avocado, Hollandaise</span>
-	                      <span class="item-price">11,9 &euro;</span>
-	                    </div>
-	                    <div class="menu-option-row">
-	                      <div>
-	                        <span class="item-name item-name-option">Mit Roastbeef</span>
-	                      </div>
-	                      <span class="item-price">16,9 &euro;</span>
-	                    </div>
-	                    <div class="menu-option-row">
-	                      <div>
-                        <span class="item-name item-name-option">Mit Lachs</span>
-                      </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Brotk&ouml;rbchen</span>
+                      <span class="item-description">Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, K&auml;se und Jam&oacute;n</span>
+                    </div>
+                    <span class="item-price">10,5 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-options">
+                    <div class="menu-option-heading">
+                      <span class="item-name">Stulle - Benedict</span>
+                      <span class="item-description">Brioche, pochierte Eier, Avocado, Hollandaise</span>
+                      <span class="item-price">11,9 &euro;</span>
+                    </div>
+                    <div class="menu-option-row">
+                      <div><span class="item-name item-name-option">Mit Roastbeef</span></div>
+                      <span class="item-price">16,9 &euro;</span>
+                    </div>
+                    <div class="menu-option-row">
+                      <div><span class="item-name item-name-option">Mit Lachs</span></div>
                       <span class="item-price">16,5 &euro;</span>
                     </div>
                     <div class="menu-option-row">
-                      <div>
-                        <span class="item-name item-name-option">Mit Jam&oacute;n</span>
-                      </div>
+                      <div><span class="item-name item-name-option">Mit Jam&oacute;n</span></div>
                       <span class="item-price">16,5 &euro;</span>
-	                    </div>
-	                  </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Stulle - Tomaten und Burrata</span>
-	                      <span class="item-description">Brioche, Avocado, Pesto</span>
-	                    </div>
-	                    <span class="item-price">13,9 &euro;</span>
-	                  </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Shakshuka</span>
-	                      <span class="item-description">Eier, Tomatensauce, Paprika, Feta</span>
-	                    </div>
-	                    <span class="item-price">14,9 &euro;</span>
-	                  </div>
-                  <div class="menu-item menu-item-priced">
-                    <div>
-                      <span class="item-name">Lachstatar</span>
-                      <span class="item-description">Guacamole, Tomaten, Mango-Mayo</span>
                     </div>
-                    <span class="item-price">13,5 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-	                      <span class="item-name">French Toast</span>
-	                      <span class="item-description">Brioche, Yuzu-Mascarpone, Beeren, Pistazieneis</span>
-	                    </div>
-	                    <span class="item-price">12,9 &euro;</span>
-	                  </div>
+                      <span class="item-name">Stulle - Tomaten &amp; Burrata</span>
+                      <span class="item-description">Brioche, Avocado, Pesto</span>
+                    </div>
+                    <span class="item-price">13,9 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">R&uuml;hrei</span>
+                      <span class="item-description">Sauerteigbrot, Strachatella, Tomaten</span>
+                    </div>
+                    <span class="item-price">14,5 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Shakshuka</span>
+                      <span class="item-description">Eier, Tomatensauce, Paprika, Feta</span>
+                    </div>
+                    <span class="item-price">14,9 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Fjordforellentatar</span>
+                      <span class="item-description">Guacamole, Tomaten, Mango-Mayo</span>
+                    </div>
+                    <span class="item-price">16,5 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">French Toast</span>
+                      <span class="item-description">Brioche, Yuzu-Mascarpone, Beeren</span>
+                    </div>
+                    <span class="item-price">12,9 &euro;</span>
+                  </div>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Hausgemachtes Granola</span>
@@ -702,83 +723,81 @@
                   </div>
                 </div>
               </div>
-
               <div class="menu-panel" id="tab-mittag">
                 <div class="menu-stack">
                   <p class="menu-panel-title">Lunch</p>
                   <div class="menu-group">
-                    <p class="menu-group-label">Vorspeisen</p>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Brotk&ouml;rbchen</span>
-	                      <span class="item-description">Hausgemachtes Sauerteigbrot, Schwarzroggenbrot</span>
-	                    </div>
-	                    <span class="item-price">3,5 &euro;</span>
-	                  </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Brotk&ouml;rbchen mit Butter &amp; Dips</span>
-	                      <span class="item-description">Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, K&auml;se und Jam&oacute;n</span>
-	                    </div>
-	                    <span class="item-price">10,5 &euro;</span>
-	                  </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Hummus mit Sauerteigbrot</span>
-	                      <span class="item-description">Tomaten, Particella</span>
-	                    </div>
-	                    <span class="item-price">7,9 &euro;</span>
-	                  </div>
+                    <p class="menu-group-label">Vorspeisen &amp; Salate</p>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Lachstatar</span>
-                      <span class="item-description">Guacamole, Tomaten, Mango-Mayo</span>
+                      <span class="item-name">Brotk&ouml;rbchen</span>
+                      <span class="item-description">Hausgemachtes Sauerteigbrot und Schwarzroggenbrot</span>
                     </div>
-                    <span class="item-price">13,5 &euro;</span>
+                    <span class="item-price">3,5 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-	                      <span class="item-name">Rindertatar</span>
-	                      <span class="item-description">Brioche, Pilze, Salatmix</span>
-	                    </div>
-	                    <span class="item-price">11,9 &euro;</span>
-	                  </div>
+                      <span class="item-name">Brotk&ouml;rbchen mit Butter &amp; Dips</span>
+                      <span class="item-description">Sauerteigbrot, Schwarzroggenbrot, Butter, Marmelade, K&auml;se und Jam&oacute;n</span>
+                    </div>
+                    <span class="item-price">10,5 &euro;</span>
+                  </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-	                      <span class="item-name">Burrata-Salat</span>
-	                      <span class="item-description">Tomaten, Salatmix, Pesto</span>
-	                    </div>
-	                    <span class="item-price">11,9 &euro;</span>
-	                  </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Caesar Salat</span>
-	                      <span class="item-description">H&auml;hnchen, Salatmix, Parmesan</span>
-	                    </div>
-	                    <span class="item-price">14,9 &euro;</span>
-	                  </div>
+                      <span class="item-name">Hummus mit Sauerteigbrot</span>
+                      <span class="item-description">Tomaten, Oliven, Feta</span>
+                    </div>
+                    <span class="item-price">7,9 &euro;</span>
                   </div>
-
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Fjordforellentatar</span>
+                      <span class="item-description">Guacamole, Tomatensalsa, Mango-Mayo</span>
+                    </div>
+                    <span class="item-price">16,5 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Rindertatar</span>
+                      <span class="item-description">Brioche, Pilze, Salatmix</span>
+                    </div>
+                    <span class="item-price">11,9 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Burrata-Salat</span>
+                      <span class="item-description">Basilikumpesto &amp; Tomatenconcass&eacute;e</span>
+                    </div>
+                    <span class="item-price">11,9 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Caesar Salat</span>
+                      <span class="item-description">H&auml;hnchen, Salatmix, Parmesan</span>
+                    </div>
+                    <span class="item-price">14,9 &euro;</span>
+                  </div>
+                  </div>
                   <div class="menu-group">
                     <p class="menu-group-label">Hauptg&auml;nge</p>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Gnocchi</span>
-                      <span class="item-description">Gorgonzola, Garnelen, Bisque</span>
+                      <span class="item-name">Fischsuppe</span>
+                      <span class="item-description">Lachs &amp; Garnelen, Pilze, Tomaten</span>
                     </div>
                     <span class="item-price">21,9 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Ente</span>
-                      <span class="item-description">Rote Bete, Jus</span>
+                      <span class="item-name">Black Pepper Beef</span>
+                      <span class="item-description">K&uuml;rbisp&uuml;ree, Jus</span>
                     </div>
                     <span class="item-price">24,5 &euro;</span>
                   </div>
                   <div class="menu-item menu-item-priced">
                     <div>
-                      <span class="item-name">Pasta-Orzo</span>
-                      <span class="item-description">Rind, Pilze, Parmesan, Hoisin</span>
+                      <span class="item-name">Ente</span>
+                      <span class="item-description">Rote Bete, Erdn&uuml;sse, Hoisin</span>
                     </div>
                     <span class="item-price">24,5 &euro;</span>
                   </div>
@@ -799,45 +818,48 @@
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">Spitzkohlsteak</span>
-                      <span class="item-description">Blumenkohlp&uuml;ree, Beurre blanc</span>
+                      <span class="item-description">Blumenkohlp&uuml;ree, Fjordforellenkaviar-Beurre-blanc</span>
                     </div>
-                    <span class="item-price">16 &euro;</span>
+                    <span class="item-price">18 &euro;</span>
                   </div>
                   </div>
-
                   <div class="menu-group">
                     <p class="menu-group-label">Desserts</p>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">K&auml;sekuchen</span>
-                      <span class="item-description">Vanillecreme, Karamell, Apfelkompott</span>
+                      <span class="item-description">Vanillecreme, Karamell, Pfirsich</span>
                     </div>
                     <span class="item-price">5,9 &euro;</span>
                   </div>
-	                  <div class="menu-item menu-item-priced">
-	                    <div>
-	                      <span class="item-name">Tiramisu</span>
-	                      <span class="item-description">Mascarpone, Kaffee, Vanilleeis</span>
-	                    </div>
-	                    <span class="item-price">6,5 &euro;</span>
-	                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Pfirsichk&uuml;chen</span>
+                      <span class="item-description">Vanillecreme, Feigen</span>
+                    </div>
+                    <span class="item-price">6,5 &euro;</span>
+                  </div>
+                  <div class="menu-item menu-item-priced">
+                    <div>
+                      <span class="item-name">Tiramisu</span>
+                      <span class="item-description">Mascarpone, Kaffee, Vanilleeis</span>
+                    </div>
+                    <span class="item-price">6,5 &euro;</span>
+                  </div>
                   <div class="menu-item menu-item-priced">
                     <div>
                       <span class="item-name">French Toast</span>
-                      <span class="item-description">Brioche, Yuzu-Mascarpone, Beeren, Pistazieneis</span>
+                      <span class="item-description">Brioche, Yuzu-Mascarpone, Beeren</span>
                     </div>
                     <span class="item-price">12,9 &euro;</span>
                   </div>
                   </div>
                 </div>
-                <p class="menu-note">
-                  Die Mittagskarte stammt aus dem aktuellen PDF-Men&uuml;. Die vollst&auml;ndige Version gibt es unten als Originalkarte.
-                </p>
+                <p class="menu-note">Die Mittagskarte stammt aus dem aktuellen PDF-Men&uuml;. Die vollst&auml;ndige Karte gibt es unten als PDF.</p>
               </div>
             </div>
-
             <div class="menu-pdf-row">
-              <a class="btn btn-dark" href="Kiku-Bistro-Menu.pdf?v=20260815-menu" target="_blank" rel="noreferrer">Aktuelle Karte als PDF</a>
+              <a class="btn btn-dark" href="Kiku-Bistro-Menu.pdf?v=20260930-menu" target="_blank" rel="noreferrer">Aktuelle Karte als PDF</a>
             </div>
           </div>
 

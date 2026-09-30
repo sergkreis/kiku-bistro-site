@@ -596,6 +596,23 @@ const locales = {
 
 const menuUpdateReplacements = {
   it: [
+    ["Scrambled eggs", "Uova strapazzate"],
+    ["Sourdough bread, stracciatella, tomatoes", "Pane a lievitazione naturale, stracciatella, pomodori"],
+    ["Fjord trout tartare", "Tartare di trota dei fiordi"],
+    ["Guacamole, tomato salsa, mango mayo", "Guacamole, salsa di pomodoro, maionese al mango"],
+    ["Basil pesto &amp; tomato concass&eacute;", "Pesto al basilico e concassé di pomodoro"],
+    ["Black pepper beef", "Manzo al pepe nero"],
+    ["Pumpkin pur&eacute;e, jus", "Purea di zucca, jus"],
+    ["Beetroot, peanuts, hoisin", "Barbabietola, arachidi, hoisin"],
+    ["Cauliflower pur&eacute;e, beurre blanc with Fjord trout roe", "Purea di cavolfiore, beurre blanc con uova di trota dei fiordi"],
+    ["Peach tart", "Crostata di pesche"],
+    ["Vanilla cream, figs", "Crema alla vaniglia, fichi"],
+    ["Vanilla cream, caramel, peach", "Crema alla vaniglia, caramello, pesca"],
+    ["Brioche, yuzu mascarpone, berries", "Brioche, mascarpone allo yuzu, frutti di bosco"],
+    ["Tomatoes, olives, feta", "Pomodori, olive, feta"],
+    ["Homemade sourdough bread and black rye bread", "Pane a lievitazione naturale fatto in casa e pane di segale nero"],
+    ["Salmon &amp; prawns, mushrooms, tomatoes", "Salmone e gamberi, funghi, pomodori"],
+
     ["Sourdough bread, black rye bread, butter, jam, cheese and jam&oacute;n", "Pane a lievitazione naturale, pane di segale nero, burro, confettura, formaggio e jamón"],
     ["Benedict open sandwich", "Tartina Benedict"],
     ["Brioche, poached eggs, avocado, hollandaise", "Brioche, uova in camicia, avocado, salsa olandese"],
@@ -636,6 +653,23 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Crema al miele, frutto della passione, gelato"],
   ],
   es: [
+    ["Scrambled eggs", "Huevos revueltos"],
+    ["Sourdough bread, stracciatella, tomatoes", "Pan de masa madre, stracciatella, tomates"],
+    ["Fjord trout tartare", "Tartar de trucha de los fiordos"],
+    ["Guacamole, tomato salsa, mango mayo", "Guacamole, salsa de tomate, mayonesa de mango"],
+    ["Basil pesto &amp; tomato concass&eacute;", "Pesto de albahaca y concassé de tomate"],
+    ["Black pepper beef", "Ternera a la pimienta negra"],
+    ["Pumpkin pur&eacute;e, jus", "Puré de calabaza, jugo"],
+    ["Beetroot, peanuts, hoisin", "Remolacha, cacahuetes, hoisin"],
+    ["Cauliflower pur&eacute;e, beurre blanc with Fjord trout roe", "Puré de coliflor, beurre blanc con huevas de trucha de los fiordos"],
+    ["Peach tart", "Tarta de melocotón"],
+    ["Vanilla cream, figs", "Crema de vainilla, higos"],
+    ["Vanilla cream, caramel, peach", "Crema de vainilla, caramelo, melocotón"],
+    ["Brioche, yuzu mascarpone, berries", "Brioche, mascarpone de yuzu, frutos rojos"],
+    ["Tomatoes, olives, feta", "Tomates, aceitunas, feta"],
+    ["Homemade sourdough bread and black rye bread", "Pan de masa madre casero y pan de centeno negro"],
+    ["Salmon &amp; prawns, mushrooms, tomatoes", "Salmón y gambas, setas, tomates"],
+
     ["Sourdough bread, black rye bread, butter, jam, cheese and jam&oacute;n", "Pan de masa madre, pan de centeno negro, mantequilla, mermelada, queso y jamón"],
     ["Benedict open sandwich", "Tosta Benedict"],
     ["Brioche, poached eggs, avocado, hollandaise", "Brioche, huevos escalfados, aguacate, holandesa"],
@@ -676,6 +710,23 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Crema de miel, fruta de la pasión, helado"],
   ],
   pt: [
+    ["Scrambled eggs", "Ovos mexidos"],
+    ["Sourdough bread, stracciatella, tomatoes", "Pão de massa-mãe, stracciatella, tomates"],
+    ["Fjord trout tartare", "Tártaro de truta dos fiordes"],
+    ["Guacamole, tomato salsa, mango mayo", "Guacamole, salsa de tomate, maionese de manga"],
+    ["Basil pesto &amp; tomato concass&eacute;", "Pesto de manjericão e concassé de tomate"],
+    ["Black pepper beef", "Carne de vaca com pimenta-preta"],
+    ["Pumpkin pur&eacute;e, jus", "Puré de abóbora, jus"],
+    ["Beetroot, peanuts, hoisin", "Beterraba, amendoins, hoisin"],
+    ["Cauliflower pur&eacute;e, beurre blanc with Fjord trout roe", "Puré de couve-flor, beurre blanc com ovas de truta dos fiordes"],
+    ["Peach tart", "Tarte de pêssego"],
+    ["Vanilla cream, figs", "Creme de baunilha, figos"],
+    ["Vanilla cream, caramel, peach", "Creme de baunilha, caramelo, pêssego"],
+    ["Brioche, yuzu mascarpone, berries", "Brioche, mascarpone de yuzu, frutos vermelhos"],
+    ["Tomatoes, olives, feta", "Tomates, azeitonas, feta"],
+    ["Homemade sourdough bread and black rye bread", "Pão de massa-mãe caseiro e pão de centeio escuro"],
+    ["Salmon &amp; prawns, mushrooms, tomatoes", "Salmão e camarões, cogumelos, tomates"],
+
     ["Sourdough bread, black rye bread, butter, jam, cheese and jam&oacute;n", "Pão de massa-mãe, pão de centeio escuro, manteiga, compota, queijo e jamón"],
     ["Benedict open sandwich", "Sanduíche aberta Benedict"],
     ["Brioche, poached eggs, avocado, hollandaise", "Brioche, ovos escalfados, abacate, molho holandês"],
@@ -716,6 +767,23 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Creme de mel, maracujá, gelado"],
   ],
   ja: [
+    ["Scrambled eggs", "スクランブルエッグ"],
+    ["Sourdough bread, stracciatella, tomatoes", "サワードウブレッド、ストラッチャテッラ、トマト"],
+    ["Fjord trout tartare", "フィヨルドマスのタルタル"],
+    ["Guacamole, tomato salsa, mango mayo", "ワカモレ、トマトサルサ、マンゴーマヨ"],
+    ["Basil pesto &amp; tomato concass&eacute;", "バジルペストとトマトのコンカッセ"],
+    ["Black pepper beef", "黒胡椒ビーフ"],
+    ["Pumpkin pur&eacute;e, jus", "かぼちゃのピュレ、ジュ"],
+    ["Beetroot, peanuts, hoisin", "ビーツ、ピーナッツ、海鮮醤"],
+    ["Cauliflower pur&eacute;e, beurre blanc with Fjord trout roe", "カリフラワーピュレ、フィヨルドマスの卵入りブールブラン"],
+    ["Peach tart", "ピーチタルト"],
+    ["Vanilla cream, figs", "バニラクリーム、イチジク"],
+    ["Vanilla cream, caramel, peach", "バニラクリーム、キャラメル、桃"],
+    ["Brioche, yuzu mascarpone, berries", "ブリオッシュ、柚子マスカルポーネ、ベリー"],
+    ["Tomatoes, olives, feta", "トマト、オリーブ、フェタ"],
+    ["Homemade sourdough bread and black rye bread", "自家製サワードウブレッドと黒ライ麦パン"],
+    ["Salmon &amp; prawns, mushrooms, tomatoes", "サーモンと海老、キノコ、トマト"],
+
     ["Sourdough bread, black rye bread, butter, jam, cheese and jam&oacute;n", "サワードウブレッド、黒ライ麦パン、バター、ジャム、チーズ、ハモン"],
     ["Benedict open sandwich", "ベネディクト・オープンサンド"],
     ["Brioche, poached eggs, avocado, hollandaise", "ブリオッシュ、ポーチドエッグ、アボカド、オランデーズ"],
@@ -773,7 +841,7 @@ function translateOutsideScripts(input, replacements) {
 }
 
 function repairPdfMenuHref(input) {
-  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20260815-menu"');
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20260930-menu"');
 }
 
 function updateCommonIndex(input, current, rootPage = false) {

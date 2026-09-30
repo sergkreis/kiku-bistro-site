@@ -1,5 +1,11 @@
 # Kiku Bistro - Handover
 
+Update 2026-09-30 (prepared locally, NOT published):
+- Source PDF SHA256 `a72258421dd6a6d8c6213b8bca30bdfe8eabf68a951cd64c81b2e0605fcf788b`. Public derivative retains source pages 2–4 only; source page 1 must never be published. Public PDF SHA256 `5cc0ffd730736850dc0713381efbe471dfa4c88d6922c1fed6bbfbaaabbbb2ff`.
+- Food menu updated in DE/EN, JSON-LD, eight generated locales and locale generators. Drinks/wine remain PDF-only. PDF links use `20260930-menu`; sitemap menu page/PDF dates updated. Reproducible scripts, old/new manifest and validation report are in `/home/hermes/kiku-menu-source/` (operator scratch, not deployed).
+- Source spells `Strachatella` and `Pfirsichküchen`; retained verbatim in German rather than guessing corrections. The fish soup description has a trailing comma, omitted in HTML. Confirm these editorial ambiguities before publication if exact typography matters.
+- No push/deploy performed. Independent review, production release and live verification remain for the coordinator.
+
 Update 2026-08-01:
 - Google Ads optimization was completed directly in campaign `23977868810` (`KIKU Bistro | Suche lokal`); no website code or Resmio configuration was changed.
 - Campaign URL suffix is now `utm_source=google&utm_medium=cpc&utm_campaign=bistro_search_local&utm_id={campaignid}&utm_term={keyword}&utm_content={creative}`. This improves attribution for future Google Ads clicks in Matomo; July 2026 sessions are not reclassified retroactively.
