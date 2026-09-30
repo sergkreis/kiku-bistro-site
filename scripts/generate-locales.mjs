@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile, copyFile } from "node:fs/promises";
+import { updateIntro } from "./intro-copy.mjs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -978,7 +979,7 @@ for (const [locale, config] of Object.entries(locales)) {
   index = replaceAll(index, [...config.replacements, ...(menuUpdateReplacements[locale] || [])]);
   index = repairPdfMenuHref(index);
   index = repairGeneratedScript(index);
-  await writeFile(join(dir, "index.html"), index, "utf8");
+  await writeFile(join(dir, "index.html"), updateIntro(index, locale), "utf8");
 
   let reservation = sourceReservation
     .replace('<html lang="en">', `<html lang="${locale}">`)

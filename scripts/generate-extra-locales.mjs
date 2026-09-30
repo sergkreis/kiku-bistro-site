@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile, copyFile } from "node:fs/promises";
+import { updateIntro } from "./intro-copy.mjs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -1066,18 +1067,18 @@ function reservationPage(code, config) {
 
 const enIndex = normalizeNewlines(await readFile(join(root, "en", "index.html"), "utf8"));
 const rootIndex = normalizeNewlines(await readFile(join(root, "index.html"), "utf8"));
-await writeFile(join(root, "index.html"), updateCommonIndex(rootIndex, "de", true), "utf8");
+await writeFile(join(root, "index.html"), updateIntro(updateCommonIndex(rootIndex, "de", true), "de"), "utf8");
 
 for (const code of ["en", "fr", "nl", "pl", "cs"]) {
   const file = join(root, code, "index.html");
   const html = normalizeNewlines(await readFile(file, "utf8"));
-  await writeFile(file, updateCommonIndex(html, code), "utf8");
+  await writeFile(file, updateIntro(updateCommonIndex(html, code), code), "utf8");
 }
 
 for (const [code, config] of Object.entries(locales)) {
   const dir = join(root, code);
   await mkdir(dir, { recursive: true });
-  await writeFile(join(dir, "index.html"), localizedIndex(enIndex, code, config), "utf8");
+  await writeFile(join(dir, "index.html"), updateIntro(localizedIndex(enIndex, code, config), code), "utf8");
   await writeFile(join(dir, "reservation.html"), reservationPage(code, config), "utf8");
   await copyFile(join(dir, "reservation.html"), join(dir, "reservierung.html"));
 }
