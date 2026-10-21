@@ -30,7 +30,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../styles.css?v=20261021-holiday-hours" />
+    <link rel="stylesheet" href="../styles.css?v=20261021-holiday-redesign" />
     <script src="../assets/language-suggest.js?v=20260621-1" defer></script>
     <script src="../assets/google-ads-conversions.js?v=20260709-1"></script>
     <script>
@@ -427,20 +427,38 @@
       </section>
       <section class="section holiday-section" id="holiday-hours" aria-labelledby="holiday-heading">
         <div class="container holiday-inner">
-          <h2 id="holiday-heading">Natal e Ano Novo</h2>
+          <h2 id="holiday-heading">Festas no Kiku</h2>
           <div class="holiday-grid">
             <div class="holiday-card holiday-card-special">
-              <h3>25 e 26 de dezembro de 2026</h3>
-              <p>Em ambos os dias servimos um menu especial fixo. Para saber os detalhes do menu, escreva-nos para <a href="mailto:info@kiku-bistro.de">info@kiku-bistro.de</a>.</p>
-              <p>Horários fixos de chegada em ambos os dias: 12:00, 13:00, 17:30 e 18:30.</p>
+              <div class="holiday-card-main">
+                <h3>Natal · Menu fixo</h3>
+                <p class="holiday-period">25 e 26 de dezembro de 2026</p>
+                <a class="holiday-menu-link" href="mailto:info@kiku-bistro.de?subject=Pedir%20o%20menu%20por%20e-mail">Pedir o menu por e-mail <span aria-hidden="true">↗</span></a>
+              </div>
+              <div class="holiday-times-group">
+                <p class="holiday-label">Horários de início das reservas — ambos os dias</p>
+                <div class="holiday-times" aria-label="Horários de início das reservas — ambos os dias">
+                <time class="holiday-time" datetime="12:00">12:00</time>
+                <time class="holiday-time" datetime="13:00">13:00</time>
+                <time class="holiday-time" datetime="17:30">17:30</time>
+                <time class="holiday-time" datetime="18:30">18:30</time>
+                </div>
+              </div>
             </div>
-            <div class="holiday-card">
-              <h3>23, 24, 27, 30 e 31 de dezembro de 2026</h3>
-              <p>Menu habitual das 09:30 às 17:00.</p>
+            <div class="holiday-card holiday-card-regular">
+              <h3>Menu habitual</h3>
+              <p class="holiday-hours">09:30–17:00</p>
+              <div class="holiday-dates" aria-label="Menu habitual">
+                <span class="holiday-date">23 dezembro de 2026</span>
+                <span class="holiday-date">24 dezembro de 2026</span>
+                <span class="holiday-date">27 dezembro de 2026</span>
+                <span class="holiday-date">30 dezembro de 2026</span>
+                <span class="holiday-date">31 dezembro de 2026</span>
+              </div>
             </div>
-            <div class="holiday-card">
-              <h3>1 a 3 de janeiro de 2027</h3>
-              <p>Encerrado.</p>
+            <div class="holiday-card holiday-card-closed">
+              <h3>Encerrado</h3>
+              <p class="holiday-closed-dates">1 a 3 de janeiro de 2027</p>
             </div>
           </div>
         </div>
