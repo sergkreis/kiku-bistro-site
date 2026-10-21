@@ -597,6 +597,14 @@ const locales = {
 
 const menuUpdateReplacements = {
   it: [
+    ["Bread basket with cheese selection", "Cestino di pane con selezione di formaggi"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Pane a lievitazione naturale, pane di segale nero, brie, formaggio di capra, Tête de Moine, gouda, miele e uva"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Capriolo, crema di tonno, capperi"],
+    ["Apple cake", "Torta di mele"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Salmone, gamberi, funghi, pomodori"],
+    ["Roast beef, baby potatoes, rosemary", "Roast beef, patate novelle, rosmarino"],
+    ["Brioche, pistachio cream, berries", "Brioche, crema al pistacchio, frutti di bosco"],
     ["Scrambled eggs", "Uova strapazzate"],
     ["Sourdough bread, stracciatella, tomatoes", "Pane a lievitazione naturale, stracciatella, pomodori"],
     ["Fjord trout tartare", "Tartare di trota dei fiordi"],
@@ -654,6 +662,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Crema al miele, frutto della passione, gelato"],
   ],
   es: [
+    ["Bread basket with cheese selection", "Cesta de pan con selección de quesos"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Pan de masa madre, pan de centeno negro, brie, queso de cabra, Tête de Moine, gouda, miel y uvas"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Corzo, crema de atún, alcaparras"],
+    ["Apple cake", "Tarta de manzana"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Salmón, gambas, setas, tomates"],
+    ["Roast beef, baby potatoes, rosemary", "Roast beef, patatas pequeñas, romero"],
+    ["Brioche, pistachio cream, berries", "Brioche, crema de pistacho, frutos rojos"],
     ["Scrambled eggs", "Huevos revueltos"],
     ["Sourdough bread, stracciatella, tomatoes", "Pan de masa madre, stracciatella, tomates"],
     ["Fjord trout tartare", "Tartar de trucha de los fiordos"],
@@ -711,6 +727,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Crema de miel, fruta de la pasión, helado"],
   ],
   pt: [
+    ["Bread basket with cheese selection", "Cesto de pão com seleção de queijos"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Pão de massa-mãe, pão de centeio escuro, brie, queijo de cabra, Tête de Moine, gouda, mel e uvas"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Corço, creme de atum, alcaparras"],
+    ["Apple cake", "Bolo de maçã"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Salmão, camarões, cogumelos, tomates"],
+    ["Roast beef, baby potatoes, rosemary", "Roast beef, batatas pequenas, alecrim"],
+    ["Brioche, pistachio cream, berries", "Brioche, creme de pistácio, frutos vermelhos"],
     ["Scrambled eggs", "Ovos mexidos"],
     ["Sourdough bread, stracciatella, tomatoes", "Pão de massa-mãe, stracciatella, tomates"],
     ["Fjord trout tartare", "Tártaro de truta dos fiordes"],
@@ -768,6 +792,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Creme de mel, maracujá, gelado"],
   ],
   ja: [
+    ["Bread basket with cheese selection", "チーズ盛り合わせ付きパンバスケット"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "サワードウブレッド、黒ライ麦パン、ブリー、ヤギのチーズ、テット・ド・モワンヌ、ゴーダ、蜂蜜、ブドウ"],
+    ["Vitello tonnato", "ヴィテッロ・トンナート"],
+    ["Venison, tuna cream, capers", "ノロジカ、ツナクリーム、ケッパー"],
+    ["Apple cake", "リンゴのケーキ"],
+    ["Salmon, prawns, mushrooms, tomatoes", "サーモン、海老、キノコ、トマト"],
+    ["Roast beef, baby potatoes, rosemary", "ローストビーフ、ベビーポテト、ローズマリー"],
+    ["Brioche, pistachio cream, berries", "ブリオッシュ、ピスタチオクリーム、ベリー"],
     ["Scrambled eggs", "スクランブルエッグ"],
     ["Sourdough bread, stracciatella, tomatoes", "サワードウブレッド、ストラッチャテッラ、トマト"],
     ["Fjord trout tartare", "フィヨルドマスのタルタル"],
@@ -842,7 +874,7 @@ function translateOutsideScripts(input, replacements) {
 }
 
 function repairPdfMenuHref(input) {
-  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20260930-menu"');
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20261021-menu"');
 }
 
 function updateCommonIndex(input, current, rootPage = false) {

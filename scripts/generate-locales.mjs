@@ -696,6 +696,14 @@ const locales = {
 
 const menuUpdateReplacements = {
   fr: [
+    ["Bread basket with cheese selection", "Corbeille de pain avec assortiment de fromages"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Pain au levain, pain de seigle noir, brie, fromage de chèvre, Tête de Moine, gouda, miel et raisins"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Chevreuil, crème de thon, câpres"],
+    ["Apple cake", "Gâteau aux pommes"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Saumon, crevettes, champignons, tomates"],
+    ["Roast beef, baby potatoes, rosemary", "Roast-beef, pommes de terre grenailles, romarin"],
+    ["Brioche, pistachio cream, berries", "Brioche, crème de pistache, fruits rouges"],
     ["Scrambled eggs", "Œufs brouillés"],
     ["Sourdough bread, stracciatella, tomatoes", "Pain au levain, stracciatella, tomates"],
     ["Fjord trout tartare", "Tartare de truite des fjords"],
@@ -753,6 +761,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Crème au miel, fruit de la passion, glace"],
   ],
   nl: [
+    ["Bread basket with cheese selection", "Broodmand met kaasselectie"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Zuurdesembrood, zwart roggebrood, brie, geitenkaas, Tête de Moine, gouda, honing en druiven"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Ree, tonijncrème, kappertjes"],
+    ["Apple cake", "Appelgebak"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Zalm, garnalen, paddenstoelen, tomaten"],
+    ["Roast beef, baby potatoes, rosemary", "Rosbief, krieltjes, rozemarijn"],
+    ["Brioche, pistachio cream, berries", "Brioche, pistachecrème, bessen"],
     ["Scrambled eggs", "Roerei"],
     ["Sourdough bread, stracciatella, tomatoes", "Zuurdesembrood, stracciatella, tomaten"],
     ["Fjord trout tartare", "Tartaar van fjordforel"],
@@ -810,6 +826,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Honingcrème, passievrucht, ijs"],
   ],
   pl: [
+    ["Bread basket with cheese selection", "Koszyk chleba z wyborem serów"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Chleb na zakwasie, czarny chleb żytni, brie, ser kozi, Tête de Moine, gouda, miód i winogrona"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Sarnina, krem z tuńczyka, kapary"],
+    ["Apple cake", "Ciasto jabłkowe"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Łosoś, krewetki, grzyby, pomidory"],
+    ["Roast beef, baby potatoes, rosemary", "Rostbef, młode ziemniaki, rozmaryn"],
+    ["Brioche, pistachio cream, berries", "Brioszka, krem pistacjowy, owoce jagodowe"],
     ["Scrambled eggs", "Jajecznica"],
     ["Sourdough bread, stracciatella, tomatoes", "Chleb na zakwasie, stracciatella, pomidory"],
     ["Fjord trout tartare", "Tatar z pstrąga fiordowego"],
@@ -867,6 +891,14 @@ const menuUpdateReplacements = {
     ["Honey cream, passion fruit, ice cream", "Krem miodowy, marakuja, lody"],
   ],
   cs: [
+    ["Bread basket with cheese selection", "Košík chleba s výběrem sýrů"],
+    ["Sourdough bread, black rye bread, brie, goat cheese, Tête de Moine, Gouda, honey and grapes", "Kváskový chléb, černý žitný chléb, brie, kozí sýr, Tête de Moine, gouda, med a hrozny"],
+    ["Vitello tonnato", "Vitello tonnato"],
+    ["Venison, tuna cream, capers", "Srnčí maso, tuňákový krém, kapary"],
+    ["Apple cake", "Jablečný koláč"],
+    ["Salmon, prawns, mushrooms, tomatoes", "Losos, krevety, houby, rajčata"],
+    ["Roast beef, baby potatoes, rosemary", "Roastbeef, malé brambory, rozmarýn"],
+    ["Brioche, pistachio cream, berries", "Brioška, pistáciový krém, lesní plody"],
     ["Scrambled eggs", "Míchaná vejce"],
     ["Sourdough bread, stracciatella, tomatoes", "Kváskový chléb, stracciatella, rajčata"],
     ["Fjord trout tartare", "Tatarák z fjordového pstruha"],
@@ -941,7 +973,7 @@ function translateOutsideScripts(input, replacements) {
 }
 
 function repairPdfMenuHref(input) {
-  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20260930-menu"');
+  return input.replace(/href="\.\.\/Kiku-Bistro-[^"]+\.pdf(?:\?[^"]*)?"/g, 'href="../Kiku-Bistro-Menu.pdf?v=20261021-menu"');
 }
 
 function applyLanguageSwitcher(input, locale) {
