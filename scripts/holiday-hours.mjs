@@ -29,9 +29,9 @@ export function holidaySection(locale) {
           <p class="holiday-period">${t("christmasDates")}</p>
           <p><a class="holiday-menu-link" href="mailto:info@kiku-bistro.de?subject=${encodeURIComponent(c.menuAsk)}">${t("menuAsk")} <span aria-hidden="true">↗</span></a></p>
           <p class="holiday-starts">${t("starts")}: <strong>${times}</strong></p>
-          <h3>${t("regular")}</h3>
+          <h3 class="holiday-dates">${dates}</h3>
           <p class="holiday-hours">${t("regularHours")}</p>
-          <p class="holiday-dates">${dates}</p>
+          <p>${t("regular")}</p>
           <h3>${t("closed")}</h3>
           <p class="holiday-closed-dates"><strong>${t("closedDates")}</strong></p>
         </div>
