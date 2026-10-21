@@ -837,10 +837,10 @@ html[lang="ja"] .intro-statement h1 span:last-child {
 .holiday-inner { max-width: 900px; color: #244235; }
 .holiday-inner h2 {
   margin: 0 0 36px;
-  color: #244235;
-  font-family: inherit;
+  color: var(--green);
+  font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.8rem, 3vw, 2.35rem);
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.22;
   overflow-wrap: break-word;
 }
