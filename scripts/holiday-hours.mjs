@@ -19,8 +19,9 @@ const escapeHtml = (value) => value.replace(/[&<>"']/g, (char) => ({
 export function holidaySection(locale) {
   const c = copy[locale];
   if (!c) throw new Error(`Unknown holiday locale: ${locale}`);
-  const t = (key) => escapeHtml(c[key]);
-  const dates = c.days.map((day) => `<span>${escapeHtml(locale === "ja" ? `${c.month}${day}` : `${day} ${c.month}`)}</span>`).join(locale === "ja" ? "、" : ", ");
+  const withoutYear = (value) => value.replace(/202[67]年/g, "").replace(/ de 202[67]/g, "").replace(/ 202[67]/g, "");
+  const t = (key) => escapeHtml(withoutYear(c[key]));
+  const dates = escapeHtml(locale === "ja" ? `${withoutYear(c.month)}${c.days.join("、")}` : `${c.days.join(", ")}${["es", "pt"].includes(locale) ? " de " : " "}${withoutYear(c.month)}`);
   const times = ["12:00", "13:00", "17:30", "18:30"].map((time) => `<time datetime="${time}">${time}</time>`).join(", ");
   return `      <section class="section holiday-section" id="holiday-hours" aria-labelledby="holiday-heading">
         <div class="container holiday-inner">
@@ -28,12 +29,14 @@ export function holidaySection(locale) {
           <h3>${t("christmas")}</h3>
           <p class="holiday-period">${t("christmasDates")}</p>
           <p><a class="holiday-menu-link" href="mailto:info@kiku-bistro.de?subject=${encodeURIComponent(c.menuAsk)}">${t("menuAsk")} <span aria-hidden="true">↗</span></a></p>
-          <p class="holiday-starts">${t("starts")}: <strong>${times}</strong></p>
+          <p class="holiday-starts">${t("starts")}: ${times}</p>
+          <hr class="holiday-divider">
           <h3 class="holiday-dates">${dates}</h3>
           <p class="holiday-hours">${t("regularHours")}</p>
           <p>${t("regular")}</p>
-          <h3>${t("closed")}</h3>
-          <p class="holiday-closed-dates"><strong>${t("closedDates")}</strong></p>
+          <hr class="holiday-divider">
+          <p class="holiday-closed-dates">${t("closedDates")}</p>
+          <p>${t("closed")}</p>
         </div>
       </section>`;
 }
