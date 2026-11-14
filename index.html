@@ -501,8 +501,28 @@
         firstScript.parentNode.insertBefore(script, firstScript);
       })();
     </script>
+    <style>
+      .christmas-notice { position: fixed; inset: auto 24px 24px auto; margin: 0; width: min(360px, calc(100vw - 32px)); max-height: calc(100dvh - 112px); overflow: auto; box-sizing: border-box; padding: 24px 28px; border: 1px solid #71816b; border-radius: 12px; background: #f4f1e7; color: #294233; box-shadow: 0 12px 40px #18322526; z-index: 100; text-align: left; }
+      .christmas-notice h2 { margin: 0 30px 12px 0; font-family: Georgia, serif; font-size: 25px; line-height: 1.2; font-weight: 400; }
+      .christmas-notice p { margin: 8px 0; font-size: 15px; line-height: 1.45; }
+      .christmas-notice .christmas-price { font-size: 18px; }
+      .christmas-notice .christmas-note { font-size: 13px; }
+      .christmas-notice a { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #294233; color: #fff; border-radius: 6px; text-decoration: none; }
+      .christmas-notice a:focus-visible, .christmas-notice button:focus-visible { outline: 3px solid #b17e49; outline-offset: 3px; }
+      .christmas-notice form { margin: 0; }
+      .christmas-notice button { position: absolute; right: 10px; top: 10px; width: 44px; height: 44px; border: 0; background: transparent; color: #294233; font-size: 28px; cursor: pointer; }
+      @media (max-width: 600px) { .christmas-notice { right: 16px; bottom: 16px; padding: 20px 24px; } }
+    </style>
   </head>
   <body>
+    <dialog class="christmas-notice" open aria-labelledby="christmas-notice-title" aria-describedby="christmas-notice-description">
+      <form method="dialog"><button type="submit" aria-label="Weihnachtshinweis schließen">×</button></form>
+      <h2 id="christmas-notice-title">Weihnachten im KIKU Bistro</h2>
+      <p id="christmas-notice-description">Am 25. &amp; 26. Dezember 2026 laden wir Sie zum festlichen Mittag- oder Abendessen ein.</p>
+      <p class="christmas-price">5 Gänge · 55 € pro Person</p>
+      <p class="christmas-note">Getränke sind nicht im Preis inbegriffen.</p>
+      <a href="assets/kiku-bistro-weihnachten-2026.jpg" target="_blank" rel="noopener noreferrer">Menü ansehen ↗</a>
+    </dialog>
     <header class="site-header" id="top">
       <div class="container header-inner">
         <a class="header-address" href="#visit">
