@@ -1,3 +1,4 @@
+import {updateMenu} from './all-day-menu.mjs';
 // Approved German source and translations for the about block.
 export const introCopy = {
 de: [
@@ -73,6 +74,7 @@ ja: [
 };
 const escape = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 export function updateIntro(html, locale) {
+ html = updateMenu(html, locale);
  html = html.replace(/styles\.css\?v=[^"']+/g, 'styles.css?v=20261021-holiday-refined');
  const copy = introCopy[locale];
  if (!copy) throw new Error(`Unknown intro locale: ${locale}`);
