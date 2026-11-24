@@ -75,7 +75,7 @@ ja: [
 const escape = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 export function updateIntro(html, locale) {
  html = updateMenu(html, locale);
- html = html.replace(/styles\.css\?v=[^"']+/g, 'styles.css?v=20261021-holiday-refined');
+ html = html.replace(/styles\.css\?v=[^"']+/g, 'styles.css?v=20261124-mobile-menu');
  const copy = introCopy[locale];
  if (!copy) throw new Error(`Unknown intro locale: ${locale}`);
  const pattern = /(<div class="intro-statement fade-up">)[\s\S]*?(<\/div>)/g;
